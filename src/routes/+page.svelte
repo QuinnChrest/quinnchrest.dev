@@ -4,6 +4,7 @@
 	import Projects from '$lib/components/Projects.svelte';
 	import Stats from '$lib/components/Stats.svelte';
 	import Navigation from '$lib/components/Navigation.svelte';
+	import { fade } from 'svelte/transition';
 
 	let currentSection = 'projects';
 	let slideDirection = 'right'; // 'left' or 'right'
@@ -145,7 +146,7 @@
 
 	<!-- Navigation Hint -->
 	{#if showHint}
-		<div class="fixed bottom-4 right-4 text-xs text-gray-400 bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] rounded-lg px-3 py-2">
+		<div class="fixed bottom-4 right-4 text-xs text-gray-400 bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] rounded-lg px-3 py-2" transition:fade={{ duration: 250 }}>
 			<div class="hidden md:block">Use ← → keys to navigate</div>
 			<div class="md:hidden">Swipe left/right to navigate</div>
 		</div>
