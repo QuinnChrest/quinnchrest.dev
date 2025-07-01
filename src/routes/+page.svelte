@@ -10,6 +10,7 @@
 	let isTransitioning = false;
 	let touchStartX = 0;
 	let touchEndX = 0;
+	let showHint = true;
 
 	function switchSection(newSection: string) {
 		if (newSection === currentSection || isTransitioning) return;
@@ -27,6 +28,17 @@
 		setTimeout(() => {
 			isTransitioning = false;
 		}, 300);
+	}
+
+	function handleScroll(e: Event) {
+		const el = e.target as HTMLElement;
+		const isMobile = window.innerWidth < 768;
+		if (!isMobile) {
+			showHint = true;
+			return;
+		}
+		const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 8;
+		showHint = !atBottom;
 	}
 
 	onMount(() => {
@@ -94,7 +106,7 @@
 			style="transform: translateX({currentSection === 'projects' ? '0%' : currentSection === 'devlog' ? '-100%' : currentSection === 'stats' ? '-200%' : '0%'})"
 		>
 			<div class="w-full h-full flex flex-col">
-				<div class="flex-1 overflow-y-auto pb-24 md:pb-8">
+				<div class="flex-1 overflow-y-auto pb-24 md:pb-8" on:scroll={handleScroll}>
 					<div class="max-w-6xl mx-auto px-4 pt-20">
 						<Projects />
 					</div>
@@ -108,7 +120,7 @@
 			style="transform: translateX({currentSection === 'devlog' ? '0%' : currentSection === 'projects' ? '100%' : currentSection === 'stats' ? '-100%' : '0%'})"
 		>
 			<div class="w-full h-full flex flex-col">
-				<div class="flex-1 overflow-y-auto pb-24 md:pb-8">
+				<div class="flex-1 overflow-y-auto pb-24 md:pb-8" on:scroll={handleScroll}>
 					<div class="max-w-6xl mx-auto px-4 pt-20">
 						<DevLog />
 					</div>
@@ -122,7 +134,7 @@
 			style="transform: translateX({currentSection === 'stats' ? '0%' : currentSection === 'devlog' ? '100%' : currentSection === 'projects' ? '200%' : '0%'})"
 		>
 			<div class="w-full h-full flex flex-col">
-				<div class="flex-1 overflow-y-auto pb-24 md:pb-8">
+				<div class="flex-1 overflow-y-auto pb-24 md:pb-8" on:scroll={handleScroll}>
 					<div class="max-w-6xl mx-auto px-4 pt-20">
 						<Stats />
 					</div>
@@ -132,10 +144,12 @@
 	</div>
 
 	<!-- Navigation Hint -->
-	<div class="fixed bottom-4 right-4 text-xs text-gray-400 bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] rounded-lg px-3 py-2">
-		<div class="hidden md:block">Use ← → keys to navigate</div>
-		<div class="md:hidden">Swipe left/right to navigate</div>
-	</div>
+	{#if showHint}
+		<div class="fixed bottom-4 right-4 text-xs text-gray-400 bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] rounded-lg px-3 py-2">
+			<div class="hidden md:block">Use ← → keys to navigate</div>
+			<div class="md:hidden">Swipe left/right to navigate</div>
+		</div>
+	{/if}
 </main>
 
 <style>
