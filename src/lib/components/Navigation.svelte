@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	
+	import { onMount } from 'svelte';
+
 	export let currentSection: string = 'projects';
 	
 	const dispatch = createEventDispatcher();
@@ -10,10 +11,26 @@
 		{ id: 'devlog', label: 'Dev Log' },
 		{ id: 'stats', label: 'GitHub Stats' }
 	];
-	
+
+	let mobileMenuOpen = false;
+
 	function handleNavClick(section: string) {
 		dispatch('sectionChange', section);
+		mobileMenuOpen = false;
 	}
+
+	function handleHamburger() {
+		mobileMenuOpen = !mobileMenuOpen;
+	}
+
+	// Close menu on resize to desktop
+	onMount(() => {
+		const handleResize = () => {
+			if (window.innerWidth >= 768) mobileMenuOpen = false;
+		};
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	});
 </script>
 
 <nav class="fixed top-0 left-0 right-0 z-50 bg-[#161b22]/90 backdrop-blur-md border-b border-[#30363d]">
@@ -43,18 +60,25 @@
 			</div>
 			
 			<!-- Mobile Menu Button -->
-			<button class="md:hidden p-2 text-[#8b949e] hover:text-[#f0f6fc]">
+			<button class="md:hidden p-2 text-[#8b949e] hover:text-[#f0f6fc] focus:outline-none" aria-label="Open menu" on:click={handleHamburger}>
 				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+					{#if !mobileMenuOpen}
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+					{:else}
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					{/if}
 				</svg>
 			</button>
 		</div>
 	</div>
 </nav>
 
-<!-- Mobile Navigation (Hidden by default) -->
-<div class="md:hidden fixed top-16 left-0 right-0 bg-[#161b22]/95 backdrop-blur-md border-b border-[#30363d] transform -translate-y-full transition-transform duration-300">
-	<div class="container mx-auto px-4 py-4">
+<!-- Mobile Navigation -->
+<div class="md:hidden fixed top-16 left-0 right-0 z-40 transition-transform duration-300"
+	class:translate-y-0={mobileMenuOpen}
+	class:-translate-y-full={!mobileMenuOpen}
+	style="will-change: transform;">
+	<div class="bg-[#161b22]/95 backdrop-blur-md border-b border-[#30363d] px-4 py-4">
 		<div class="flex flex-col space-y-4">
 			{#each navItems as item}
 				<button
@@ -66,4 +90,14 @@
 			{/each}
 		</div>
 	</div>
-</div> 
+</div>
+
+<style>
+	/* Animate mobile menu slide */
+	.-translate-y-full {
+		transform: translateY(-100%);
+	}
+	.translate-y-0 {
+		transform: translateY(0);
+	}
+</style> 
