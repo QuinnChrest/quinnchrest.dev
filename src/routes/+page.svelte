@@ -94,7 +94,7 @@
 			style="transform: translateX({currentSection === 'projects' ? '0%' : currentSection === 'devlog' ? '-100%' : currentSection === 'stats' ? '-200%' : '0%'})"
 		>
 			<div class="w-full h-full flex flex-col">
-				<div class="flex-1 overflow-y-auto pb-8">
+				<div class="flex-1 overflow-y-auto pb-24 md:pb-8">
 					<div class="max-w-6xl mx-auto px-4 pt-20">
 						<Projects />
 					</div>
@@ -108,7 +108,7 @@
 			style="transform: translateX({currentSection === 'devlog' ? '0%' : currentSection === 'projects' ? '100%' : currentSection === 'stats' ? '-100%' : '0%'})"
 		>
 			<div class="w-full h-full flex flex-col">
-				<div class="flex-1 overflow-y-auto pb-8">
+				<div class="flex-1 overflow-y-auto pb-24 md:pb-8">
 					<div class="max-w-6xl mx-auto px-4 pt-20">
 						<DevLog />
 					</div>
@@ -122,7 +122,7 @@
 			style="transform: translateX({currentSection === 'stats' ? '0%' : currentSection === 'devlog' ? '100%' : currentSection === 'projects' ? '200%' : '0%'})"
 		>
 			<div class="w-full h-full flex flex-col">
-				<div class="flex-1 overflow-y-auto pb-8">
+				<div class="flex-1 overflow-y-auto pb-24 md:pb-8">
 					<div class="max-w-6xl mx-auto px-4 pt-20">
 						<Stats />
 					</div>
