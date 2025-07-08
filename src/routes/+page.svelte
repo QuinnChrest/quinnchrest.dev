@@ -94,6 +94,7 @@
 	<title>Quinn Chrest - Developer Portfolio</title>
 	<meta name="description" content="Developer portfolio showcasing projects, dev log, and GitHub stats" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="alternate" type="application/rss+xml" title="Quinn Chrest - Dev Log RSS Feed" href="/api/feed.xml" />
 </svelte:head>
 
 <main class="min-h-screen bg-[#0d1117] text-white overflow-hidden">

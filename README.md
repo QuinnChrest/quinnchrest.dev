@@ -48,44 +48,6 @@ A modern, responsive portfolio website built with SvelteKit, TypeScript, and Tai
 - **Build Tool**: Vite 6.2.6
 - **Font**: Inter (Google Fonts)
 
-## 📦 Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/quinnchrest/portfolio.git
-cd portfolio
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Start the development server:
-```bash
-npm run dev
-```
-
-4. Open your browser and navigate to `http://localhost:5173`
-
-## 🏗️ Project Structure
-
-```
-src/
-├── app.css              # Global styles and Tailwind imports
-├── app.html             # HTML template
-├── routes/
-│   ├── +layout.svelte   # Root layout
-│   └── +page.svelte     # Main page component
-└── lib/
-    └── components/
-        ├── Navigation.svelte  # Navigation bar
-        ├── Hero.svelte        # Hero section
-        ├── DevLog.svelte      # Dev log component
-        ├── Projects.svelte    # Projects showcase
-        └── Blog.svelte        # Blog section
-```
-
 ## 🎨 Customization
 
 ### Colors and Theme
@@ -109,17 +71,29 @@ The website is fully responsive and works on:
 
 ## 🚀 Deployment
 
+### Environment Variables for Production
+When deploying to production, make sure to set the following environment variables in your hosting platform:
+
+- `DB_HOST` - Your database host
+- `DB_PORT` - Database port (usually 5432)
+- `DB_NAME` - Database name
+- `DB_USER` - Database username
+- `DB_PASSWORD` - Database password
+- `DB_SSL` - Set to 'true' for production databases
+
 ### Vercel (Recommended)
 1. Push your code to GitHub
 2. Connect your repository to Vercel
-3. Deploy automatically
+3. Add environment variables in Vercel dashboard
+4. Deploy automatically
 
 ### Netlify
 1. Build the project: `npm run build`
-2. Deploy the `build` folder to Netlify
+2. Add environment variables in Netlify dashboard
+3. Deploy the `build` folder to Netlify
 
 ### Other Platforms
-The project uses SvelteKit's adapter-auto, so it should work with most hosting platforms.
+The project uses SvelteKit's adapter-auto, so it should work with most hosting platforms. Remember to configure environment variables for your database connection.
 
 ## 🔧 Available Scripts
 
