@@ -13,7 +13,7 @@ if [ $(docker ps -aq -f name=quinnchrest.dev) ]; then
   docker rm quinnchrest.dev || true
 fi
 
-# Run the Docker container on port 3000
-docker run -d -p 3000:3000 --env-file .env quinnchrest.dev
+# Run the Docker container on port 3000 with a specific name
+docker run -d --name quinnchrest.dev -p 3000:3000 --env-file .env quinnchrest.dev
 
 echo "Deployment complete! Your app is running on http://localhost:3000" 
