@@ -107,9 +107,9 @@
 		<!-- Projects Grid -->
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 			{#each filteredProjects as project}
-				<div class="group bg-[#21262d] border border-[#30363d] rounded-lg overflow-hidden hover:bg-[#30363d] transition-all duration-300 transform hover:scale-105">
+				<div class="group bg-[#21262d] border border-[#30363d] rounded-lg overflow-hidden hover:bg-[#30363d] transition-all duration-300 transform hover:scale-105 flex flex-col h-full">
 					<!-- Project Image -->
-					<div class="relative h-48 overflow-hidden">
+					<div class="relative h-48 overflow-hidden flex-shrink-0">
 						<img
 							src={project.image}
 							alt={project.title}
@@ -135,14 +135,10 @@
 					</div>
 					
 					<!-- Project Content -->
-					<div class="p-6">
+					<div class="p-6 flex flex-col flex-grow">
 						<h3 class="text-xl font-semibold text-[#f0f6fc] mb-3 group-hover:text-[#58a6ff] transition-colors">
 							{project.title}
 						</h3>
-						
-						<p class="text-[#8b949e] text-sm leading-relaxed mb-4">
-							{project.description}
-						</p>
 						
 						<!-- Technologies -->
 						<div class="flex flex-wrap gap-2 mb-4">
@@ -153,8 +149,12 @@
 							{/each}
 						</div>
 						
+						<p class="text-[#8b949e] text-sm leading-relaxed mb-4">
+							{project.description}
+						</p>
+						
 						<!-- Action Buttons -->
-						<div class="flex space-x-3">
+						<div class="flex space-x-3 mt-auto">
 							{#if project.githubUrl}
 								<a
 									href={project.githubUrl}
