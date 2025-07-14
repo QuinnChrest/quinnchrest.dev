@@ -20,11 +20,20 @@ export function requireAuth(request: Request): boolean {
 	if (!adminUsername || !adminPassword) {
 		return false;
 	}
+
+	const decoded = atob(token);
+	const [username, password, timestamp] = decoded.split(':');
+
+	// Check if token is expired
+	const tokenTime = parseInt(timestamp);
+	const now = Date.now();
+	const maxAge = 60 * 60 * 1000;
 	
-	// Create a simple token (in production, use proper JWT)
-	const expectedToken = btoa(`${adminUsername}:${adminPassword}`);
+	if (now - tokenTime > maxAge) {
+		return false;
+	}
 	
-	return token === expectedToken;
+	return username === adminUsername && password === adminPassword;
 }
 
 export function authGuard(request: Request) {
