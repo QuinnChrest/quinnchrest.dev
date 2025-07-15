@@ -126,7 +126,7 @@
 						<h3 class="text-xl font-semibold text-[#f0f6fc] mb-3">{entry.title}</h3>
 						
 						<!-- Content -->
-						<p class="text-[#8b949e] leading-relaxed mb-4">{entry.content}</p>
+						<p class="text-[#8b949e] leading-relaxed mb-4" style="white-space: pre-line;">{entry.content}</p>
 						
 						<!-- Tags -->
 						{#if entry.tags.length > 0}
