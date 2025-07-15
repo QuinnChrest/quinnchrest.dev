@@ -64,14 +64,16 @@ function generateRSSFeed(entries: any[]): string {
 		const category = entry.category;
 		const tags = entry.tags.join(', ');
 		
+		// Add link back in when I have a way to link to the devlog page
+		// <link>${baseUrl}/devlog/${entry.id}</link>
+
 		return `
 			<item>
 				<guid>${baseUrl}/devlog/${entry.id}</guid>
 				<title><![CDATA[${entry.title}]]></title>
-				<link>${baseUrl}/devlog/${entry.id}</link>
 				<pubDate>${pubDate}</pubDate>
 				<category>${category}</category>
-				<description><![CDATA[${entry.content}]]></description>
+				<description><![CDATA[${entry.content.replace(/\n/g, '<br>')}]]></description>
 				<dc:creator>Quinn Chrest</dc:creator>
 				<dc:subject>${tags}</dc:subject>
 			</item>
