@@ -69,6 +69,18 @@ The website is fully responsive and works on:
 - Tablet (768px - 1199px)
 - Mobile (320px - 767px)
 
+## 🔐 Admin Panel
+
+The website includes a secure admin panel for managing projects and dev log entries:
+
+- **Access**: Navigate to `/admin` to access the admin panel
+- **Authentication**: Uses environment variables `ADMIN_USERNAME` and `ADMIN_PASSWORD`
+- **Features**: 
+  - Create, edit, and delete projects
+  - Create, edit, and delete dev log entries
+  - Secure API endpoints with Bearer token authentication
+- **Security**: All admin API endpoints require proper authentication
+
 ## 🚀 Deployment
 
 ### Environment Variables for Production
@@ -80,6 +92,8 @@ When deploying to production, make sure to set the following environment variabl
 - `DB_USER` - Database username
 - `DB_PASSWORD` - Database password
 - `DB_SSL` - Set to 'true' for production databases
+- `ADMIN_USERNAME` - Username for admin panel access
+- `ADMIN_PASSWORD` - Password for admin panel access
 
 ### Vercel (Recommended)
 1. Push your code to GitHub
