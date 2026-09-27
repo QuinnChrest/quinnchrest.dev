@@ -38,7 +38,7 @@
 		<div class="flex items-center justify-between h-16">
 			<!-- Logo/Avatar -->
 			<div class="flex items-center space-x-2">
-				<img src="/avatar.jpg" alt="Quinn Chrest" width="36" height="36" class="w-9 h-9 rounded-full border-2 border-[#30363d] shadow-sm object-cover" />
+				<img src="/avatar.jpg" alt="Avatar" class="w-9 h-9 rounded-full border-2 border-[#30363d] shadow-sm object-cover" />
 				<span class="text-xl font-bold text-[#f0f6fc]">
 					Quinn Chrest
 				</span>

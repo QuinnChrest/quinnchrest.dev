@@ -56,4 +56,4 @@ One-time repo setup: **Settings → Pages → Source: GitHub Actions**, then set
 
 - **Website**: [quinnchrest.dev](https://quinnchrest.dev)
 - **GitHub**: [@quinnchrest](https://github.com/quinnchrest)
-- **LinkedIn**: [Quinn Chrest](https://www.linkedin.com/in/quinn-chrest-533581140/)
+- **LinkedIn**: [Quinn Chrest](https://linkedin.com/in/quinnchrest)

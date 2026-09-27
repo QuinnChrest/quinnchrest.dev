@@ -9,39 +9,6 @@
 
 	export let data: PageData;
 
-	const siteUrl = 'https://quinnchrest.dev';
-	const title = 'Quinn Chrest | Software Developer Portfolio';
-	const description =
-		'Quinn Chrest is a software developer in Chanhassen, MN. Browse projects built with Svelte, TypeScript and more, read the dev log, and see live GitHub stats.';
-
-	const jsonLd = {
-		'@context': 'https://schema.org',
-		'@graph': [
-			{
-				'@type': 'WebSite',
-				'@id': `${siteUrl}/#website`,
-				url: `${siteUrl}/`,
-				name: 'Quinn Chrest',
-				description,
-				publisher: { '@id': `${siteUrl}/#person` }
-			},
-			{
-				'@type': 'Person',
-				'@id': `${siteUrl}/#person`,
-				name: 'Quinn Chrest',
-				url: `${siteUrl}/`,
-				image: `${siteUrl}/avatar.jpg`,
-				jobTitle: 'Software Developer',
-				address: { '@type': 'PostalAddress', addressLocality: 'Chanhassen', addressRegion: 'MN', addressCountry: 'US' },
-				sameAs: [
-					'https://github.com/QuinnChrest',
-					'https://www.linkedin.com/in/quinn-chrest-533581140/',
-					'https://quinnchrest.com/'
-				]
-			}
-		]
-	};
-
 	let currentSection = 'projects';
 	let slideDirection = 'right'; // 'left' or 'right'
 	let isTransitioning = false;
@@ -127,32 +94,13 @@
 </script>
 
 <svelte:head>
-	<title>{title}</title>
-	<meta name="description" content={description} />
-	<link rel="canonical" href="{siteUrl}/" />
+	<title>Quinn Chrest - Developer Portfolio</title>
+	<meta name="description" content="Developer portfolio showcasing projects, dev log, and GitHub stats" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="alternate" type="application/rss+xml" title="Quinn Chrest - Dev Log RSS Feed" href="/api/feed.xml" />
-
-	<meta property="og:type" content="website" />
-	<meta property="og:site_name" content="Quinn Chrest" />
-	<meta property="og:title" content={title} />
-	<meta property="og:description" content={description} />
-	<meta property="og:url" content="{siteUrl}/" />
-	<meta property="og:image" content="{siteUrl}/avatar.jpg" />
-	<meta property="og:image:width" content="512" />
-	<meta property="og:image:height" content="512" />
-	<meta property="og:image:alt" content="Photo of Quinn Chrest" />
-	<meta property="og:locale" content="en_US" />
-
-	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:title" content={title} />
-	<meta name="twitter:description" content={description} />
-	<meta name="twitter:image" content="{siteUrl}/avatar.jpg" />
-
-	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`}
 </svelte:head>
 
 <main class="min-h-screen bg-[#0d1117] text-white overflow-hidden">
-	<h1 class="sr-only">Quinn Chrest, Software Developer</h1>
 	<Navigation {currentSection} on:sectionChange={(e) => switchSection(e.detail)} />
 	
 	<!-- Slide Container -->
