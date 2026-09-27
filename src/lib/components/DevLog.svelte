@@ -29,10 +29,10 @@
 	}
 </script>
 
-<div class="space-y-6">
+<section class="space-y-6" aria-labelledby="devlog-heading">
 	<!-- Header with RSS Feed Link -->
 	<div class="flex justify-between items-center mb-6">
-		<h2 class="text-2xl font-bold text-[#f0f6fc]">Dev Log</h2>
+		<h2 id="devlog-heading" class="text-2xl font-bold text-[#f0f6fc]">Dev Log</h2>
 		<a 
 			href="/api/feed.xml" 
 			target="_blank" 
@@ -52,7 +52,7 @@
 	<!-- Dev Log Timeline -->
 	<div class="space-y-6">
 		{#each entries as entry, index}
-			<div class="relative">
+			<article class="relative">
 				<!-- Entry Card -->
 				<div class="relative bg-[#21262d] border border-[#30363d] rounded-lg p-6 hover:bg-[#30363d] transition-all duration-300">
 					<!-- Category Badge -->
@@ -67,7 +67,7 @@
 								</span>
 							</div>
 						</div>
-						<time class="text-sm text-[#8b949e]">{formatDate(entry.date)}</time>
+						<time datetime={formatDate(entry.date)} class="text-sm text-[#8b949e]">{formatDate(entry.date)}</time>
 					</div>
 					
 					<!-- Title -->
@@ -87,7 +87,7 @@
 						</div>
 					{/if}
 				</div>
-			</div>
+			</article>
 		{/each}
 	</div>
 	
@@ -99,4 +99,4 @@
 			<p class="text-[#8b949e]">Your development journey will appear here!</p>
 		</div>
 	{/if}
-</div> 
+</section> 

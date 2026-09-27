@@ -30,13 +30,16 @@
 	}
 </script>
 
-<div class="space-y-6">
+<section class="space-y-6" aria-labelledby="projects-heading">
+	<h2 id="projects-heading" class="sr-only">Projects</h2>
+
 	<!-- Controls -->
 	<div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
 		<!-- Filter -->
 		<div class="flex items-center space-x-4">
-			<label class="text-sm font-medium text-[#8b949e]">Filter:</label>
+			<label for="project-filter" class="text-sm font-medium text-[#8b949e]">Filter:</label>
 			<select
+				id="project-filter"
 				bind:value={selectedFilter}
 				class="px-3 py-2 bg-[#21262d] border border-[#30363d] rounded-lg text-[#f0f6fc] focus:outline-none focus:ring-2 focus:ring-[#58a6ff] focus:border-[#58a6ff]"
 			>
@@ -52,12 +55,16 @@
 	<!-- Projects Grid -->
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 		{#each filteredProjects as project}
-			<div class="group bg-[#21262d] border border-[#30363d] rounded-lg overflow-hidden hover:bg-[#30363d] transition-all duration-300 transform hover:scale-105 flex flex-col h-full">
+			<article class="group bg-[#21262d] border border-[#30363d] rounded-lg overflow-hidden hover:bg-[#30363d] transition-all duration-300 transform hover:scale-105 flex flex-col h-full">
 				<!-- Project Image -->
 				<div class="relative h-48 overflow-hidden flex-shrink-0">
 					<img
 						src={project.image}
 						alt={project.title}
+					width="400"
+					height="192"
+					loading="lazy"
+					decoding="async"
 						class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
 					/>
 					<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -122,7 +129,7 @@
 						{/if}
 					</div>
 				</div>
-			</div>
+			</article>
 		{/each}
 	</div>
 	
@@ -134,4 +141,4 @@
 			<p class="text-[#8b949e]">Try changing the filter to see more projects!</p>
 		</div>
 	{/if}
-</div> 
+</section> 
