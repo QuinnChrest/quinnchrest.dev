@@ -1,67 +1,35 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import pool from '$lib/db';
+import { getDevLog } from '$lib/server/content';
+import type { DevLogEntry } from '$lib/types';
 
-export const GET: RequestHandler = async () => {
-	try {
-		const client = await pool.connect();
-		
-		const query = `
-			SELECT 
-				id,
-				title,
-				date,
-				category,
-				content,
-				tags
-			FROM devlog 
-			ORDER BY date DESC
-			LIMIT 20
-		`;
-		
-		const result = await client.query(query);
-		client.release();
-		
-		// Transform the data for RSS
-		const devlogEntries = result.rows.map((row: any) => ({
-			id: row.id.toString(),
-			title: row.title,
-			date: row.date,
-			content: row.content,
-			tags: row.tags ? row.tags.split(',').map((tag: string) => tag.trim()) : [],
-			category: getCategoryFromNumber(row.category)
-		}));
-		
-		// Generate RSS XML
-		const rssXml = generateRSSFeed(devlogEntries);
-		
-		return new Response(rssXml, {
-			headers: {
-				'Content-Type': 'application/xml; charset=utf-8',
-				'Cache-Control': 'public, max-age=3600' // Cache for 1 hour
-			}
-		});
-	} catch (error) {
-		console.error('Error generating RSS feed:', error);
-		return new Response('Error generating RSS feed', { status: 500 });
-	}
+export const prerender = true;
+
+export const GET: RequestHandler = () => {
+	const rssXml = generateRSSFeed(getDevLog().slice(0, 20));
+
+	return new Response(rssXml, {
+		headers: {
+			'Content-Type': 'application/xml; charset=utf-8'
+		}
+	});
 };
 
-function getCategoryFromNumber(categoryNum: number): string {
-	switch (categoryNum) {
-		case 1: return 'Feature';
-		case 2: return 'Bug Fix';
-		case 3: return 'Learning';
+function getCategoryLabel(category: DevLogEntry['category']): string {
+	switch (category) {
+		case 'feature': return 'Feature';
+		case 'bug-fix': return 'Bug Fix';
+		case 'learning': return 'Learning';
 		default: return 'Update';
 	}
 }
 
-function generateRSSFeed(entries: any[]): string {
+function generateRSSFeed(entries: DevLogEntry[]): string {
 	const baseUrl = 'https://quinnchrest.dev';
 	const currentDate = new Date().toUTCString();
 	
 	const rssItems = entries.map(entry => {
 		const pubDate = new Date(entry.date).toUTCString();
-		const category = entry.category;
+		const category = getCategoryLabel(entry.category);
 		const tags = entry.tags.join(', ');
 		
 		// Add link back in when I have a way to link to the devlog page

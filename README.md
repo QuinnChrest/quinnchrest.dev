@@ -1,135 +1,59 @@
 # Quinn Chrest - Developer Portfolio
 
-A modern, responsive portfolio website built with SvelteKit, TypeScript, and Tailwind CSS. Features a dev log, projects showcase, and blog section with smooth animations and a beautiful dark theme.
+Source for [quinnchrest.dev](https://quinnchrest.dev): a projects showcase, dev log (with RSS feed), and live GitHub stats. Built with SvelteKit, TypeScript, and Tailwind CSS, and published as a fully static site on GitHub Pages. There's no server and no database; all content lives in Markdown files in this repo.
 
-## 🚀 Features
+## ✍️ Adding content
 
-### ✨ Modern Design
-- Dark theme with purple/pink gradient accents
-- Smooth animations and transitions
-- Responsive design for all devices
-- Glass morphism effects
-- Custom scrollbar styling
+Add a Markdown file, commit, and push to `main`. The site rebuilds and deploys automatically.
 
-### 📝 Dev Log
-- Timeline-based development updates
-- Categorization (Feature, Bug Fix, Learning, Update)
-- Tag system for easy filtering
-- Add new entries with a form
-- Visual indicators for different entry types
+### Dev log entry: `src/content/devlog/<YYYY-MM-DD>-<slug>.md`
 
-### 🚀 Projects Showcase
-- Grid layout with project cards
-- Status tracking (Completed, In Progress, Planned)
-- Technology tags
-- GitHub and live demo links
-- Featured projects highlighting
-- Filter by status or featured projects
+```md
+---
+id: 6                     # unique number; used as the RSS <guid>, never change it once published
+title: "My new entry"
+date: 2025-08-01
+category: feature         # feature | bug-fix | learning | update
+tags: ["SvelteKit", "GitHub Pages"]
+---
+Entry text goes here. Line breaks are preserved.
+```
 
-### 📚 Blog Section
-- Search and filter functionality
-- Category-based organization
-- Read time estimation
-- Featured posts
-- Tag system
-- Add new blog posts
+### Project: `src/content/projects/<slug>.md`
 
-### 🧭 Navigation
-- Smooth scrolling between sections
-- Active section highlighting
-- Mobile-responsive navigation
-- Fixed header with backdrop blur
+```md
+---
+id: 39                    # higher ids are listed first (after featured projects)
+title: "My Project"
+status: completed         # completed | in-progress | planned
+featured: false
+image: "https://example.com/thumbnail.png"
+technologies: ["Svelte", "TypeScript"]
+githubUrl: "https://github.com/QuinnChrest/my-project"   # optional
+liveUrl: "https://my-project.vercel.app"                  # optional
+---
+Short project description.
+```
 
-## 🛠️ Tech Stack
+Content is loaded at build time by `src/lib/server/content.ts`.
 
-- **Framework**: SvelteKit 2.16.0
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS 3.4.0
-- **Build Tool**: Vite 6.2.6
-- **Font**: Inter (Google Fonts)
+## 🔧 Development
 
-## 🎨 Customization
-
-### Colors and Theme
-The website uses a dark theme with purple and pink gradients. You can customize the colors by modifying the Tailwind classes in the components or updating the `tailwind.config.js` file.
-
-### Content
-- Update personal information in the `Hero.svelte` component
-- Add your own projects in the `Projects.svelte` component
-- Customize the dev log entries in `DevLog.svelte`
-- Add blog posts in the `Blog.svelte` component
-
-### Social Links
-Update the social media links in the `Hero.svelte` component with your actual profiles.
-
-## 📱 Responsive Design
-
-The website is fully responsive and works on:
-- Desktop (1200px+)
-- Tablet (768px - 1199px)
-- Mobile (320px - 767px)
-
-## 🔐 Admin Panel
-
-The website includes a secure admin panel for managing projects and dev log entries:
-
-- **Access**: Navigate to `/admin` to access the admin panel
-- **Authentication**: Uses environment variables `ADMIN_USERNAME` and `ADMIN_PASSWORD`
-- **Features**: 
-  - Create, edit, and delete projects
-  - Create, edit, and delete dev log entries
-  - Secure API endpoints with Bearer token authentication
-- **Security**: All admin API endpoints require proper authentication
+- `npm run dev`: start the dev server
+- `npm run build`: build the static site into `build/`
+- `npm run preview`: serve the built site locally
+- `npm run check`: type-check the project
 
 ## 🚀 Deployment
 
-### Environment Variables for Production
-When deploying to production, make sure to set the following environment variables in your hosting platform:
+`.github/workflows/deploy.yml` builds the site with `@sveltejs/adapter-static` and deploys it to GitHub Pages on every push to `main`. It can also be run manually from the Actions tab.
 
-- `DB_HOST` - Your database host
-- `DB_PORT` - Database port (usually 5432)
-- `DB_NAME` - Database name
-- `DB_USER` - Database username
-- `DB_PASSWORD` - Database password
-- `DB_SSL` - Set to 'true' for production databases
-- `ADMIN_USERNAME` - Username for admin panel access
-- `ADMIN_PASSWORD` - Password for admin panel access
+Every route is prerendered, including the RSS feed (`/api/feed.xml`) and `/sitemap.xml`. `static/CNAME` sets the custom domain.
 
-### Vercel (Recommended)
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy automatically
-
-### Netlify
-1. Build the project: `npm run build`
-2. Add environment variables in Netlify dashboard
-3. Deploy the `build` folder to Netlify
-
-### Other Platforms
-The project uses SvelteKit's adapter-auto, so it should work with most hosting platforms. Remember to configure environment variables for your database connection.
-
-## 🔧 Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run check` - Type-check the project
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+One-time repo setup: **Settings → Pages → Source: GitHub Actions**, then set the custom domain to `quinnchrest.dev` and enable **Enforce HTTPS**.
 
 ## 📞 Contact
 
 - **Website**: [quinnchrest.dev](https://quinnchrest.dev)
 - **GitHub**: [@quinnchrest](https://github.com/quinnchrest)
 - **LinkedIn**: [Quinn Chrest](https://linkedin.com/in/quinnchrest)
-
----
-
-Built with ❤️ using SvelteKit and Tailwind CSS

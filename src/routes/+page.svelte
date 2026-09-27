@@ -5,6 +5,9 @@
 	import Stats from '$lib/components/Stats.svelte';
 	import Navigation from '$lib/components/Navigation.svelte';
 	import { fade } from 'svelte/transition';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 
 	let currentSection = 'projects';
 	let slideDirection = 'right'; // 'left' or 'right'
@@ -110,7 +113,7 @@
 			<div class="w-full h-full flex flex-col">
 				<div class="flex-1 overflow-y-auto pb-24 md:pb-8" on:scroll={handleScroll}>
 					<div class="max-w-6xl mx-auto px-4 pt-20">
-						<Projects />
+						<Projects projects={data.projects} />
 					</div>
 				</div>
 			</div>
@@ -124,7 +127,7 @@
 			<div class="w-full h-full flex flex-col">
 				<div class="flex-1 overflow-y-auto pb-24 md:pb-8" on:scroll={handleScroll}>
 					<div class="max-w-6xl mx-auto px-4 pt-20">
-						<DevLog />
+						<DevLog entries={data.devlog} />
 					</div>
 				</div>
 			</div>
