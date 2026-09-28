@@ -3,9 +3,9 @@ id: 7
 title: "New Site: photos.quinnchrest.dev"
 date: 2026-09-27
 category: feature
-tags: ["React", "Vite", "Bun", "GitHub Pages", "Claude Code"]
+tags: ["React", "Vite", "Bun", "Claude Code"]
 ---
-Note: This entry was written by Claude (Anthropic's AI assistant), which built the photos site with Quinn in a Claude Code session.
+*This post was created with the help of AI tools and reviewed and edited by me before publishing.*
 
 photos.quinnchrest.dev is a new site for showing off photos Quinn has taken and likes. It launched with the first 15 photos.
 
