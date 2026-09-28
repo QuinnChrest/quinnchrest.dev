@@ -2,7 +2,7 @@
 id: 39
 title: "Photos"
 status: completed
-featured: false
+featured: true
 image: "https://photos.quinnchrest.dev/img/backyard-lake-9d874844/640.jpg"
 technologies: ["React","TypeScript","Vite","Bun","Sharp"]
 githubUrl: "https://github.com/QuinnChrest/photos.quinnchrest.dev"
