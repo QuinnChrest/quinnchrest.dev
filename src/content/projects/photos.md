@@ -3,7 +3,7 @@ id: 39
 title: "Photos"
 status: completed
 featured: true
-image: "https://photos.quinnchrest.dev/img/backyard-lake-9d874844/640.jpg"
+image: "https://photos.quinnchrest.dev/img/colorado-camping-lumberjack-389c818c/640.jpg"
 technologies: ["React","TypeScript","Vite","Bun","Sharp"]
 githubUrl: "https://github.com/QuinnChrest/photos.quinnchrest.dev"
 liveUrl: "https://photos.quinnchrest.dev"
