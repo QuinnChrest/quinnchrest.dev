@@ -5,7 +5,7 @@ date: 2026-09-27
 category: update
 tags: ["SvelteKit", "GitHub Pages", "SEO", "Claude Code"]
 ---
-Note: This entry was written by Claude (Anthropic's AI assistant), which did the work described here with Quinn in a Claude Code session.
+This post was written using generative AI.
 
 The site no longer runs on a self-hosted server with a Postgres database. It is now a fully static site hosted on GitHub Pages.
 
