@@ -11,23 +11,70 @@ let error = '';
 let totalStars = 0;
 let totalForks = 0;
 
+// The unauthenticated GitHub API allows 60 requests per hour per IP, and each
+// load costs 2. Responses are cached so repeat visits don't use up the limit,
+// and a stale cache is shown if the API refuses the request.
+const CACHE_KEY = 'github-stats';
+const CACHE_TTL_MS = 60 * 60 * 1000;
+
+type Cached = { savedAt: number; profile: any; repos: any[] };
+
+function readCache(): Cached | null {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeCache(profile: any, repos: any[]) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ savedAt: Date.now(), profile, repos }));
+  } catch {
+    // Storage can be unavailable (private mode, blocked); the fetched data still shows.
+  }
+}
+
+function show(data: { profile: any; repos: any[] }) {
+  profile = data.profile;
+  totalStars = data.repos.reduce((sum, repo) => sum + repo.stargazers_count, 0);
+  totalForks = data.repos.reduce((sum, repo) => sum + repo.forks_count, 0);
+  // Sort repos by stars, most recently pushed first on ties
+  repos = [...data.repos].sort(
+    (a, b) => b.stargazers_count - a.stargazers_count || b.pushed_at.localeCompare(a.pushed_at)
+  );
+}
+
 onMount(async () => {
   loading = true;
   error = '';
+  const cached = readCache();
+  if (cached && Date.now() - cached.savedAt < CACHE_TTL_MS) {
+    show(cached);
+    loading = false;
+    return;
+  }
   try {
     const [profileRes, reposRes] = await Promise.all([
       fetch(`https://api.github.com/users/${username}`),
       fetch(`https://api.github.com/users/${username}/repos?per_page=100`)
     ]);
-    if (!profileRes.ok || !reposRes.ok) throw new Error('GitHub API error');
-    profile = await profileRes.json();
-    repos = await reposRes.json();
-    totalStars = repos.reduce((sum, repo) => sum + repo.stargazers_count, 0);
-    totalForks = repos.reduce((sum, repo) => sum + repo.forks_count, 0);
-    // Sort repos by stars
-    repos = repos.sort((a, b) => b.stargazers_count - a.stargazers_count);
+    if (!profileRes.ok || !reposRes.ok) {
+      const limited = [profileRes, reposRes].some((r) => r.headers.get('x-ratelimit-remaining') === '0');
+      throw new Error(limited ? 'rate-limit' : 'GitHub API error');
+    }
+    const data = { profile: await profileRes.json(), repos: await reposRes.json() };
+    writeCache(data.profile, data.repos);
+    show(data);
   } catch (e) {
-    error = 'Failed to fetch GitHub data.';
+    if (cached) {
+      show(cached);
+    } else {
+      error = e instanceof Error && e.message === 'rate-limit'
+        ? 'GitHub rate limit reached. Try again in a little while.'
+        : 'Failed to fetch GitHub data.';
+    }
   } finally {
     loading = false;
   }
