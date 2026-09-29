@@ -2,6 +2,23 @@
 	import type { DevLogEntry } from '$lib/types';
 	
 	export let entries: DevLogEntry[] = [];
+
+	// Render entries in batches; the next batch loads when the sentinel below
+	// the list scrolls into view.
+	const PAGE_SIZE = 5;
+	let visibleCount = PAGE_SIZE;
+	$: visibleEntries = entries.slice(0, visibleCount);
+
+	function loadMore(node: HTMLElement) {
+		const observer = new IntersectionObserver(
+			(observed) => {
+				if (observed.some((e) => e.isIntersecting)) visibleCount += PAGE_SIZE;
+			},
+			{ rootMargin: '400px' }
+		);
+		observer.observe(node);
+		return { destroy: () => observer.disconnect() };
+	}
 	
 	function getCategoryColor(category: DevLogEntry['category']) {
 		switch (category) {
@@ -51,10 +68,10 @@
 
 	<!-- Dev Log Timeline -->
 	<div class="space-y-6">
-		{#each entries as entry, index}
+		{#each visibleEntries as entry (entry.id)}
 			<article class="relative">
 				<!-- Entry Card -->
-				<div class="relative bg-[#21262d] border border-[#30363d] rounded-lg p-6 hover:bg-[#30363d] transition-all duration-300">
+				<div class="relative bg-[#21262d] border border-[#30363d] rounded-lg p-6">
 					<!-- Category Badge -->
 					<div class="flex items-center justify-between mb-4">
 						<div class="flex items-center space-x-3">
@@ -89,6 +106,11 @@
 				</div>
 			</article>
 		{/each}
+		{#if visibleCount < entries.length}
+			{#key visibleCount}
+				<div use:loadMore class="h-px" aria-hidden="true"></div>
+			{/key}
+		{/if}
 	</div>
 	
 	<!-- Empty State -->
