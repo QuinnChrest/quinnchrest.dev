@@ -20,13 +20,6 @@
 				const t = localStorage.getItem('theme');
 				if (t === 'light') document.documentElement.dataset.theme = t;
 			} catch {}
-			// Draw the contour lines in on the first page of a visit only.
-			try {
-				if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !sessionStorage.getItem('topo-drawn')) {
-					document.documentElement.classList.add('draw-topo');
-					sessionStorage.setItem('topo-drawn', '1');
-				}
-			} catch {}
 		</script>
 		%sveltekit.head%
 	</head>

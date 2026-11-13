@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '../app.css';
-	import { beforeNavigate, onNavigate } from '$app/navigation';
+	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
@@ -9,9 +9,6 @@
 	let { children } = $props();
 
 	const home = $derived(page.url.pathname === '/');
-
-	// The contour draw-in is only for the first page of a visit.
-	beforeNavigate(() => document.documentElement.classList.remove('draw-topo'));
 
 	// Smooth page changes: crossfade between pages, and a project card's image
 	// glides into place on the project page (matching view-transition-names in
