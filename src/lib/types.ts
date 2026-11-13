@@ -108,3 +108,10 @@ export interface Photo {
 	alt: string;
 	takenAt?: string;
 }
+
+/** GitHub contributions by month (the elevation chart). `total` is for the months shown. */
+export interface Contributions {
+	total: number;
+	/** Oldest first, from the first month with real activity (3+). `month` is YYYY-MM. */
+	months: { month: string; count: number }[];
+}
