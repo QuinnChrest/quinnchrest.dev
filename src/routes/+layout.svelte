@@ -30,6 +30,11 @@
 		if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 		// Same-page changes (like #stats) don't need a transition.
 		if (navigation.from?.url.pathname === navigation.to?.url.pathname) return;
+		// Back and forward should be instant and land exactly where you were.
+		// Some browsers (Firefox) only restore the scroll position after a view
+		// transition finishes, so animating here showed the top of the page
+		// first and then jumped.
+		if (navigation.type === 'popstate') return;
 		nameVisibleMorphs(); // the page we're leaving, as it is now
 		return new Promise((resolve) => {
 			document.startViewTransition(async () => {

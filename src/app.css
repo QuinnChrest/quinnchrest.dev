@@ -40,8 +40,10 @@
 	box-sizing: border-box;
 }
 
+/* No global smooth scrolling: it also animates the browser restoring your
+   scroll position on back/forward, which looks like the page jumping. The
+   header's Stats link scrolls smoothly on its own (Header.svelte). */
 html {
-	scroll-behavior: smooth;
 	-webkit-text-size-adjust: 100%;
 }
 
@@ -232,8 +234,5 @@ h3 {
 	*::after {
 		transition: none !important;
 		animation: none !important;
-	}
-	html {
-		scroll-behavior: auto;
 	}
 }

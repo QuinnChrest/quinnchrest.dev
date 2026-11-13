@@ -10,6 +10,17 @@
 		{ href: '/#stats', label: 'Stats', wide: true }
 	];
 
+	// On the home page, glide down to the stats instead of jumping there.
+	function toSection(e: MouseEvent, href: string) {
+		const id = href.split('#')[1];
+		if (!id || page.url.pathname !== '/' || e.metaKey || e.ctrlKey || e.shiftKey) return;
+		const el = document.getElementById(id);
+		if (!el) return;
+		e.preventDefault();
+		const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+		el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto' });
+	}
+
 	// Notes live under their project, so /notes also highlights Projects.
 	const current = (href: string) =>
 		href === '/projects' && (page.url.pathname.startsWith('/projects') || page.url.pathname.startsWith('/notes'));
@@ -23,6 +34,7 @@
 				href={link.href}
 				class:wide={link.wide}
 				aria-current={current(link.href) ? 'page' : undefined}
+				onclick={(e) => toSection(e, link.href)}
 				target={link.external ? '_blank' : undefined}
 				rel={link.external ? 'noopener me' : undefined}>{link.label}</a
 			>
