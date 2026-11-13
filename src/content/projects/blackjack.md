@@ -2,6 +2,7 @@
 id: 35
 title: "Blackjack"
 status: completed
+kind: game
 featured: false
 image: "https://images.unsplash.com/photo-1618304925090-b68a8c744cbe?w=400&h=300&fit=crop"
 technologies: ["React"]

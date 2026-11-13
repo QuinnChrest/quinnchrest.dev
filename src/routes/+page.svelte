@@ -1,241 +1,285 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import DevLog from '$lib/components/DevLog.svelte';
-	import Projects from '$lib/components/Projects.svelte';
+	import Seo from '$lib/components/Seo.svelte';
+	import PhotoStrip from '$lib/components/PhotoStrip.svelte';
 	import Stats from '$lib/components/Stats.svelte';
-	import Navigation from '$lib/components/Navigation.svelte';
-	import { fade } from 'svelte/transition';
-	import type { PageData } from './$types';
+	import Trail from '$lib/components/Trail.svelte';
+	import Trailhead from '$lib/components/Trailhead.svelte';
+	import { SITE_URL } from '$lib/format';
+	import type { TrailItem } from '$lib/types';
 
-	export let data: PageData;
+	let { data } = $props();
 
-	const siteUrl = 'https://quinnchrest.dev';
-	const title = 'Quinn Chrest | Software Developer Portfolio';
 	const description =
-		'Quinn Chrest is a software developer in Chanhassen, MN. Browse projects built with Svelte, TypeScript and more, read the dev log, and see live GitHub stats.';
+		'Quinn Chrest is a software developer in Minneapolis, MN. Browse side projects built with SvelteKit, React, Python and the Claude API, with notes on how each one works.';
+
+	const blogItems: TrailItem[] = $derived(
+		(data.blog ?? []).map((post) => ({
+			key: post.url,
+			href: post.url,
+			date: post.date,
+			meta: 'quinnchrest.com ↗',
+			title: post.title,
+			excerpt: post.excerpt,
+			image: post.image,
+			external: true
+		}))
+	);
 
 	const jsonLd = {
 		'@context': 'https://schema.org',
 		'@graph': [
 			{
 				'@type': 'WebSite',
-				'@id': `${siteUrl}/#website`,
-				url: `${siteUrl}/`,
+				'@id': `${SITE_URL}/#website`,
+				url: `${SITE_URL}/`,
 				name: 'Quinn Chrest',
 				description,
-				publisher: { '@id': `${siteUrl}/#person` }
+				publisher: { '@id': `${SITE_URL}/#person` }
 			},
 			{
 				'@type': 'Person',
-				'@id': `${siteUrl}/#person`,
+				'@id': `${SITE_URL}/#person`,
 				name: 'Quinn Chrest',
-				url: `${siteUrl}/`,
-				image: `${siteUrl}/avatar.jpg`,
+				url: `${SITE_URL}/`,
+				image: `${SITE_URL}/avatar.jpg`,
 				jobTitle: 'Software Developer',
-				address: { '@type': 'PostalAddress', addressLocality: 'Chanhassen', addressRegion: 'MN', addressCountry: 'US' },
-				sameAs: [
-					'https://github.com/QuinnChrest',
-					'https://www.linkedin.com/in/quinn-chrest-533581140/',
-					'https://quinnchrest.com/'
-				]
+				address: { '@type': 'PostalAddress', addressLocality: 'Minneapolis', addressRegion: 'MN', addressCountry: 'US' },
+				sameAs: ['https://github.com/QuinnChrest', 'https://www.linkedin.com/in/quinn-chrest-533581140/', 'https://quinnchrest.com/']
 			}
 		]
 	};
-
-	let currentSection = 'projects';
-	let slideDirection = 'right'; // 'left' or 'right'
-	let isTransitioning = false;
-	let touchStartX = 0;
-	let touchEndX = 0;
-	let showHint = true;
-
-	function switchSection(newSection: string) {
-		if (newSection === currentSection || isTransitioning) return;
-		
-		// Determine slide direction based on section order
-		const sectionOrder = ['projects', 'devlog', 'stats'];
-		const currentIndex = sectionOrder.indexOf(currentSection);
-		const newIndex = sectionOrder.indexOf(newSection);
-		
-		slideDirection = newIndex > currentIndex ? 'right' : 'left';
-		currentSection = newSection;
-		isTransitioning = true;
-		
-		// Reset transition flag after animation
-		setTimeout(() => {
-			isTransitioning = false;
-		}, 300);
-	}
-
-	function handleScroll(e: Event) {
-		const el = e.target as HTMLElement;
-		const isMobile = window.innerWidth < 768;
-		if (!isMobile) {
-			showHint = true;
-			return;
-		}
-		const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 8;
-		showHint = !atBottom;
-	}
-
-	onMount(() => {
-		// Add keyboard navigation
-		const handleKeydown = (e: KeyboardEvent) => {
-			const sectionOrder = ['projects', 'devlog', 'stats'];
-			const idx = sectionOrder.indexOf(currentSection);
-			if (e.key === 'ArrowLeft' && idx > 0) {
-				switchSection(sectionOrder[idx - 1]);
-			} else if (e.key === 'ArrowRight' && idx < sectionOrder.length - 1) {
-				switchSection(sectionOrder[idx + 1]);
-			}
-		};
-
-		// Add touch/swipe support
-		const handleTouchStart = (e: TouchEvent) => {
-			touchStartX = e.changedTouches[0].screenX;
-		};
-
-		const handleTouchEnd = (e: TouchEvent) => {
-			touchEndX = e.changedTouches[0].screenX;
-			handleSwipe();
-		};
-
-		const handleSwipe = () => {
-			const swipeThreshold = 50;
-			const diff = touchStartX - touchEndX;
-			const sectionOrder = ['projects', 'devlog', 'stats'];
-			const idx = sectionOrder.indexOf(currentSection);
-			if (Math.abs(diff) > swipeThreshold) {
-				if (diff > 0 && idx < sectionOrder.length - 1) {
-					switchSection(sectionOrder[idx + 1]);
-				} else if (diff < 0 && idx > 0) {
-					switchSection(sectionOrder[idx - 1]);
-				}
-			}
-		};
-
-		document.addEventListener('keydown', handleKeydown);
-		document.addEventListener('touchstart', handleTouchStart);
-		document.addEventListener('touchend', handleTouchEnd);
-		
-		return () => {
-			document.removeEventListener('keydown', handleKeydown);
-			document.removeEventListener('touchstart', handleTouchStart);
-			document.removeEventListener('touchend', handleTouchEnd);
-		};
-	});
 </script>
 
+<Seo title="Quinn Chrest | Software Developer" {description} />
 <svelte:head>
-	<title>{title}</title>
-	<meta name="description" content={description} />
-	<link rel="canonical" href="{siteUrl}/" />
-	<link rel="alternate" type="application/rss+xml" title="Quinn Chrest - Dev Log RSS Feed" href="/api/feed.xml" />
-
-	<meta property="og:type" content="website" />
-	<meta property="og:site_name" content="Quinn Chrest" />
-	<meta property="og:title" content={title} />
-	<meta property="og:description" content={description} />
-	<meta property="og:url" content="{siteUrl}/" />
-	<meta property="og:image" content="{siteUrl}/avatar.jpg" />
-	<meta property="og:image:width" content="512" />
-	<meta property="og:image:height" content="512" />
-	<meta property="og:image:alt" content="Photo of Quinn Chrest" />
-	<meta property="og:locale" content="en_US" />
-
-	<meta name="twitter:card" content="summary" />
-	<meta name="twitter:title" content={title} />
-	<meta name="twitter:description" content={description} />
-	<meta name="twitter:image" content="{siteUrl}/avatar.jpg" />
-
 	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`}
 </svelte:head>
 
-<main class="min-h-screen bg-[#0d1117] text-white overflow-hidden">
-	<h1 class="sr-only">Quinn Chrest, Software Developer</h1>
-	<Navigation {currentSection} on:sectionChange={(e) => switchSection(e.detail)} />
-	
-	<!-- Slide Container -->
-	<div class="relative w-full h-screen overflow-hidden">
-		<!-- Projects Section -->
-		<div 
-			class="absolute inset-0 w-full h-full transition-transform duration-300 ease-in-out"
-			style="transform: translateX({currentSection === 'projects' ? '0%' : currentSection === 'devlog' ? '-100%' : currentSection === 'stats' ? '-200%' : '0%'})"
-		>
-			<div class="w-full h-full flex flex-col">
-				<div class="flex-1 overflow-y-auto pb-24 md:pb-8" on:scroll={handleScroll}>
-					<div class="max-w-6xl mx-auto px-4 pt-20">
-						<Projects projects={data.projects} />
-					</div>
-				</div>
-			</div>
+<div class="wrap">
+	<section class="hero">
+		<figure class="pin">
+			<img src="/avatar.jpg" alt="Quinn Chrest" width="512" height="512" />
+			<figcaption class="mono">You are here</figcaption>
+		</figure>
+		<div class="intro">
+		<span class="mono">Trailhead</span>
+		<h1>Building side projects <em>one mile</em> at a time.</h1>
+		<p>
+			I'm Quinn, a software developer in Minneapolis, MN. I like bike rides, taking photos, and building things on
+			evenings and weekends. Here's the map of where it's all gone.
+		</p>
+		<div class="coords mono">
+			<span>44.98° N, 93.27° W</span>
+			<span>{data.projectCount} projects logged</span>
+			<span>{data.noteCount} project notes</span>
 		</div>
+		</div>
+	</section>
 
-		<!-- Dev Log Section -->
-		<div 
-			class="absolute inset-0 w-full h-full transition-transform duration-300 ease-in-out"
-			style="transform: translateX({currentSection === 'devlog' ? '0%' : currentSection === 'projects' ? '100%' : currentSection === 'stats' ? '-100%' : '0%'})"
-		>
-			<div class="w-full h-full flex flex-col">
-				<div class="flex-1 overflow-y-auto pb-24 md:pb-8" on:scroll={handleScroll}>
-					<div class="max-w-6xl mx-auto px-4 pt-20">
-						<DevLog entries={data.devlog} />
-					</div>
-				</div>
-			</div>
+	<section aria-labelledby="work">
+		<div class="section-head">
+			<h2 id="work">Trailheads</h2>
+			<a class="mono" href="/projects">All projects →</a>
 		</div>
+		<div class="trailheads">
+			{#each data.featured as project, i (project.slug)}
+				<Trailhead {project} eager={i < 3} latest={data.latest[project.slug]} />
+			{/each}
+		</div>
+		{#if data.others.length}
+			<ul class="others">
+				{#each data.others as project (project.slug)}
+					<li>
+						<a href="/projects/{project.slug}"><b>{project.title}</b><span class="mono">{project.technologies[0] ?? ''}</span></a>
+					</li>
+				{/each}
+			</ul>
+		{/if}
+	</section>
 
-		<!-- Stats Section -->
-		<div 
-			class="absolute inset-0 w-full h-full transition-transform duration-300 ease-in-out"
-			style="transform: translateX({currentSection === 'stats' ? '0%' : currentSection === 'devlog' ? '100%' : currentSection === 'projects' ? '200%' : '0%'})"
-		>
-			<div class="w-full h-full flex flex-col">
-				<div class="flex-1 overflow-y-auto pb-24 md:pb-8" on:scroll={handleScroll}>
-					<div class="max-w-6xl mx-auto px-4 pt-20">
-						<Stats />
-					</div>
-				</div>
+	{#if data.photos?.length}
+		<section aria-labelledby="photos">
+			<div class="section-head">
+				<h2 id="photos">From the trail</h2>
+				<a class="mono" href="https://photos.quinnchrest.dev" target="_blank" rel="noopener">All photos ↗</a>
 			</div>
-		</div>
-	</div>
-
-	<!-- Navigation Hint -->
-	{#if showHint}
-		<div class="fixed bottom-4 right-4 text-xs text-gray-400 bg-[#161b22]/80 backdrop-blur-sm border border-[#30363d] rounded-lg px-3 py-2" transition:fade={{ duration: 250 }}>
-			<div class="hidden md:block">Use ← → keys to navigate</div>
-			<div class="md:hidden">Swipe left/right to navigate</div>
-		</div>
+			<PhotoStrip photos={data.photos} />
+		</section>
 	{/if}
-</main>
+
+	{#if blogItems.length}
+		<section aria-labelledby="log">
+			<div class="section-head">
+				<h2 id="log">Trail log</h2>
+				<a class="mono" href="https://quinnchrest.com" target="_blank" rel="noopener me">Read the blog ↗</a>
+			</div>
+			<Trail items={blogItems} />
+		</section>
+	{/if}
+
+	<section aria-labelledby="stats-title" id="stats">
+		<div class="section-head">
+			<h2 id="stats-title">Elevation profile</h2>
+			<a class="mono" href="https://github.com/QuinnChrest" target="_blank" rel="noopener">Live from GitHub ↗</a>
+		</div>
+		<Stats initial={data.github} projects={data.projectCount} notes={data.noteCount} />
+	</section>
+</div>
 
 <style>
-	:global(html) {
-		scroll-behavior: smooth;
+	.hero {
+		padding: 100px 0 120px;
+		display: grid;
+		grid-template-columns: minmax(0, 740px) 1fr;
+		align-items: center;
+		gap: 40px;
 	}
-	
-	:global(body) {
+	.intro {
+		grid-row: 1;
+	}
+	/* Photo as a map pin: ring, pointer and a pulsing "you are here" dot. */
+	.pin {
+		grid-column: 2;
+		grid-row: 1;
+		justify-self: center;
+		position: relative;
 		margin: 0;
+		width: 240px;
+		padding-bottom: 46px;
+	}
+	.pin img {
+		display: block;
+		width: 240px;
+		height: 240px;
+		border-radius: 50%;
+		object-fit: cover;
+		border: 6px solid var(--trail);
+		box-shadow: var(--shadow);
+		background: var(--line);
+	}
+	.pin::before {
+		/* pointer under the circle */
+		content: '';
+		position: absolute;
+		left: 50%;
+		top: 228px;
+		width: 26px;
+		height: 26px;
+		background: var(--trail);
+		transform: translateX(-50%) rotate(45deg);
+		border-radius: 0 0 6px 0;
+		z-index: -1;
+	}
+	.pin::after {
+		content: '';
+		position: absolute;
+		left: 50%;
+		bottom: 0;
+		width: 14px;
+		height: 14px;
+		margin-left: -7px;
+		border-radius: 50%;
+		background: var(--trail);
+		box-shadow: 0 0 0 0 color-mix(in srgb, var(--trail) 50%, transparent);
+		animation: ping 2.4s ease-out infinite;
+	}
+	@keyframes ping {
+		70%,
+		100% {
+			box-shadow: 0 0 0 18px transparent;
+		}
+	}
+	figcaption {
+		position: absolute;
+		left: calc(50% + 18px);
+		bottom: -3px;
+		white-space: nowrap;
+	}
+	h1 {
+		font-size: clamp(42px, 7vw, 84px);
+		line-height: 1;
+		letter-spacing: -0.03em;
+		margin: 14px 0 22px;
+		font-weight: 800;
+	}
+	h1 em {
+		font-style: normal;
+		color: var(--trail);
+	}
+	.hero p {
+		font-size: 19px;
+		color: var(--muted);
+		margin: 0;
+		max-width: 580px;
+	}
+	.coords {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px 22px;
+		margin-top: 28px;
+	}
+	.trailheads {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 20px;
+	}
+	.others {
+		list-style: none;
 		padding: 0;
-		font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-		overflow: hidden;
+		margin: 20px 0 0;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0 20px;
 	}
-	
-	/* Custom scrollbar for content areas */
-	:global(.overflow-y-auto::-webkit-scrollbar) {
-		width: 6px;
+	.others a {
+		display: flex;
+		justify-content: space-between;
+		gap: 12px;
+		padding: 12px 0;
+		border-bottom: 1px dashed var(--line);
 	}
-	
-	:global(.overflow-y-auto::-webkit-scrollbar-track) {
-		background: transparent;
+	.others a:hover b {
+		color: var(--trail);
 	}
-	
-	:global(.overflow-y-auto::-webkit-scrollbar-thumb) {
-		background: rgba(64, 64, 64, 0.5);
-		border-radius: 3px;
+	@media (max-width: 900px) {
+		.trailheads,
+		.others {
+			grid-template-columns: 1fr;
+		}
+		.hero {
+			padding: 40px 0 72px;
+			grid-template-columns: 1fr;
+			gap: 20px;
+		}
+		.pin {
+			grid-column: 1;
+			justify-self: start;
+			width: 120px;
+			padding-bottom: 30px;
+		}
+		.pin img {
+			width: 120px;
+			height: 120px;
+			border-width: 4px;
+		}
+		.pin::before {
+			top: 110px;
+			width: 16px;
+			height: 16px;
+		}
+		.pin::after {
+			width: 10px;
+			height: 10px;
+			margin-left: -5px;
+		}
+		.intro {
+			grid-row: 2;
+		}
 	}
-	
-	:global(.overflow-y-auto::-webkit-scrollbar-thumb:hover) {
-		background: rgba(82, 82, 82, 0.8);
+	@media (min-width: 600px) and (max-width: 900px) {
+		.trailheads,
+		.others {
+			grid-template-columns: 1fr 1fr;
+		}
 	}
 </style>

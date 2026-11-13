@@ -2,9 +2,10 @@
 id: 37
 title: "YuYudle"
 status: completed
+kind: game
 featured: false
 image: "https://imgsrv.crunchyroll.com/cdn-cgi/image/fit=cover,format=auto,quality=85,width=1920/keyart/GR9PKENW6-backdrop_wide"
-technologies: ["Seltekit"]
+technologies: ["SvelteKit","TypeScript"]
 githubUrl: "https://github.com/QuinnChrest/yuyudle"
 liveUrl: "https://yuyudle.vercel.app/classic"
 ---

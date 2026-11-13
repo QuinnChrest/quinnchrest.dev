@@ -12,6 +12,8 @@ const config = {
 		adapter: adapter({
 			pages: 'build',
 			assets: 'build',
+			// GitHub Pages serves 404.html for unknown paths; it renders +error.svelte.
+			fallback: '404.html',
 			strict: true
 		})
 	}
