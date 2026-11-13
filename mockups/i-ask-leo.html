@@ -57,7 +57,7 @@
 </head>
 <body>
 <aside>
-  <div class="me"><img src="../static/avatar.jpg" alt=""><div><b>Quinn Chrest</b><span>Software developer · Chanhassen, MN</span></div></div>
+  <div class="me"><img src="../static/avatar.jpg" alt=""><div><b>Quinn Chrest</b><span>Software developer · Minneapolis, MN</span></div></div>
   <h4>Projects</h4>
   <a href="#">Hey Leo <small>· in progress</small></a>
   <a href="#">Quinn in Motion</a><a href="#">Photos</a><a href="#">Reborndle</a><a href="#">YuYudle</a><a href="#">Snake</a><a href="#">Blackjack</a><a href="#">To Go</a>
@@ -83,7 +83,7 @@
   const photo = 'https://photos.quinnchrest.dev/img/colorado-camping-lumberjack-389c818c/640.jpg';
   const card = (img, t, s) => `<a class="card" href="#"><img src="${img}" alt=""><div>${t}<small>${s}</small></div></a>`;
   const answers = {
-    'Who is Quinn?': `<p>Quinn's a software developer in Chanhassen, Minnesota. On weekends Quinn builds side projects: games, small sites, a terminal app, and me.</p><p>Quinn also rides a bike a lot. About 1,170 miles of it is on a map.</p>`,
+    'Who is Quinn?': `<p>Quinn's a software developer in Minneapolis, Minnesota. On weekends Quinn builds side projects: games, small sites, a terminal app, and me.</p><p>Quinn also rides a bike a lot. About 1,170 miles of it is on a map.</p>`,
     'Show me projects': `<p>Here are the three Quinn's proudest of right now:</p><div class="cards">${card(LEO, 'Hey Leo', 'that\'s me! in progress')}${card('../static/projects/activities.jpg', 'Quinn in Motion', 'rides on a heat map')}${card(photo, 'Photos', 'a photo gallery')}</div><p style="margin-top:10px">There are also games: Snake, Blackjack, YuYudle and Reborndle, and To Go, a to-do list for the terminal.</p>`,
     "What's new?": `<p><b>Nov 12 · Meet Hey Leo.</b> Quinn wrote up how I work: I hear "Hey Leo", Haiku decides whether Haiku, Sonnet or Opus answers, and I read the answer out loud.</p><p><a href="#">Read the entry →</a> or <a href="#">see the whole dev log</a>.</p>`,
     'How do you work?': `<p>The wake word and speech-to-text run on Quinn's computer, so only the text of a question goes to Claude. A small model picks the right model for the job, which keeps answers fast and cheap.</p>`,

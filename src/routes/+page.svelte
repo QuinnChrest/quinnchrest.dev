@@ -10,7 +10,7 @@
 	let { data } = $props();
 
 	const description =
-		'Quinn Chrest is a software developer in Chanhassen, MN. Browse side projects built with SvelteKit, React, Python and the Claude API, with notes on how each one works.';
+		'Quinn Chrest is a software developer in Minneapolis, MN. Browse side projects built with SvelteKit, React, Python and the Claude API, with notes on how each one works.';
 
 	const blogItems: TrailItem[] = $derived(
 		(data.blog ?? []).map((post) => ({
@@ -43,7 +43,7 @@
 				url: `${SITE_URL}/`,
 				image: `${SITE_URL}/avatar.jpg`,
 				jobTitle: 'Software Developer',
-				address: { '@type': 'PostalAddress', addressLocality: 'Chanhassen', addressRegion: 'MN', addressCountry: 'US' },
+				address: { '@type': 'PostalAddress', addressLocality: 'Minneapolis', addressRegion: 'MN', addressCountry: 'US' },
 				sameAs: ['https://github.com/QuinnChrest', 'https://www.linkedin.com/in/quinn-chrest-533581140/', 'https://quinnchrest.com/']
 			}
 		]
@@ -65,11 +65,11 @@
 		<span class="mono">Trailhead</span>
 		<h1>Building side projects <em>one mile</em> at a time.</h1>
 		<p>
-			I'm Quinn, a software developer in Chanhassen, MN. I like bike rides, taking photos, and building things on
+			I'm Quinn, a software developer in Minneapolis, MN. I like bike rides, taking photos, and building things on
 			evenings and weekends. Here's the map of where it's all gone.
 		</p>
 		<div class="coords mono">
-			<span>44.86° N, 93.53° W</span>
+			<span>44.98° N, 93.27° W</span>
 			<span>{data.projectCount} projects logged</span>
 			<span>{data.noteCount} project notes</span>
 		</div>

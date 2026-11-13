@@ -6,7 +6,7 @@ export const prerender = true;
 // Share image for pages without their own (home, project list, notes list).
 export const GET: RequestHandler = async () => {
 	const png = await renderOgImage({
-		kicker: 'Software developer · Chanhassen, MN',
+		kicker: 'Software developer · Minneapolis, MN',
 		title: 'Building side projects one mile at a time.',
 		key: 'site'
 	});
