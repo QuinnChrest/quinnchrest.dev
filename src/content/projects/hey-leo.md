@@ -3,7 +3,7 @@ id: 41
 title: "Hey Leo"
 status: in-progress
 featured: true
-image: "/projects/hey-leo.png"
+image: "/projects/hey-leo.webp"
 technologies: ["Python","Claude API"]
 githubUrl: "https://github.com/QuinnChrest/hey-leo"
 ---
