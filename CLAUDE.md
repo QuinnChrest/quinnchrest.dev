@@ -33,7 +33,8 @@ Personal portfolio for quinnchrest.dev: SvelteKit 2 + Svelte 5 + TypeScript, bui
 - **Blog:** `src/lib/server/blog.ts` reads the micro.blog JSON Feed at `https://quinnchrest.com/feed.json` at build time; the home page "Trail log" shows the newest five as a `Trail` linking out. Most posts are untitled, so the text is the headline. If the fetch fails the section is left out.
 - **Animations** (all skipped when the system asks for reduced motion, and nothing is hidden without JS): `Trail.svelte` draws its line and pops in each stop the first time it scrolls into view (the `reveal` action in `src/lib/reveal.ts` sets `data-reveal`; style it with `:global([data-reveal])` or Svelte strips the selectors). `Topo.svelte` traces each new map's lines outward from the peaks: full speed on a page load, quicker on navigations. The hidden starting state lives inside `@media (prefers-reduced-motion: no-preference)` so the lines can never get stuck invisible. Page changes use the View Transitions API from `onNavigate` in `+layout.svelte`; project images morph between the card and project page via matching `view-transition-name: project-<slug>`, which must stay unique per page.
 - **Trail.svelte** takes generic `TrailItem`s (`noteToTrail` in `src/lib/format.ts` converts notes), so it renders both notes and blog posts.
-- `mockups/` holds static HTML design mock-ups from the redesign. It is not part of the build.
+- The 11 design mock-ups from the redesign (editorial, terminal, bento, swiss, desktop, topo, scrapbook, arcade, ask-leo, plain, board) are archived on the `archive/redesign-mockups` branch in `mockups/`, not on `main`.
+- Feature ideas that haven't been built yet are tracked in `IDEAS.md`.
 
 ## Content conventions
 

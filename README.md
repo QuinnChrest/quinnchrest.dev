@@ -53,6 +53,8 @@ Short project description.
 
 Content is loaded at build time by `src/lib/server/content.ts`.
 
+Ideas that haven't been built yet are in [`IDEAS.md`](IDEAS.md).
+
 ## 🔧 Development
 
 - `npm run dev`: start the dev server
