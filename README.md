@@ -59,6 +59,7 @@ Content is loaded at build time by `src/lib/server/content.ts`.
 - `npm run build`: build the static site into `build/`
 - `npm run preview`: serve the built site locally
 - `npm run check`: type-check the project
+- `npm run icons`: regenerate the favicon and home screen icon from `scripts/icons.mjs`
 
 ## 🚀 Deployment
 

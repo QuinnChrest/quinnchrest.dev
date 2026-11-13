@@ -12,6 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run build`: static build into `build/` (this is also the best end-to-end check: prerendering fails on broken links or non-prerenderable routes)
 - `npm run preview`: serve the built site
 - `npm run check`: `svelte-kit sync` + `svelte-check` type checking
+- `npm run icons`: regenerate `static/favicon.svg`, `favicon-32.png` and `apple-touch-icon.png` from `scripts/icons.mjs` (the orange trail dot on Topo green). The outputs are committed; only rerun when the design changes.
 
 There is no test suite or linter.
 
