@@ -10,7 +10,7 @@
 
 <svg viewBox="0 0 1200 {height}" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="height: {height}px">
 	{#each paths as p}
-		<path d={p.d} stroke-width={p.index ? 1.6 : 0.8} />
+		<path d={p.d} stroke-width={p.index ? 1.6 : 0.8} pathLength="1" style="--ring: {p.ring}" />
 	{/each}
 </svg>
 
@@ -26,5 +26,19 @@
 	path {
 		fill: none;
 		stroke: var(--contour);
+	}
+	/* On the first page of a visit, the lines trace themselves outward from
+	   each peak. `draw-topo` is set before paint by a script in app.html and
+	   removed on the first navigation (in +layout.svelte). */
+	:global(:root.draw-topo) path {
+		stroke-dasharray: 1;
+		stroke-dashoffset: 1;
+		animation: draw 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+		animation-delay: calc(var(--ring) * 55ms);
+	}
+	@keyframes draw {
+		to {
+			stroke-dashoffset: 0;
+		}
 	}
 </style>

@@ -30,7 +30,13 @@
 				</ul>
 			{/if}
 		</div>
-		<img src={p.image} alt="Screenshot or artwork for {p.title}" width="800" height="600" />
+		<img
+			src={p.image}
+			alt="Screenshot or artwork for {p.title}"
+			width="800"
+			height="600"
+			style="view-transition-name: project-{p.slug}"
+		/>
 	</article>
 
 	{#if data.notes.length}

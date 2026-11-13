@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '../app.css';
+	import { beforeNavigate, onNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
@@ -11,6 +12,25 @@
 	// Each page gets its own (stable) contour map, seeded from its path.
 	const seed = $derived(seedFrom(page.url.pathname));
 	const home = $derived(page.url.pathname === '/');
+
+	// The contour draw-in is only for the first page of a visit.
+	beforeNavigate(() => document.documentElement.classList.remove('draw-topo'));
+
+	// Smooth page changes: crossfade between pages, and a project card's image
+	// glides into place on the project page (matching view-transition-names in
+	// Trailhead.svelte and projects/[slug]). Browsers without the View
+	// Transitions API just switch pages instantly.
+	onNavigate((navigation) => {
+		if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		// Same-page changes (like #stats) don't need a transition.
+		if (navigation.from?.url.pathname === navigation.to?.url.pathname) return;
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
+	});
 </script>
 
 <div class="page">

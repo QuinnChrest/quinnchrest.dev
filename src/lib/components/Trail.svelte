@@ -1,13 +1,18 @@
 <script lang="ts">
 	import type { TrailItem } from '$lib/types';
 	import { formatDate } from '$lib/format';
+	import { reveal } from '$lib/reveal';
 
 	let { items }: { items: TrailItem[] } = $props();
+
+	// The line takes about 0.25s per stop to draw (capped), and each stop
+	// appears as the line reaches it.
+	const drawMs = $derived(Math.min(1600, 250 * items.length + 200));
 </script>
 
-<ol class="trail">
-	{#each items as item (item.key)}
-		<li>
+<ol class="trail" use:reveal style="--draw: {drawMs}ms; --n: {items.length}">
+	{#each items as item, i (item.key)}
+		<li style="--i: {i}">
 			<a
 				class="stop"
 				href={item.href}
@@ -129,6 +134,35 @@
 		border-radius: 4px;
 		padding: 1px 6px;
 		margin-left: 6px;
+	}
+	/* Draw-in animation (see $lib/reveal): the dashed line grows downward and
+	   each stop's dot pops in, then its text slides in, as the line reaches it. */
+	.trail:global([data-reveal])::before {
+		transform-origin: top;
+		transition: transform var(--draw) cubic-bezier(0.45, 0, 0.25, 1);
+	}
+	.trail:global([data-reveal]) li::before {
+		transition:
+			transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+			opacity 0.2s;
+		transition-delay: calc(var(--draw) * var(--i) / var(--n));
+	}
+	.trail:global([data-reveal]) .stop {
+		transition:
+			transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+			opacity 0.5s;
+		transition-delay: calc(var(--draw) * var(--i) / var(--n) + 80ms);
+	}
+	.trail:global([data-reveal='armed'])::before {
+		transform: scaleY(0);
+	}
+	.trail:global([data-reveal='armed']) li::before {
+		transform: scale(0);
+		opacity: 0;
+	}
+	.trail:global([data-reveal='armed']) .stop {
+		transform: translateX(-12px);
+		opacity: 0;
 	}
 	@media (max-width: 800px) {
 		.stop {

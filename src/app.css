@@ -209,7 +209,24 @@ h3 {
 	border-radius: 10px;
 }
 
+/* Page transitions (started in +layout.svelte). Pages crossfade quickly;
+   named elements (project images, the header) move into place instead. */
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation-duration: 220ms;
+}
+::view-transition-group(*) {
+	animation-duration: 380ms;
+	animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
+	::view-transition-group(*),
+	::view-transition-old(*),
+	::view-transition-new(*) {
+		animation: none !important;
+	}
+
 	*,
 	*::before,
 	*::after {

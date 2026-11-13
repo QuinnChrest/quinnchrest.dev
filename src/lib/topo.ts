@@ -17,9 +17,9 @@ function random(s: number) {
 	};
 }
 
-export function contours(seed: number, peaks: Peak[] = DEFAULT_PEAKS): { d: string; index: boolean }[] {
+export function contours(seed: number, peaks: Peak[] = DEFAULT_PEAKS): { d: string; index: boolean; ring: number }[] {
 	const rand = random(seed * 9973 + 7);
-	const out: { d: string; index: boolean }[] = [];
+	const out: { d: string; index: boolean; ring: number }[] = [];
 	for (const peak of peaks) {
 		const p1 = rand() * 10;
 		const p2 = rand() * 10;
@@ -33,7 +33,7 @@ export function contours(seed: number, peaks: Peak[] = DEFAULT_PEAKS): { d: stri
 				d += `${a ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
 			}
 			// Every fifth ring is an "index contour", drawn thicker like on real maps.
-			out.push({ d: d + 'Z', index: r % 5 === 0 });
+			out.push({ d: d + 'Z', index: r % 5 === 0, ring: r });
 		}
 	}
 	return out;

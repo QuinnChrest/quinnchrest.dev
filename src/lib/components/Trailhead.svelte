@@ -17,7 +17,14 @@
 
 <a class="card" href="/projects/{project.slug}">
 	<div class="media">
-		<img src={project.image} alt="" loading={eager ? 'eager' : 'lazy'} width="600" height="400" />
+		<img
+			src={project.image}
+			alt=""
+			loading={eager ? 'eager' : 'lazy'}
+			width="600"
+			height="400"
+			style="view-transition-name: project-{project.slug}"
+		/>
 		{#if project.kind}<span class="kind kind-{project.kind}">{kindLabel[project.kind]}</span>{/if}
 	</div>
 	<div>

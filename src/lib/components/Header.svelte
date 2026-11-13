@@ -34,6 +34,8 @@
 
 <style>
 	header {
+		/* Stays put during page transitions instead of crossfading. */
+		view-transition-name: site-header;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
