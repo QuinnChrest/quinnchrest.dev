@@ -35,7 +35,7 @@
 			alt="Screenshot or artwork for {p.title}"
 			width="800"
 			height="600"
-			style="view-transition-name: project-{p.slug}"
+			data-morph="project-{p.slug}"
 		/>
 	</article>
 
