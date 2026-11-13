@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mock-up E: Desktop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+  :root { --wall1: #ffd7c2; --wall2: #c9d6ff; --win: #fffaf3; --ink: #2a2433; --muted: #7a7086; --line: #2a2433; --accent: #ff7a59; --title: #ffe7a8; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; font: 14px/1.5 "DM Sans", system-ui, sans-serif; color: var(--ink); overflow: hidden;
+    background: radial-gradient(circle at 20% 20%, var(--wall1), transparent 50%), radial-gradient(circle at 80% 70%, var(--wall2), transparent 55%), #f3e9ff; }
+  a { color: var(--ink); }
+  .menubar { position: fixed; top: 0; left: 0; right: 0; height: 32px; display: flex; align-items: center; gap: 18px; padding: 0 14px; background: rgba(255,250,243,.8); backdrop-filter: blur(8px); border-bottom: 2px solid var(--line); font-weight: 500; z-index: 100; }
+  .menubar b { font-weight: 700; } .menubar .sp { flex: 1; } .menubar span { cursor: default; }
+  .icons { position: fixed; top: 52px; left: 18px; display: grid; grid-template-columns: repeat(2, 92px); gap: 10px; }
+  .icon { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 4px; border-radius: 10px; cursor: pointer; border: 0; background: none; font: inherit; color: var(--ink); text-align: center; }
+  .icon:hover, .icon:focus { background: rgba(255,255,255,.55); outline: none; }
+  .icon .g { width: 56px; height: 56px; border-radius: 14px; border: 2px solid var(--line); display: grid; place-items: center; font-size: 26px; box-shadow: 3px 3px 0 var(--line); background-size: cover; background-position: center; }
+  .icon span { font-size: 12.5px; font-weight: 500; background: rgba(255,250,243,.7); padding: 0 6px; border-radius: 4px; }
+  .win { position: absolute; background: var(--win); border: 2px solid var(--line); border-radius: 12px; box-shadow: 6px 6px 0 var(--line); width: 420px; display: flex; flex-direction: column; max-height: calc(100vh - 120px); }
+  .win.hidden { display: none; }
+  .tb { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--title); border-bottom: 2px solid var(--line); border-radius: 10px 10px 0 0; cursor: grab; user-select: none; font-weight: 700; }
+  .tb:active { cursor: grabbing; }
+  .tb button { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--line); background: var(--accent); padding: 0; cursor: pointer; }
+  .tb button + button { background: #fff; }
+  .wc { padding: 16px 18px; overflow: auto; }
+  .wc img { width: 100%; border-radius: 8px; border: 2px solid var(--line); display: block; margin-bottom: 12px; aspect-ratio: 16/9; object-fit: cover; }
+  .wc h2 { margin: 0 0 6px; font-size: 22px; }
+  .wc p { margin: 0 0 12px; }
+  .chips span { display: inline-block; font: 12px "DM Mono", monospace; border: 1.5px solid var(--line); border-radius: 99px; padding: 1px 8px; margin: 0 4px 4px 0; background: #fff; }
+  .btns a { display: inline-block; margin: 8px 8px 0 0; padding: 6px 14px; border: 2px solid var(--line); border-radius: 8px; background: var(--accent); color: #fff; font-weight: 700; text-decoration: none; box-shadow: 2px 2px 0 var(--line); }
+  .btns a + a { background: #fff; color: var(--ink); }
+  .note { background: #fff6a8; }
+  .note .tb { background: #ffe34d; }
+  .entry { padding: 10px 0; border-bottom: 1.5px dashed #cfc4d9; }
+  .entry time { font: 12px "DM Mono", monospace; color: var(--muted); }
+  .entry b { display: block; font-size: 15px; }
+  .entry:last-child { border: 0; }
+  .dock { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; padding: 8px; background: rgba(255,250,243,.8); backdrop-filter: blur(8px); border: 2px solid var(--line); border-radius: 18px; box-shadow: 4px 4px 0 var(--line); z-index: 100; }
+  .dock button { width: 46px; height: 46px; border-radius: 12px; border: 2px solid var(--line); background: #fff; font-size: 20px; cursor: pointer; transition: transform .1s; }
+  .dock button:hover { transform: translateY(-4px); }
+  .stat { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat div { border: 2px solid var(--line); border-radius: 8px; padding: 8px 12px; background: #fff; }
+  .stat b { font-size: 26px; display: block; line-height: 1.1; }
+  @media (max-width: 760px) {
+    body { overflow: auto; }
+    .icons { position: static; padding: 52px 16px 120px; grid-template-columns: repeat(4, 1fr); }
+    .icon .g { width: 58px; height: 58px; }
+    .win { position: fixed !important; left: 10px !important; right: 10px; top: 46px !important; width: auto; max-height: calc(100vh - 130px); z-index: 50; }
+    .menubar .hide { display: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="menubar"><b>✿ quinn.os</b><span class="hide">File</span><span class="hide">View</span><span>Help</span><span class="sp"></span><span id="clock"></span></div>
+
+  <div class="icons">
+    <button class="icon" data-open="about"><div class="g">👋</div><span>About me</span></button>
+    <button class="icon" data-open="leo"><div class="g" style="background-image:url(../static/projects/hey-leo.webp)"></div><span>Hey Leo</span></button>
+    <button class="icon" data-open="motion"><div class="g" style="background-image:url(../static/projects/activities.jpg)"></div><span>Quinn in Motion</span></button>
+    <button class="icon" data-open="photos"><div class="g" style="background-image:url(https://photos.quinnchrest.dev/img/colorado-camping-lumberjack-389c818c/640.jpg)"></div><span>Photos</span></button>
+    <button class="icon" data-open="log"><div class="g" style="background:#fff6a8">📓</div><span>Dev log</span></button>
+    <button class="icon" data-open="games"><div class="g" style="background:#d6f5df">🎮</div><span>Games</span></button>
+    <button class="icon" data-open="stats"><div class="g" style="background:#dfe6ff">📊</div><span>Stats</span></button>
+    <button class="icon" data-open="togo"><div class="g" style="background:#2a2433;color:#ffe7a8">&gt;_</div><span>To Go</span></button>
+  </div>
+
+  <div class="win" id="about" style="left:260px; top:70px; width:440px">
+    <div class="tb"><button data-close></button><button></button>about-me.txt</div>
+    <div class="wc">
+      <h2>Hi, I'm Quinn.</h2>
+      <p>I'm a software developer in Chanhassen, MN. This is my desktop: double-click around. Each icon is a side project, and the notebook is my dev log.</p>
+      <div class="btns"><a href="#">GitHub</a><a href="#">LinkedIn</a></div>
+    </div>
+  </div>
+
+  <div class="win note" id="log" style="left:740px; top:110px; width:340px">
+    <div class="tb"><button data-close></button><button></button>devlog.md</div>
+    <div class="wc">
+      <div class="entry"><time>2026-11-12</time><b>Meet Hey Leo</b>A voice assistant for my computer, powered by Claude.</div>
+      <div class="entry"><time>2026-09-28</time><b>New site: activities</b>Every ride and walk on one map.</div>
+      <div class="entry"><time>2026-09-27</time><b>New site: photos</b>Launched with the first 15 photos.</div>
+      <div class="entry"><time>2026-09-27</time><b>Moving to GitHub Pages</b>No more server, no more Postgres.</div>
+    </div>
+  </div>
+
+  <div class="win hidden" id="leo" style="left:380px; top:90px; width:400px">
+    <div class="tb"><button data-close></button><button></button>Hey Leo</div>
+    <div class="wc">
+      <img src="../static/projects/hey-leo.webp" alt="">
+      <h2>Hey Leo <span class="chips"><span style="background:#ffe34d">in progress</span></span></h2>
+      <p>Say "Hey Leo" and ask a question. Haiku decides whether Haiku, Sonnet or Opus should answer, and the reply is read out loud.</p>
+      <div class="chips"><span>Python</span><span>Claude API</span></div>
+      <div class="btns"><a href="#">Source</a></div>
+    </div>
+  </div>
+
+  <div class="win hidden" id="motion" style="left:300px; top:120px">
+    <div class="tb"><button data-close></button><button></button>Quinn in Motion</div>
+    <div class="wc"><img src="../static/projects/activities.jpg" alt=""><h2>Quinn in Motion</h2><p>Every bike ride and walk I've recorded on Strava on one heat map, plus totals, records and a year calendar.</p><div class="chips"><span>React</span><span>MapLibre</span></div><div class="btns"><a href="#">Open site</a><a href="#">Source</a></div></div>
+  </div>
+  <div class="win hidden" id="photos" style="left:340px; top:150px">
+    <div class="tb"><button data-close></button><button></button>Photos</div>
+    <div class="wc"><img src="https://photos.quinnchrest.dev/img/colorado-camping-lumberjack-389c818c/640.jpg" alt=""><h2>Photos</h2><p>A simple gallery of photos I've taken and like.</p><div class="chips"><span>React</span><span>Bun</span><span>Sharp</span></div><div class="btns"><a href="#">Open site</a><a href="#">Source</a></div></div>
+  </div>
+  <div class="win hidden" id="games" style="left:420px; top:130px">
+    <div class="tb"><button data-close></button><button></button>Games/</div>
+    <div class="wc">
+      <div class="entry"><b>Reborndle</b>Guess the Pokémon Reborn trainer. <a href="#">Play</a></div>
+      <div class="entry"><b>YuYudle</b>Daily Yu Yu Hakusho guessing game. <a href="#">Play</a></div>
+      <div class="entry"><b>Snake</b>Snake in JavaScript with PixiJS. <a href="#">Play</a></div>
+      <div class="entry"><b>Blackjack</b>Learn to play by the book. <a href="#">Play</a></div>
+    </div>
+  </div>
+  <div class="win hidden" id="stats" style="left:460px; top:160px; width:320px">
+    <div class="tb"><button data-close></button><button></button>Stats</div>
+    <div class="wc"><div class="stat"><div><b>24</b>repos</div><div><b>12</b>stars</div><div><b>8</b>followers</div><div><b>9</b>log entries</div></div></div>
+  </div>
+  <div class="win hidden" id="togo" style="left:500px; top:180px">
+    <div class="tb"><button data-close></button><button></button>To Go</div>
+    <div class="wc" style="background:#2a2433;color:#ffe7a8;font-family:'DM Mono',monospace;border-radius:0 0 10px 10px">$ togo<br>[ ] Not another to-do list app<br>[x] ...but this one lives in the terminal<br><br>Go · SQLite · Bubble Tea</div>
+  </div>
+
+  <div class="dock">
+    <button data-open="about" title="About">👋</button>
+    <button data-open="log" title="Dev log">📓</button>
+    <button data-open="games" title="Games">🎮</button>
+    <button data-open="stats" title="Stats">📊</button>
+    <button title="RSS">📡</button>
+  </div>
+
+<script>
+  let z = 10;
+  const front = w => { w.style.zIndex = ++z; };
+  document.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => {
+    const w = document.getElementById(b.dataset.open);
+    if (innerWidth < 760) document.querySelectorAll('.win').forEach(x => x.classList.add('hidden'));
+    w.classList.remove('hidden'); front(w);
+  }));
+  document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); b.closest('.win').classList.add('hidden'); }));
+  document.querySelectorAll('.win').forEach(w => {
+    w.addEventListener('mousedown', () => front(w));
+    const tb = w.querySelector('.tb');
+    tb.addEventListener('pointerdown', e => {
+      if (e.target.tagName === 'BUTTON' || innerWidth < 760) return;
+      const sx = e.clientX - w.offsetLeft, sy = e.clientY - w.offsetTop;
+      const move = ev => { w.style.left = (ev.clientX - sx) + 'px'; w.style.top = Math.max(34, ev.clientY - sy) + 'px'; };
+      const up = () => { removeEventListener('pointermove', move); removeEventListener('pointerup', up); };
+      addEventListener('pointermove', move); addEventListener('pointerup', up);
+    });
+  });
+  if (innerWidth < 760) document.querySelectorAll('.win').forEach(x => x.classList.add('hidden'));
+  const tick = () => document.getElementById('clock').textContent = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  tick(); setInterval(tick, 10000);
+</script>
+</body>
+</html>

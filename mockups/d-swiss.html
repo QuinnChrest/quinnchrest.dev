@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mock-up D: Swiss</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #ffffff; --ink: #0a0a0a; --hi: #ffd400; --muted: #6d6d6d; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 Archivo, Helvetica, Arial, sans-serif; }
+  a { color: inherit; text-decoration: none; }
+  .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 0 20px; padding: 0 28px; }
+  header { padding-top: 22px; padding-bottom: 22px; border-bottom: 3px solid var(--ink); align-items: baseline; font-weight: 500; font-size: 14px; }
+  header .n { grid-column: 1 / 5; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; }
+  header .r { grid-column: 5 / 9; color: var(--muted); }
+  header nav { grid-column: 9 / 13; display: flex; justify-content: flex-end; gap: 22px; }
+  header nav a:hover { background: var(--hi); }
+  .hero { padding-top: 40px; padding-bottom: 40px; border-bottom: 3px solid var(--ink); }
+  .hero h1 { grid-column: 1 / 13; font-size: clamp(64px, 15vw, 230px); line-height: .82; font-weight: 900; letter-spacing: -0.055em; margin: 0; text-transform: uppercase; }
+  .hero h1 span { background: var(--hi); padding: 0 .05em; }
+  .hero p { grid-column: 7 / 12; font-size: 22px; line-height: 1.3; margin: 36px 0 0; font-weight: 500; }
+  .hero .num { grid-column: 1 / 4; margin-top: 36px; font-size: 14px; color: var(--muted); }
+  .label { grid-column: 1 / 4; font-size: 14px; font-weight: 800; text-transform: uppercase; padding-top: 18px; }
+  .sec { border-bottom: 3px solid var(--ink); padding-bottom: 40px; }
+  .sec .body { grid-column: 4 / 13; }
+  .proj { display: grid; grid-template-columns: 70px 1fr 260px 120px; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--ink); align-items: center; position: relative; }
+  .proj .i { font-size: 14px; font-weight: 500; }
+  .proj h3 { margin: 0; font-size: clamp(28px, 4vw, 52px); font-weight: 900; letter-spacing: -0.04em; text-transform: uppercase; line-height: 1; }
+  .proj p { margin: 0; font-size: 14px; color: var(--muted); }
+  .proj .s { font-size: 13px; text-align: right; font-weight: 500; }
+  .proj img { position: absolute; right: 150px; top: 50%; width: 260px; height: 170px; object-fit: cover; transform: translateY(-50%) rotate(-3deg); opacity: 0; pointer-events: none; transition: opacity .15s; z-index: 2; box-shadow: 8px 8px 0 var(--ink); }
+  .proj:hover { background: var(--hi); }
+  .proj:hover img { opacity: 1; }
+  .wip { background: var(--ink); color: var(--hi); padding: 2px 6px; }
+  .log { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding-top: 18px; }
+  .log article { border-top: 8px solid var(--ink); padding-top: 12px; }
+  .log time { font-size: 13px; font-weight: 800; }
+  .log h3 { font-size: 26px; line-height: 1.05; margin: 8px 0; font-weight: 800; letter-spacing: -0.02em; }
+  .log p { font-size: 14px; color: var(--muted); margin: 0; }
+  .log article:hover h3 { background: var(--hi); display: inline; }
+  .nums { display: grid; grid-template-columns: repeat(4, 1fr); padding-top: 18px; }
+  .nums div { border-left: 1px solid var(--ink); padding: 0 16px; }
+  .nums b { display: block; font-size: clamp(48px, 7vw, 110px); font-weight: 900; letter-spacing: -0.05em; line-height: 1; }
+  .nums span { font-size: 13px; text-transform: uppercase; font-weight: 500; }
+  footer { padding-top: 22px; padding-bottom: 40px; font-size: 14px; }
+  footer div { grid-column: span 3; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0a0a0a; --ink: #f2f2f2; --muted: #9a9a9a; } .proj:hover, header nav a:hover { color: #0a0a0a; } .proj:hover p { color: #333; } .hero h1 span { color: #0a0a0a; } }
+  @media (max-width: 800px) {
+    .grid { padding: 0 16px; }
+    header .r { display: none; } header .n { grid-column: 1 / 7; } header nav { grid-column: 7 / 13; gap: 12px; }
+    .hero p { grid-column: 1 / 13; font-size: 19px; } .hero .num { grid-column: 1 / 13; order: 3; }
+    .label, .sec .body { grid-column: 1 / 13; }
+    .proj { grid-template-columns: 34px 1fr; gap: 4px 10px; }
+    .proj p, .proj .s { grid-column: 2; text-align: left; }
+    .proj img { display: none; }
+    .log { grid-template-columns: 1fr; }
+    .nums { grid-template-columns: 1fr 1fr; gap: 20px 0; }
+    footer div { grid-column: span 6; }
+  }
+</style>
+</head>
+<body>
+  <header class="grid">
+    <div class="n">Quinn Chrest</div>
+    <div class="r">Software developer, Chanhassen MN</div>
+    <nav><a href="#work">Work</a><a href="#log">Log</a><a href="#nums">Stats</a></nav>
+  </header>
+
+  <section class="grid hero">
+    <h1>Builds <span>things</span><br>for fun.</h1>
+    <div class="num">Est. 2025 · Vol. 09</div>
+    <p>Games, terminal tools, a photo gallery, a map of every bike ride, and a voice assistant named Leo. Everything here is a side project.</p>
+  </section>
+
+  <section class="grid sec" id="work">
+    <div class="label">01 / Work</div>
+    <div class="body">
+      <a class="proj" href="#"><span class="i">01</span><h3>Hey Leo</h3><p>Voice assistant powered by Claude.</p><span class="s"><span class="wip">IN PROGRESS</span></span><img src="../static/projects/hey-leo.webp" alt=""></a>
+      <a class="proj" href="#"><span class="i">02</span><h3>Quinn in Motion</h3><p>Every Strava ride and walk on one heat map.</p><span class="s">React</span><img src="../static/projects/activities.jpg" alt=""></a>
+      <a class="proj" href="#"><span class="i">03</span><h3>Photos</h3><p>Photos I've taken and like.</p><span class="s">React, Bun</span><img src="https://photos.quinnchrest.dev/img/colorado-camping-lumberjack-389c818c/640.jpg" alt=""></a>
+      <a class="proj" href="#"><span class="i">04</span><h3>Reborndle</h3><p>Guess the Pokémon Reborn trainer.</p><span class="s">Svelte</span></a>
+      <a class="proj" href="#"><span class="i">05</span><h3>YuYudle</h3><p>Daily Yu Yu Hakusho guessing game.</p><span class="s">SvelteKit</span></a>
+      <a class="proj" href="#"><span class="i">06</span><h3>Snake</h3><p>Snake in JavaScript with PixiJS.</p><span class="s">PixiJS</span></a>
+      <a class="proj" href="#"><span class="i">07</span><h3>Blackjack</h3><p>Learn to play by the book.</p><span class="s">React</span></a>
+      <a class="proj" href="#"><span class="i">08</span><h3>To Go</h3><p>A to-do list in the terminal.</p><span class="s">Go</span></a>
+    </div>
+  </section>
+
+  <section class="grid sec" id="log">
+    <div class="label">02 / Dev log</div>
+    <div class="body log">
+      <a href="#"><article><time>12.11.2026</time><h3>Meet Hey Leo</h3><p>A voice assistant for my computer, like "Hey Google" but powered by Claude.</p></article></a>
+      <a href="#"><article><time>28.09.2026</time><h3>New site: activities</h3><p>149 rides and walks going back to 2020, on one map.</p></article></a>
+      <a href="#"><article><time>27.09.2026</time><h3>New site: photos</h3><p>Launched with the first 15 photos.</p></article></a>
+    </div>
+  </section>
+
+  <section class="grid sec" id="nums">
+    <div class="label">03 / Numbers</div>
+    <div class="body nums">
+      <div><b>24</b><span>Repos</span></div>
+      <div><b>12</b><span>Stars</span></div>
+      <div><b>09</b><span>Projects</span></div>
+      <div><b>09</b><span>Log entries</span></div>
+    </div>
+  </section>
+
+  <footer class="grid">
+    <div><a href="#">GitHub ↗</a></div><div><a href="#">LinkedIn ↗</a></div><div><a href="#">RSS ↗</a></div><div>© 2026</div>
+  </footer>
+</body>
+</html>

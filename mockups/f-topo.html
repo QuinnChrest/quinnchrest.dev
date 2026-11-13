@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mock-up F: Topo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #f1ecdf; --ink: #1f2b22; --muted: #5f6b5f; --line: #c9c0a8; --contour: #b9ae90; --trail: #e2562b; --card: #faf7ef; --moss: #3d5a3f; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #141a15; --ink: #e9e4d4; --muted: #9aa392; --line: #2c372d; --contour: #2a352b; --trail: #ff7448; --card: #1b231c; --moss: #9cc49a; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 "Bricolage Grotesque", system-ui, sans-serif; }
+  a { color: inherit; text-decoration: none; }
+  .mono { font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+  #topo { position: absolute; inset: 0 0 auto 0; height: 760px; width: 100%; z-index: 0; }
+  .wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  header { display: flex; justify-content: space-between; align-items: center; padding: 22px 0; }
+  header .logo { font-weight: 800; font-size: 18px; display: flex; gap: 8px; align-items: center; }
+  header .logo i { width: 12px; height: 12px; border-radius: 50%; background: var(--trail); box-shadow: 0 0 0 4px color-mix(in srgb, var(--trail) 25%, transparent); }
+  header nav { display: flex; gap: 22px; } header nav a:hover { color: var(--trail); }
+  .hero { padding: 110px 0 140px; max-width: 720px; }
+  .hero h1 { font-size: clamp(44px, 7vw, 84px); line-height: 1; letter-spacing: -0.03em; margin: 14px 0 22px; font-weight: 800; }
+  .hero h1 em { font-style: normal; color: var(--trail); }
+  .hero p { font-size: 19px; color: var(--muted); margin: 0; max-width: 560px; }
+  .coords { display: flex; gap: 22px; margin-top: 28px; }
+  h2 { font-size: 34px; margin: 0; letter-spacing: -0.02em; font-weight: 800; }
+  .sh { display: flex; justify-content: space-between; align-items: end; margin: 0 0 24px; padding-top: 40px; }
+  .trailheads { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .th { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; transition: transform .15s, box-shadow .15s; }
+  .th:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,.08); }
+  .th img { width: 100%; aspect-ratio: 3/2; object-fit: cover; display: block; }
+  .th div { padding: 16px 18px 18px; }
+  .th h3 { margin: 6px 0 6px; font-size: 22px; }
+  .th p { margin: 0; color: var(--muted); font-size: 14.5px; }
+  .marker { display: inline-flex; align-items: center; gap: 6px; }
+  .marker::before { content: ""; width: 8px; height: 8px; background: var(--moss); transform: rotate(45deg); }
+  .marker.wip::before { background: var(--trail); }
+  .others { margin-top: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 20px; }
+  .others a { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--line); }
+  .others a:hover b { color: var(--trail); }
+  .trail { position: relative; margin: 10px 0 0 10px; padding-left: 40px; }
+  .trail::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; border-left: 3px dashed var(--trail); }
+  .stop { position: relative; padding: 0 0 36px; display: grid; grid-template-columns: 150px 1fr; gap: 20px; }
+  .stop::before { content: ""; position: absolute; left: -49px; top: 4px; width: 15px; height: 15px; border-radius: 50%; background: var(--bg); border: 3px solid var(--trail); }
+  .stop:first-child::before { background: var(--trail); }
+  .stop h3 { margin: 0 0 4px; font-size: 24px; line-height: 1.2; }
+  .stop p { margin: 0; color: var(--muted); max-width: 600px; }
+  .elev { margin-top: 30px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .elev b { display: block; font-size: 40px; font-weight: 800; line-height: 1.1; }
+  .elev svg { grid-column: 1 / -1; width: 100%; height: 70px; }
+  footer { padding: 60px 0 40px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  footer nav { display: flex; gap: 18px; }
+  @media (max-width: 800px) {
+    .wrap { padding: 0 16px; } header nav { gap: 14px; font-size: 15px; }
+    .hero { padding: 60px 0 80px; }
+    .trailheads, .others { grid-template-columns: 1fr; }
+    .stop { grid-template-columns: 1fr; gap: 2px; }
+    .elev { grid-template-columns: 1fr 1fr; }
+    .coords { flex-wrap: wrap; gap: 8px 18px; }
+  }
+</style>
+</head>
+<body>
+<svg id="topo" preserveAspectRatio="xMidYMid slice" viewBox="0 0 1200 760" aria-hidden="true"></svg>
+<div class="wrap">
+  <header>
+    <a class="logo" href="#"><i></i>Quinn Chrest</a>
+    <nav><a href="#work">Projects</a><a href="#log">Log</a><a href="#stats">Stats</a></nav>
+  </header>
+
+  <section class="hero">
+    <span class="mono">Trailhead · You are here</span>
+    <h1>Building side projects <em>one mile</em> at a time.</h1>
+    <p>Software developer in Chanhassen, MN. I like bike rides, taking photos, and building things on weekends. Here's the map of where it's all gone.</p>
+    <div class="coords mono"><span>44.86° N, 93.53° W</span><span>Elev. 950 ft</span><span>9 projects logged</span></div>
+  </section>
+
+  <section id="work">
+    <div class="sh"><h2>Trailheads</h2><span class="mono">Featured projects</span></div>
+    <div class="trailheads">
+      <a class="th" href="#"><img src="../static/projects/hey-leo.webp" alt=""><div><span class="mono marker wip">In progress · Python</span><h3>Hey Leo</h3><p>A voice assistant powered by Claude. Haiku picks the right model, and the answer is read out loud.</p></div></a>
+      <a class="th" href="#"><img src="../static/projects/activities.jpg" alt=""><div><span class="mono marker">React · MapLibre</span><h3>Quinn in Motion</h3><p>Every Strava ride and walk on one heat map, where the roads I travel most shine brightest.</p></div></a>
+      <a class="th" href="#"><img src="https://photos.quinnchrest.dev/img/colorado-camping-lumberjack-389c818c/640.jpg" alt=""><div><span class="mono marker">React · Bun</span><h3>Photos</h3><p>A simple gallery of photos I've taken and like, from camping trips and everywhere else.</p></div></a>
+    </div>
+    <div class="others">
+      <a href="#"><b>Reborndle</b><span class="mono">Svelte</span></a>
+      <a href="#"><b>YuYudle</b><span class="mono">SvelteKit</span></a>
+      <a href="#"><b>Snake</b><span class="mono">PixiJS</span></a>
+      <a href="#"><b>Blackjack</b><span class="mono">React</span></a>
+      <a href="#"><b>To Go</b><span class="mono">Go</span></a>
+      <a href="#"><b>Developer Site</b><span class="mono">SvelteKit</span></a>
+    </div>
+  </section>
+
+  <section id="log">
+    <div class="sh"><h2>Trail log</h2><a class="mono" href="#">RSS feed ↗</a></div>
+    <div class="trail">
+      <a class="stop" href="#"><span class="mono">Nov 12, 2026<br>Update</span><div><h3>Meet Hey Leo</h3><p>A voice assistant for my computer, like "Hey Google" but powered by Claude. An introduction to what it is and how it works.</p></div></a>
+      <a class="stop" href="#"><span class="mono">Sep 28, 2026<br>Feature</span><div><h3>New site: activities.quinnchrest.dev</h3><p>Every ride and walk on one map. Launched with 149 activities going back to 2020.</p></div></a>
+      <a class="stop" href="#"><span class="mono">Sep 27, 2026<br>Feature</span><div><h3>New site: photos.quinnchrest.dev</h3><p>A home for photos I've taken and like. Launched with the first 15.</p></div></a>
+      <a class="stop" href="#"><span class="mono">Sep 27, 2026<br>Update</span><div><h3>Moving to GitHub Pages + SEO cleanup</h3><p>No more self-hosted server or Postgres database. The whole site is static now.</p></div></a>
+    </div>
+  </section>
+
+  <section id="stats">
+    <div class="sh"><h2>Elevation profile</h2><span class="mono">Live from GitHub</span></div>
+    <div class="elev">
+      <div><span class="mono">Repos</span><b>24</b></div>
+      <div><span class="mono">Stars</span><b>12</b></div>
+      <div><span class="mono">Miles ridden</span><b>1,170</b></div>
+      <div><span class="mono">Log entries</span><b>9</b></div>
+      <svg viewBox="0 0 400 70" preserveAspectRatio="none"><path d="M0 60 L30 52 L60 55 L90 40 L120 44 L150 30 L180 34 L210 18 L240 26 L270 14 L300 22 L330 8 L360 16 L400 6 L400 70 L0 70Z" fill="var(--trail)" opacity=".15"/><path d="M0 60 L30 52 L60 55 L90 40 L120 44 L150 30 L180 34 L210 18 L240 26 L270 14 L300 22 L330 8 L360 16 L400 6" fill="none" stroke="var(--trail)" stroke-width="2"/></svg>
+    </div>
+  </section>
+
+  <footer><span class="mono">© 2026 Quinn Chrest · Chanhassen, MN</span><nav class="mono"><a href="#">GitHub</a><a href="#">LinkedIn</a><a href="#">RSS</a></nav></footer>
+</div>
+<script>
+  // Contour lines: wobbly rings around a few peaks (a build step could bake this in as static SVG)
+  const svg = document.getElementById('topo'), NS = 'http://www.w3.org/2000/svg';
+  const peaks = [[950, 220, 16], [1150, 600, 10], [80, 640, 7]];
+  for (const [cx, cy, rings] of peaks) {
+    const seed = Math.random() * 10;
+    for (let r = 1; r <= rings; r++) {
+      let d = '';
+      for (let a = 0; a <= 64; a++) {
+        const t = a / 64 * Math.PI * 2;
+        const rad = r * 34 * (1 + 0.18 * Math.sin(3 * t + seed) + 0.1 * Math.sin(5 * t + r * 0.3 + seed));
+        d += (a ? 'L' : 'M') + (cx + Math.cos(t) * rad * 1.3).toFixed(1) + ' ' + (cy + Math.sin(t) * rad).toFixed(1);
+      }
+      const p = document.createElementNS(NS, 'path');
+      p.setAttribute('d', d + 'Z'); p.setAttribute('fill', 'none');
+      p.setAttribute('stroke', 'var(--contour)'); p.setAttribute('stroke-width', r % 5 === 0 ? 1.6 : 0.8);
+      svg.appendChild(p);
+    }
+  }
+</script>
+</body>
+</html>
