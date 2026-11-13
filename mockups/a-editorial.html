@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mock-up A: Editorial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f2ea; --ink: #1c1a17; --muted: #6b655c; --rule: #d9d2c4; --accent: #d9481e; --card: #fffdf8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper: #171513; --ink: #eee8dc; --muted: #9c9486; --rule: #34302a; --accent: #ff6a3d; --card: #1f1c19; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.6 Inter, system-ui, sans-serif; }
+  a { color: inherit; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  header.top { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; border-bottom: 1px solid var(--rule); }
+  .mark { font-family: Fraunces, serif; font-weight: 800; font-size: 20px; text-decoration: none; }
+  .mark span { color: var(--accent); }
+  nav a { margin-left: 24px; text-decoration: none; font-size: 14px; color: var(--muted); }
+  nav a:hover { color: var(--ink); }
+  .hero { padding: 96px 0 72px; display: grid; grid-template-columns: 1fr 180px; gap: 48px; align-items: end; border-bottom: 1px solid var(--rule); }
+  .hero h1 { font-family: Fraunces, serif; font-weight: 600; font-size: clamp(44px, 7vw, 88px); line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 24px; }
+  .hero h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .hero p { font-size: 19px; color: var(--muted); max-width: 560px; margin: 0; }
+  .hero img { width: 180px; height: 220px; object-fit: cover; border-radius: 4px; filter: grayscale(0.2); }
+  .section-head { display: flex; justify-content: space-between; align-items: baseline; padding: 64px 0 24px; }
+  .section-head h2 { font-family: Fraunces, serif; font-size: 36px; margin: 0; font-weight: 600; }
+  .section-head small { color: var(--muted); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .featured { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .feat img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; display: block; }
+  .feat h3 { font-family: Fraunces, serif; font-size: 24px; margin: 16px 0 6px; font-weight: 600; }
+  .feat p { margin: 0 0 10px; color: var(--muted); font-size: 15px; }
+  .meta { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .meta b { color: var(--accent); font-weight: 600; }
+  .index { margin-top: 48px; border-top: 1px solid var(--ink); }
+  .row { display: grid; grid-template-columns: 56px 1fr 1.6fr 140px; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--rule); align-items: baseline; text-decoration: none; }
+  .row:hover h4 { color: var(--accent); }
+  .row .n { font-family: Fraunces, serif; color: var(--muted); }
+  .row h4 { margin: 0; font-family: Fraunces, serif; font-size: 22px; font-weight: 600; }
+  .row p { margin: 0; color: var(--muted); font-size: 14px; }
+  .row .t { font-size: 12px; color: var(--muted); text-align: right; }
+  .log { display: grid; grid-template-columns: 1fr 1fr; gap: 0 64px; }
+  .entry { padding: 28px 0; border-top: 1px solid var(--rule); }
+  .entry time { font-size: 13px; color: var(--muted); }
+  .entry h3 { font-family: Fraunces, serif; font-size: 26px; margin: 4px 0 10px; font-weight: 600; line-height: 1.2; }
+  .entry p { margin: 0 0 12px; color: var(--muted); }
+  .entry a.more { font-size: 14px; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border: 1px solid var(--rule); border-radius: 99px; margin-right: 6px; color: var(--muted); }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule); }
+  .stat { padding: 28px 0; }
+  .stat b { display: block; font-family: Fraunces, serif; font-size: 48px; font-weight: 400; line-height: 1; }
+  .stat span { font-size: 13px; color: var(--muted); }
+  footer { padding: 64px 0 48px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; color: var(--muted); font-size: 14px; }
+  footer a { margin-right: 18px; }
+  @media (max-width: 760px) {
+    nav a { margin-left: 12px; } nav a:nth-child(3) { display: none; }
+    .section-head { padding-top: 48px; } .section-head h2 { font-size: 28px; }
+    .hero { grid-template-columns: 1fr; padding: 56px 0 48px; gap: 24px; }
+    .hero img { width: 96px; height: 96px; border-radius: 50%; order: -1; }
+    .featured, .log { grid-template-columns: 1fr; }
+    .row { grid-template-columns: 32px 1fr; gap: 4px 12px; }
+    .row p { grid-column: 2; } .row .t { grid-column: 2; text-align: left; }
+    .stats { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="mark" href="#">Quinn Chrest<span>.</span></a>
+    <nav><a href="#work">Work</a><a href="#log">Log</a><a href="#about">About</a><a href="#">RSS</a></nav>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1>I build small things <em>for fun</em> and bigger things for work.</h1>
+      <p>Software developer in Chanhassen, MN. This is where I keep my side projects, a running log of what I'm building, and a few numbers from GitHub.</p>
+    </div>
+    <img src="../static/avatar.jpg" alt="Quinn Chrest">
+  </section>
+
+  <section id="work">
+    <div class="section-head"><h2>Selected work</h2><small>9 projects</small></div>
+    <div class="featured">
+      <a class="feat" href="#" style="text-decoration:none">
+        <img src="../static/projects/hey-leo.webp" alt="">
+        <div class="meta"><b>In progress</b> · Python · Claude API</div>
+        <h3>Hey Leo</h3>
+        <p>A voice assistant for my computer, powered by Claude. Haiku decides which model should answer, and the reply is read out loud.</p>
+      </a>
+      <a class="feat" href="#" style="text-decoration:none">
+        <img src="../static/projects/activities.jpg" alt="">
+        <div class="meta">React · MapLibre</div>
+        <h3>Quinn in Motion</h3>
+        <p>Every bike ride and walk I've recorded on Strava on one heat map, plus totals, records and a year calendar.</p>
+      </a>
+      <a class="feat" href="#" style="text-decoration:none">
+        <img src="https://photos.quinnchrest.dev/img/colorado-camping-lumberjack-389c818c/640.jpg" alt="">
+        <div class="meta">React · Bun · Sharp</div>
+        <h3>Photos</h3>
+        <p>A simple gallery of photos I've taken and like, resized locally into AVIF, WebP and JPEG.</p>
+      </a>
+    </div>
+
+    <div class="index">
+      <a class="row" href="#"><span class="n">04</span><h4>Reborndle</h4><p>Guess the Pokémon Reborn trainer. A remix of YuYudle for Loopysaurs' stream.</p><span class="t">Svelte</span></a>
+      <a class="row" href="#"><span class="n">05</span><h4>YuYudle</h4><p>A daily guessing game with Yu Yu Hakusho characters.</p><span class="t">SvelteKit</span></a>
+      <a class="row" href="#"><span class="n">06</span><h4>Snake</h4><p>Could I build Snake in JavaScript? Yes, with PixiJS.</p><span class="t">PixiJS</span></a>
+      <a class="row" href="#"><span class="n">07</span><h4>Blackjack</h4><p>Practice blackjack and learn to play by the book.</p><span class="t">React</span></a>
+      <a class="row" href="#"><span class="n">08</span><h4>To Go</h4><p>A to-do list that lives entirely in the terminal.</p><span class="t">Go · Bubble Tea</span></a>
+      <a class="row" href="#"><span class="n">09</span><h4>Developer Site</h4><p>This website.</p><span class="t">SvelteKit</span></a>
+    </div>
+  </section>
+
+  <section id="log">
+    <div class="section-head"><h2>Dev log</h2><small><a href="#">All entries →</a></small></div>
+    <div class="log">
+      <article class="entry">
+        <time>Nov 12, 2026</time> <span class="tag">update</span>
+        <h3>Meet Hey Leo</h3>
+        <p>Hey Leo is a voice assistant for my computer, like "Hey Google" but powered by Claude. This post is an introduction to what it is and how it works.</p>
+        <a class="more" href="#">Read entry →</a>
+      </article>
+      <article class="entry">
+        <time>Sep 28, 2026</time> <span class="tag">feature</span>
+        <h3>New site: activities.quinnchrest.dev</h3>
+        <p>Every bike ride and walk on one map. It launched with 149 activities going back to 2020.</p>
+        <a class="more" href="#">Read entry →</a>
+      </article>
+      <article class="entry">
+        <time>Sep 27, 2026</time> <span class="tag">feature</span>
+        <h3>New site: photos.quinnchrest.dev</h3>
+        <p>A new site for showing off photos I've taken and like. It launched with the first 15 photos.</p>
+        <a class="more" href="#">Read entry →</a>
+      </article>
+      <article class="entry">
+        <time>Sep 27, 2026</time> <span class="tag">update</span>
+        <h3>Moving to GitHub Pages + SEO cleanup</h3>
+        <p>The site no longer runs on a self-hosted server with a Postgres database. It's now fully static.</p>
+        <a class="more" href="#">Read entry →</a>
+      </article>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="section-head"><h2>By the numbers</h2><small>Live from GitHub</small></div>
+    <div class="stats">
+      <div class="stat"><b>24</b><span>public repos</span></div>
+      <div class="stat"><b>12</b><span>stars</span></div>
+      <div class="stat"><b>1,170</b><span>miles ridden</span></div>
+      <div class="stat"><b>9</b><span>log entries</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <div><a href="#">GitHub</a><a href="#">LinkedIn</a><a href="#">RSS</a></div>
+    <div>© 2026 Quinn Chrest</div>
+  </footer>
+</div>
+</body>
+</html>
