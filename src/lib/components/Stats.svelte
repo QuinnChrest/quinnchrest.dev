@@ -1,16 +1,17 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { GITHUB_USER, summarize } from '$lib/github';
-	import type { GitHubStats } from '$lib/types';
+	import type { Contributions, GitHubStats } from '$lib/types';
 
 	// `initial` comes from the build, so real numbers are in the HTML right away.
 	// The browser then refreshes them, at most once an hour per visitor: the
 	// unauthenticated GitHub API allows 60 requests an hour per IP.
 	let {
 		initial,
+		contributions,
 		projects,
 		notes
-	}: { initial: GitHubStats | null; projects: number; notes: number } = $props();
+	}: { initial: GitHubStats | null; contributions: Contributions | null; projects: number; notes: number } = $props();
 
 	let stats = $state<GitHubStats | null>(null);
 	const shown = $derived(stats ?? initial);
@@ -45,8 +46,40 @@
 		}
 	});
 
-	// A fixed-shape "elevation profile" for decoration under the numbers.
-	const profile = 'M0 60 L30 52 L60 55 L90 40 L120 44 L150 30 L180 34 L210 18 L240 26 L270 14 L300 22 L330 8 L360 16 L400 6';
+	// The elevation profile: GitHub contributions per month, drawn as terrain.
+	// Built from data fetched at build time (src/lib/server/github.ts).
+	const W = 400, H = 70, TOP = 10, BOTTOM = 62;
+	const monthName = (m: string, style: 'short' | 'long' = 'short') =>
+		new Date(`${m}-01T00:00:00Z`).toLocaleDateString('en-US', { timeZone: 'UTC', month: style === 'long' ? 'long' : 'short', year: 'numeric' });
+
+	const chart = $derived.by(() => {
+		const months = contributions?.months ?? [];
+		if (months.length < 2) return null;
+		const max = Math.max(...months.map((m) => m.count), 1);
+		const pts = months.map((m, i) => ({
+			x: (i / (months.length - 1)) * W,
+			y: BOTTOM - (m.count / max) * (BOTTOM - TOP)
+		}));
+		// Smooth curve through the points (Catmull-Rom as cubic Béziers), never dipping below the baseline.
+		let d = `M${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
+		for (let i = 0; i < pts.length - 1; i++) {
+			const [p0, p1, p2, p3] = [pts[Math.max(0, i - 1)], pts[i], pts[i + 1], pts[Math.min(pts.length - 1, i + 2)]];
+			const c1y = Math.min(BOTTOM, p1.y + (p2.y - p0.y) / 6), c2y = Math.min(BOTTOM, p2.y - (p3.y - p1.y) / 6);
+			d += `C${(p1.x + (p2.x - p0.x) / 6).toFixed(1)} ${c1y.toFixed(1)} ${(p2.x - (p3.x - p1.x) / 6).toFixed(1)} ${c2y.toFixed(1)} ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+		}
+		const peakIndex = months.findIndex((m) => m.count === max);
+		const years = months
+			.map((m, i) => ({ year: m.month.slice(0, 4), x: (i / (months.length - 1)) * 100, jan: m.month.endsWith('-01') }))
+			.filter((m) => m.jan);
+		return {
+			line: d,
+			fill: `${d}L${W} ${H}L0 ${H}Z`,
+			peak: { ...pts[peakIndex], xPct: (pts[peakIndex].x / W) * 100, month: months[peakIndex].month, count: max },
+			years,
+			from: months[0].month,
+			total: contributions!.total
+		};
+	});
 </script>
 
 <div class="elev">
@@ -54,10 +87,23 @@
 	<div><span class="mono">GitHub stars</span><b>{shown?.stars ?? '—'}</b></div>
 	<div><span class="mono">Projects</span><b>{projects}</b></div>
 	<div><span class="mono">Project notes</span><b>{notes}</b></div>
-	<svg viewBox="0 0 400 70" preserveAspectRatio="none" aria-hidden="true">
-		<path d="{profile} L400 70 L0 70Z" class="fill" />
-		<path d={profile} class="line" />
-	</svg>
+	{#if chart}
+		<figure class="profile">
+			<figcaption class="mono">
+				{chart.total} GitHub contributions since {monthName(chart.from)}, by month
+			</figcaption>
+			<div class="plot">
+				<svg viewBox="0 0 {W} {H}" preserveAspectRatio="none" role="img" aria-label="Monthly GitHub contributions; busiest was {monthName(chart.peak.month, 'long')} with {chart.peak.count}">
+					<path d={chart.fill} class="fill" />
+					<path d={chart.line} class="line" />
+				</svg>
+				<span class="peak mono" style="left: {chart.peak.xPct}%">▲ {chart.peak.count} · {monthName(chart.peak.month)}</span>
+				{#each chart.years as y}
+					<span class="year mono" style="left: {y.x}%">{y.year}</span>
+				{/each}
+			</div>
+		</figure>
+	{/if}
 </div>
 
 {#if shown?.topRepos.length}
@@ -90,10 +136,36 @@
 		font-weight: 800;
 		line-height: 1.1;
 	}
-	svg {
+	.profile {
 		grid-column: 1 / -1;
+		margin: 6px 0 0;
+	}
+	.profile figcaption {
+		margin-bottom: 18px;
+	}
+	.plot {
+		position: relative;
+		padding-bottom: 20px;
+	}
+	svg {
+		display: block;
 		width: 100%;
-		height: 70px;
+		height: 90px;
+	}
+	.peak {
+		position: absolute;
+		top: -16px;
+		transform: translateX(-100%);
+		white-space: nowrap;
+		color: var(--trail);
+		font-size: 11px;
+	}
+	.year {
+		position: absolute;
+		bottom: 0;
+		font-size: 11px;
+		border-left: 1px solid var(--line);
+		padding-left: 6px;
 	}
 	.fill {
 		fill: var(--trail);

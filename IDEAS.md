@@ -4,7 +4,6 @@ Ideas for quinnchrest.dev that came up during the 2026 redesign but haven't been
 
 ## Data that's still placeholder
 
-- **Real elevation chart.** The line under the stats on the home page is a fixed decorative shape. It could show real GitHub contribution counts for the past year (GraphQL `contributionsCollection`, needs the build's `GITHUB_TOKEN`), falling back to how often notes are posted when there's no token.
 - **Real ride stats.** Show miles and rides from Quinn in Motion in the stats. The activities site doesn't publish its totals in a readable form, so it would first need to commit a small summary JSON (like the photos site's `photos.json`) for this site to read at build time.
 - **Real map lines.** Draw one of the background maps from actual elevation data around Minneapolis, or from ride routes, instead of generated hills.
 

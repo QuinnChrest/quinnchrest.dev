@@ -122,7 +122,7 @@
 			<h2 id="stats-title">Elevation profile</h2>
 			<a class="mono" href="https://github.com/QuinnChrest" target="_blank" rel="noopener">Live from GitHub ↗</a>
 		</div>
-		<Stats initial={data.github} projects={data.projectCount} notes={data.noteCount} />
+		<Stats initial={data.github} contributions={data.contributions} projects={data.projectCount} notes={data.noteCount} />
 	</section>
 </div>
 
