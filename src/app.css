@@ -13,7 +13,8 @@
 	--focus: #7aa5ff;
 	--shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
 
-	--font-sans: 'Bricolage Grotesque', system-ui, sans-serif;
+	/* San Francisco on Apple devices; Segoe UI / Roboto elsewhere (SF can't be self-hosted). */
+	--font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 	--font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 	--wrap: 1100px;
 	--radius: 16px;

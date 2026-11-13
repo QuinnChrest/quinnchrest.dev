@@ -20,8 +20,8 @@ let assets: { fonts: Parameters<typeof satori>[1]['fonts']; avatar: string } | u
 function load() {
 	assets ??= {
 		fonts: [
-			{ name: 'Bricolage', data: font('bricolage-grotesque', 'bricolage-grotesque-latin-400-normal.woff'), weight: 400 },
-			{ name: 'Bricolage', data: font('bricolage-grotesque', 'bricolage-grotesque-latin-800-normal.woff'), weight: 800 },
+			{ name: 'Inter', data: font('inter', 'inter-latin-400-normal.woff'), weight: 400 },
+			{ name: 'Inter', data: font('inter', 'inter-latin-800-normal.woff'), weight: 800 },
 			{ name: 'Plex Mono', data: font('ibm-plex-mono', 'ibm-plex-mono-latin-500-normal.woff'), weight: 500 }
 		],
 		avatar: `data:image/jpeg;base64,${readFileSync(join(root, 'static/avatar.jpg')).toString('base64')}`
@@ -55,7 +55,7 @@ export async function renderOgImage({ kicker, title, key }: { kicker: string; ti
 
 	const card = h(
 		'div',
-		{ width: '100%', height: '100%', display: 'flex', position: 'relative', background: C.bg, fontFamily: 'Bricolage', color: C.ink },
+		{ width: '100%', height: '100%', display: 'flex', position: 'relative', background: C.bg, fontFamily: 'Inter', color: C.ink },
 		{ type: 'img', props: { src: background(seedFrom(key)), width: OG_WIDTH, height: OG_HEIGHT, style: { position: 'absolute', left: 0, top: 0 } } },
 		h(
 			'div',

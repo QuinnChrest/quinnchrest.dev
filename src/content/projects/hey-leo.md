@@ -4,7 +4,7 @@ title: "Hey Leo"
 status: in-progress
 kind: ai
 featured: true
-image: "/projects/hey-leo.webp"
+image: "https://images.unsplash.com/photo-1585468274952-66591eb14165?w=800&h=600&fit=crop"
 technologies: ["Python","Claude API"]
 githubUrl: "https://github.com/QuinnChrest/hey-leo"
 ---
