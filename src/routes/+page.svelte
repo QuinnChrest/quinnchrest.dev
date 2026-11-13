@@ -42,7 +42,12 @@
 
 <div class="wrap">
 	<section class="hero">
-		<span class="mono">Trailhead · You are here</span>
+		<figure class="pin">
+			<img src="/avatar.jpg" alt="Quinn Chrest" width="512" height="512" />
+			<figcaption class="mono">You are here</figcaption>
+		</figure>
+		<div class="intro">
+		<span class="mono">Trailhead</span>
 		<h1>Building side projects <em>one mile</em> at a time.</h1>
 		<p>
 			I'm Quinn, a software developer in Chanhassen, MN. I like bike rides, taking photos, and building things on
@@ -52,6 +57,7 @@
 			<span>44.86° N, 93.53° W</span>
 			<span>{data.projectCount} projects logged</span>
 			<span>{data.entryCount} log entries</span>
+		</div>
 		</div>
 	</section>
 
@@ -96,7 +102,71 @@
 <style>
 	.hero {
 		padding: 100px 0 120px;
-		max-width: 740px;
+		display: grid;
+		grid-template-columns: minmax(0, 740px) 1fr;
+		align-items: center;
+		gap: 40px;
+	}
+	.intro {
+		grid-row: 1;
+	}
+	/* Photo as a map pin: ring, pointer and a pulsing "you are here" dot. */
+	.pin {
+		grid-column: 2;
+		grid-row: 1;
+		justify-self: center;
+		position: relative;
+		margin: 0;
+		width: 240px;
+		padding-bottom: 46px;
+	}
+	.pin img {
+		display: block;
+		width: 240px;
+		height: 240px;
+		border-radius: 50%;
+		object-fit: cover;
+		border: 6px solid var(--trail);
+		box-shadow: var(--shadow);
+		background: var(--line);
+	}
+	.pin::before {
+		/* pointer under the circle */
+		content: '';
+		position: absolute;
+		left: 50%;
+		top: 228px;
+		width: 26px;
+		height: 26px;
+		background: var(--trail);
+		transform: translateX(-50%) rotate(45deg);
+		border-radius: 0 0 6px 0;
+		z-index: -1;
+	}
+	.pin::after {
+		content: '';
+		position: absolute;
+		left: 50%;
+		bottom: 0;
+		width: 14px;
+		height: 14px;
+		margin-left: -7px;
+		border-radius: 50%;
+		background: var(--trail);
+		box-shadow: 0 0 0 0 color-mix(in srgb, var(--trail) 50%, transparent);
+		animation: ping 2.4s ease-out infinite;
+	}
+	@keyframes ping {
+		70%,
+		100% {
+			box-shadow: 0 0 0 18px transparent;
+		}
+	}
+	figcaption {
+		position: absolute;
+		left: calc(50% + 18px);
+		bottom: -3px;
+		white-space: nowrap;
 	}
 	h1 {
 		font-size: clamp(42px, 7vw, 84px);
@@ -150,7 +220,33 @@
 			grid-template-columns: 1fr;
 		}
 		.hero {
-			padding: 56px 0 72px;
+			padding: 40px 0 72px;
+			grid-template-columns: 1fr;
+			gap: 20px;
+		}
+		.pin {
+			grid-column: 1;
+			justify-self: start;
+			width: 120px;
+			padding-bottom: 30px;
+		}
+		.pin img {
+			width: 120px;
+			height: 120px;
+			border-width: 4px;
+		}
+		.pin::before {
+			top: 110px;
+			width: 16px;
+			height: 16px;
+		}
+		.pin::after {
+			width: 10px;
+			height: 10px;
+			margin-left: -5px;
+		}
+		.intro {
+			grid-row: 2;
 		}
 	}
 	@media (min-width: 600px) and (max-width: 900px) {

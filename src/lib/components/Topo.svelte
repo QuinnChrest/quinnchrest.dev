@@ -1,46 +1,11 @@
 <script lang="ts">
-	// Decorative contour lines: wobbly rings around a few "peaks". Built from a
-	// fixed seed, so the same seed draws the same map in every build and no
-	// JavaScript is needed to show it.
-	type Peak = { x: number; y: number; rings: number };
+	// Decorative contour background. Drawn on the server from a fixed seed, so no
+	// JavaScript is needed to show it and it looks the same on every build.
+	import { contours, DEFAULT_PEAKS, type Peak } from '$lib/topo';
 
-	let {
-		seed = 1,
-		peaks = [
-			{ x: 950, y: 220, rings: 16 },
-			{ x: 1150, y: 640, rings: 10 },
-			{ x: 60, y: 660, rings: 7 }
-		],
-		height = 760
-	}: { seed?: number; peaks?: Peak[]; height?: number } = $props();
+	let { seed = 1, peaks = DEFAULT_PEAKS, height = 760 }: { seed?: number; peaks?: Peak[]; height?: number } = $props();
 
-	function random(s: number) {
-		return () => {
-			s = (s * 16807) % 2147483647;
-			return s / 2147483647;
-		};
-	}
-
-	const paths = $derived.by(() => {
-		const rand = random(seed * 9973 + 7);
-		const out: { d: string; index: boolean }[] = [];
-		for (const peak of peaks) {
-			const p1 = rand() * 10;
-			const p2 = rand() * 10;
-			for (let r = 1; r <= peak.rings; r++) {
-				let d = '';
-				for (let a = 0; a <= 72; a++) {
-					const t = (a / 72) * Math.PI * 2;
-					const rad = r * 34 * (1 + 0.18 * Math.sin(3 * t + p1) + 0.1 * Math.sin(5 * t + r * 0.3 + p2));
-					const x = peak.x + Math.cos(t) * rad * 1.3;
-					const y = peak.y + Math.sin(t) * rad;
-					d += `${a ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
-				}
-				out.push({ d: d + 'Z', index: r % 5 === 0 });
-			}
-		}
-		return out;
-	});
+	const paths = $derived(contours(seed, peaks));
 </script>
 
 <svg viewBox="0 0 1200 {height}" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="height: {height}px">

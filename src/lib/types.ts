@@ -44,3 +44,13 @@ export interface GitHubStats {
 	forks: number;
 	topRepos: { name: string; url: string; description: string | null; stars: number; forks: number }[];
 }
+
+export interface SearchDoc {
+	type: 'project' | 'entry';
+	url: string;
+	title: string;
+	/** Short line under the title: date for entries, status and stack for projects */
+	meta: string;
+	tags: string[];
+	text: string;
+}

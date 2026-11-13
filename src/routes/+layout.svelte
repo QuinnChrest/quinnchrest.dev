@@ -4,11 +4,12 @@
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import Topo from '$lib/components/Topo.svelte';
+	import { DEFAULT_PEAKS, seedFrom } from '$lib/topo';
 
 	let { children } = $props();
 
 	// Each page gets its own (stable) contour map, seeded from its path.
-	const seed = $derived([...page.url.pathname].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 100000, 7));
+	const seed = $derived(seedFrom(page.url.pathname));
 	const home = $derived(page.url.pathname === '/');
 </script>
 
@@ -22,7 +23,7 @@
 			{seed}
 			height={home ? 820 : 460}
 			peaks={home
-				? undefined
+				? DEFAULT_PEAKS
 				: [
 						{ x: 1050, y: 120, rings: 11 },
 						{ x: 120, y: 420, rings: 6 }

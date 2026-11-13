@@ -25,6 +25,9 @@ Personal portfolio for quinnchrest.dev: SvelteKit 2 + Svelte 5 + TypeScript + Ta
 - **Design:** the "Topo" theme. Plain CSS (no Tailwind): global tokens and `.prose` styles in `src/app.css`, component styles scoped in each `.svelte` file. Light/dark follows the system, and `ThemeToggle.svelte` overrides it via `data-theme` on `<html>` (applied before paint by a script in `src/app.html`). `Topo.svelte` draws the contour background from a seed, server-side.
 - **Stats:** `src/lib/server/github.ts` fetches GitHub numbers at build time (using `GITHUB_TOKEN` if set, returning null on failure so the build never breaks); `Stats.svelte` shows those and refreshes them in the browser, cached in localStorage for an hour.
 - **Feeds:** `src/routes/api/feed.xml/+server.ts` (RSS, latest 20 dev log entries, rendered HTML) and `src/routes/sitemap.xml/+server.ts` (every page) are prerendered endpoints. Base URL is `SITE_URL` in `src/lib/format.ts`. `static/CNAME` sets the custom domain.
+- **Search:** `src/routes/search.json/+server.ts` prerenders an index of every project and entry; `Search.svelte` (header button, `/` or Ctrl/Cmd+K) downloads it on first open and ranks results with `src/lib/search.ts`. No server or third-party service.
+- **Share images:** `src/routes/og/[slug].png` (one per dev log entry) and `src/routes/og/site.png` (everything else) are prerendered PNGs drawn by `src/lib/server/og.ts` with satori + resvg, using font files from `@fontsource` packages and `static/avatar.jpg`. `Seo.svelte` uses `summary_large_image` for these.
+- **Deploys:** on every push to `main`, and daily at 11:17 UTC via `schedule` in the workflow so build-time GitHub stats stay fresh (scheduled runs only fire on the default branch).
 - `mockups/` holds static HTML design mock-ups from the redesign. It is not part of the build.
 
 ## Content conventions

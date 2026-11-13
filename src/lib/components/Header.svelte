@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import Search from './Search.svelte';
 	import ThemeToggle from './ThemeToggle.svelte';
 
 	const links = [
@@ -17,6 +18,7 @@
 		{#each links as link}
 			<a href={link.href} aria-current={current(link.href) ? 'page' : undefined}>{link.label}</a>
 		{/each}
+		<Search />
 		<ThemeToggle />
 	</nav>
 </header>
@@ -54,10 +56,19 @@
 	nav a[aria-current='page'] {
 		color: var(--trail);
 	}
-	@media (max-width: 520px) {
+	@media (max-width: 760px) {
 		nav {
 			gap: 14px;
+		}
+	}
+	@media (max-width: 520px) {
+		nav {
+			gap: 10px;
 			font-size: 15px;
+		}
+		.logo {
+			font-size: 16px;
+			gap: 8px;
 		}
 	}
 </style>

@@ -2,7 +2,6 @@
 id: 1
 title: "Portfolio Website Launch"
 date: 2025-07-10
-project: developer-site
 category: feature
 tags: ["Sveltkit","PostgreSQL","Cursor Agent","RSS"]
 ---

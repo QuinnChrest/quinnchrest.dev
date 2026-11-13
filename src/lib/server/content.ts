@@ -45,7 +45,7 @@ function fileName(path: string): string {
 	return path.split('/').pop()!.replace(/\.md$/, '');
 }
 
-function toPlainText(html: string): string {
+export function toPlainText(html: string): string {
 	return html
 		.replace(/<[^>]+>/g, ' ')
 		.replace(/&amp;/g, '&')
@@ -120,6 +120,9 @@ export function getDevLog(): DevLogEntry[] {
 	for (const entry of devlogCache) {
 		if (slugs.has(entry.slug)) throw new Error(`Two dev log entries share the slug "${entry.slug}"`);
 		slugs.add(entry.slug);
+		// Catch a `project:` that points at a project file that doesn't exist.
+		if (entry.project && !getProjects().some((p) => p.slug === entry.project))
+			throw new Error(`Dev log entry "${entry.slug}" links to unknown project "${entry.project}"`);
 	}
 	return devlogCache;
 }

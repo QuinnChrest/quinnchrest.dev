@@ -17,7 +17,7 @@ title: "My new entry"
 date: 2025-08-01
 category: feature         # feature | bug-fix | learning | update
 tags: ["SvelteKit", "GitHub Pages"]
-project: developer-site   # optional: the project file this entry is about
+project: hey-leo          # optional: the project file this entry is about
 ---
 Entry text goes here, in Markdown. Line breaks are preserved.
 The first paragraph is used as the summary on cards and in search results.
@@ -52,9 +52,9 @@ Content is loaded at build time by `src/lib/server/content.ts`.
 
 ## 🚀 Deployment
 
-`.github/workflows/deploy.yml` builds the site with `@sveltejs/adapter-static` and deploys it to GitHub Pages on every push to `main`. It can also be run manually from the Actions tab.
+`.github/workflows/deploy.yml` builds the site with `@sveltejs/adapter-static` and deploys it to GitHub Pages on every push to `main` and once a day (to refresh the GitHub stats). It can also be run manually from the Actions tab.
 
-Every route is prerendered, including the RSS feed (`/api/feed.xml`) and `/sitemap.xml`. GitHub stats are fetched during the build (with the workflow's `GITHUB_TOKEN`) and refreshed in the browser. `static/CNAME` sets the custom domain.
+Every route is prerendered, including the RSS feed (`/api/feed.xml`), `/sitemap.xml`, the search index (`/search.json`) and a share image for each dev log entry (`/og/<slug>.png`). GitHub stats are fetched during the build (with the workflow's `GITHUB_TOKEN`) and refreshed in the browser. `static/CNAME` sets the custom domain.
 
 One-time repo setup: **Settings → Pages → Source: GitHub Actions**, then set the custom domain to `quinnchrest.dev` and enable **Enforce HTTPS**.
 

@@ -17,7 +17,7 @@
 	});
 </script>
 
-<Seo title="{e.title} | Quinn Chrest" description={e.excerpt} type="article" published={e.date} image={data.project?.image} />
+<Seo title="{e.title} | Quinn Chrest" description={e.excerpt} type="article" published={e.date} image="/og/{e.slug}.png" />
 <svelte:head>
 	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`}
 </svelte:head>

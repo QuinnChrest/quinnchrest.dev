@@ -2,7 +2,6 @@
 id: 5
 title: "PostgreSQL Backups"
 date: 2025-07-17
-project: developer-site
 category: feature
 tags: ["PostgreSQL","CronJob","Bash Script"]
 ---

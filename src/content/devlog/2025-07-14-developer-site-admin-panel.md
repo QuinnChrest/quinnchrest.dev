@@ -2,7 +2,6 @@
 id: 4
 title: "Developer Site - Admin Panel"
 date: 2025-07-14
-project: developer-site
 category: feature
 tags: ["Sveltkit","Cursor Agent"]
 ---

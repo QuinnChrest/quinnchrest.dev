@@ -7,31 +7,12 @@
 	let { data } = $props();
 
 	let status = $state<ProjectStatus | 'all'>('all');
-	let tech = $state<string | null>(null);
-
-	// Tech names are normalized for filtering so "Typescript" and "TypeScript" match.
-	const key = (t: string) => t.toLowerCase().replace(/[^a-z0-9]/g, '');
-
-	const techs = $derived.by(() => {
-		const seen = new Map<string, { name: string; count: number }>();
-		for (const p of data.projects)
-			for (const t of p.technologies) {
-				const k = key(t);
-				const cur = seen.get(k);
-				seen.set(k, { name: cur?.name ?? t, count: (cur?.count ?? 0) + 1 });
-			}
-		return [...seen.entries()].filter(([, v]) => v.count > 1).sort((a, b) => b[1].count - a[1].count);
-	});
 
 	const statuses = $derived(
 		(['in-progress', 'completed', 'planned'] as const).filter((s) => data.projects.some((p) => p.status === s))
 	);
 
-	const shown = $derived(
-		data.projects.filter(
-			(p) => (status === 'all' || p.status === status) && (!tech || p.technologies.some((t) => key(t) === tech))
-		)
-	);
+	const shown = $derived(data.projects.filter((p) => status === 'all' || p.status === status));
 </script>
 
 <Seo
@@ -47,13 +28,9 @@
 	</header>
 
 	<div class="filters" role="group" aria-label="Filter projects">
-		<button aria-pressed={status === 'all' && !tech} onclick={() => ((status = 'all'), (tech = null))}>All</button>
+		<button aria-pressed={status === 'all'} onclick={() => (status = 'all')}>All</button>
 		{#each statuses as s}
 			<button aria-pressed={status === s} onclick={() => (status = status === s ? 'all' : s)}>{statusLabel[s]}</button>
-		{/each}
-		<span class="sep" aria-hidden="true"></span>
-		{#each techs as [k, t]}
-			<button aria-pressed={tech === k} onclick={() => (tech = tech === k ? null : k)}>{t.name}</button>
 		{/each}
 	</div>
 
@@ -110,12 +87,6 @@
 		background: var(--ink);
 		color: var(--bg);
 		border-color: var(--ink);
-	}
-	.sep {
-		width: 1px;
-		height: 20px;
-		background: var(--line);
-		margin: 0 4px;
 	}
 	.count {
 		margin: 18px 0;

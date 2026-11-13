@@ -23,11 +23,14 @@
 </ol>
 
 <style>
+	/* --pad is the gap between the line and the text. The dot is centered on
+	   the 3px line: line center is 1.5px in, the dot is 15px wide. */
 	.trail {
+		--pad: 40px;
 		position: relative;
 		list-style: none;
 		margin: 10px 0 0 10px;
-		padding: 0 0 0 40px;
+		padding: 0 0 0 var(--pad);
 	}
 	.trail::before {
 		content: '';
@@ -43,7 +46,7 @@
 	li::before {
 		content: '';
 		position: absolute;
-		left: -49px;
+		left: calc(1.5px - 7.5px - var(--pad));
 		top: 4px;
 		width: 15px;
 		height: 15px;
@@ -79,10 +82,7 @@
 			gap: 4px;
 		}
 		.trail {
-			padding-left: 32px;
-		}
-		li::before {
-			left: -41px;
+			--pad: 32px;
 		}
 	}
 </style>

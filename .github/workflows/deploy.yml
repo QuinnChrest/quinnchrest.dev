@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Rebuild every morning so the GitHub stats baked into the pages stay fresh.
+  # 11:17 UTC is about 6 AM in Minnesota. Scheduled runs only use the default branch.
+  schedule:
+    - cron: '17 11 * * *'
   workflow_dispatch:
 
 permissions:
