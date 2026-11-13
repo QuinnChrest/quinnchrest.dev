@@ -10,18 +10,33 @@
 
 	const home = $derived(page.url.pathname === '/');
 
-	// Smooth page changes: crossfade between pages, and a project card's image
-	// glides into place on the project page (matching view-transition-names in
-	// Trailhead.svelte and projects/[slug]). Browsers without the View
-	// Transitions API just switch pages instantly.
+	// Elements with data-morph="<name>" glide between pages when the same name
+	// is on both (project images: Trailhead.svelte and projects/[slug]). Only
+	// ones actually on screen get a name; an off-screen one (say, a card further
+	// down a page that opens at the top) would make the image fly to or from
+	// somewhere you can't see, so it just crossfades with the page instead.
+	function nameVisibleMorphs() {
+		for (const el of document.querySelectorAll<HTMLElement>('[data-morph]')) {
+			const r = el.getBoundingClientRect();
+			const onScreen = r.bottom > 0 && r.top < innerHeight && r.right > 0 && r.left < innerWidth;
+			el.style.viewTransitionName = onScreen ? el.dataset.morph! : 'none';
+		}
+	}
+
+	// Smooth page changes: a quick crossfade, with on-screen project images
+	// gliding into place. Browsers without the View Transitions API just switch
+	// pages instantly.
 	onNavigate((navigation) => {
 		if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 		// Same-page changes (like #stats) don't need a transition.
 		if (navigation.from?.url.pathname === navigation.to?.url.pathname) return;
+		nameVisibleMorphs(); // the page we're leaving, as it is now
 		return new Promise((resolve) => {
 			document.startViewTransition(async () => {
 				resolve();
+				// Resolves after the new page renders and its scroll is restored.
 				await navigation.complete;
+				nameVisibleMorphs(); // the page we're arriving at
 			});
 		});
 	});

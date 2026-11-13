@@ -23,7 +23,7 @@
 			loading={eager ? 'eager' : 'lazy'}
 			width="600"
 			height="400"
-			style="view-transition-name: project-{project.slug}"
+			data-morph="project-{project.slug}"
 		/>
 		{#if project.kind}<span class="kind kind-{project.kind}">{kindLabel[project.kind]}</span>{/if}
 	</div>
