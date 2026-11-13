@@ -2,6 +2,7 @@
 id: 7
 title: "New Site: photos.quinnchrest.dev"
 date: 2026-09-27
+project: photos
 category: feature
 tags: ["React", "Vite", "Bun", "Claude Code"]
 ---

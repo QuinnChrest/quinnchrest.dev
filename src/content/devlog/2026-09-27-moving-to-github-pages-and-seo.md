@@ -2,6 +2,7 @@
 id: 6
 title: "Moving to GitHub Pages + SEO Cleanup"
 date: 2026-09-27
+project: developer-site
 category: update
 tags: ["SvelteKit", "GitHub Pages", "SEO", "Claude Code"]
 ---

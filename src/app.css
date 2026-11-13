@@ -1,51 +1,238 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Topo theme. Colors are tokens so light and dark stay in sync.
+   Dark mode follows the system unless the visitor picks one with the toggle
+   (stored as data-theme on <html>, set before paint in app.html). */
+:root {
+	--bg: #f1ecdf;
+	--bg-raised: #faf7ef;
+	--ink: #1f2b22;
+	--muted: #5b675c;
+	--line: #d6ceb8;
+	--contour: #c4b999;
+	--trail: #d24b20;
+	--moss: #3d5a3f;
+	--focus: #2563eb;
+	--shadow: 0 12px 30px rgba(40, 30, 10, 0.08);
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+	--font-sans: 'Bricolage Grotesque', system-ui, sans-serif;
+	--font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+	--wrap: 1100px;
+	--radius: 16px;
+	color-scheme: light;
 }
 
-::-webkit-scrollbar-track {
-  background: #1e1e1e;
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) {
+		--bg: #141a15;
+		--bg-raised: #1b231c;
+		--ink: #e9e4d4;
+		--muted: #9aa392;
+		--line: #2c372d;
+		--contour: #2a352b;
+		--trail: #ff7448;
+		--moss: #9cc49a;
+		--focus: #7aa5ff;
+		--shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+		color-scheme: dark;
+	}
 }
 
-::-webkit-scrollbar-thumb {
-  background: #404040;
-  border-radius: 4px;
+:root[data-theme='dark'] {
+	--bg: #141a15;
+	--bg-raised: #1b231c;
+	--ink: #e9e4d4;
+	--muted: #9aa392;
+	--line: #2c372d;
+	--contour: #2a352b;
+	--trail: #ff7448;
+	--moss: #9cc49a;
+	--focus: #7aa5ff;
+	--shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+	color-scheme: dark;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #525252;
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
 }
 
-/* Smooth scrolling */
 html {
-  scroll-behavior: smooth;
+	scroll-behavior: smooth;
+	-webkit-text-size-adjust: 100%;
 }
 
-/* Custom animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--ink);
+	font: 17px/1.6 var(--font-sans);
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
+a {
+	color: inherit;
+	text-decoration: none;
 }
 
-/* Glass morphism effect */
-.glass {
-  background: rgba(30, 30, 30, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(64, 64, 64, 0.3);
-} 
+img {
+	max-width: 100%;
+}
+
+:focus-visible {
+	outline: 2px solid var(--focus);
+	outline-offset: 3px;
+	border-radius: 4px;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.02em;
+	line-height: 1.15;
+}
+
+.wrap {
+	width: 100%;
+	max-width: var(--wrap);
+	margin: 0 auto;
+	padding: 0 24px;
+}
+
+@media (max-width: 800px) {
+	.wrap {
+		padding: 0 16px;
+	}
+}
+
+/* Small uppercase labels: dates, coordinates, tech stacks */
+.mono {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--muted);
+}
+
+/* Diamond trail marker; .wip makes it the trail color */
+.marker {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+.marker::before {
+	content: '';
+	width: 8px;
+	height: 8px;
+	flex: none;
+	background: var(--moss);
+	transform: rotate(45deg);
+}
+.marker.wip::before {
+	background: var(--trail);
+}
+
+.section-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: end;
+	gap: 16px;
+	margin: 0 0 24px;
+	padding-top: 56px;
+}
+.section-head h2 {
+	font-size: 34px;
+	margin: 0;
+	font-weight: 800;
+}
+.section-head a:hover {
+	color: var(--trail);
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* Rendered Markdown (dev log entries and project pages) */
+.prose {
+	font-size: 18px;
+	line-height: 1.7;
+	max-width: 680px;
+}
+.prose p,
+.prose ul,
+.prose ol {
+	margin: 0 0 1.1em;
+}
+.prose ul,
+.prose ol {
+	padding-left: 1.3em;
+}
+.prose li {
+	margin: 0.3em 0;
+}
+.prose li::marker {
+	color: var(--trail);
+}
+/* Older entries use a plain line as a heading right before a list. */
+.prose p:has(+ ul),
+.prose p:has(+ ol) {
+	font-weight: 700;
+	margin: 1.6em 0 0.4em;
+}
+.prose h2,
+.prose h3 {
+	margin: 1.6em 0 0.5em;
+}
+.prose a {
+	color: var(--trail);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+.prose code {
+	font-family: var(--font-mono);
+	font-size: 0.85em;
+	background: var(--bg-raised);
+	border: 1px solid var(--line);
+	border-radius: 4px;
+	padding: 0.1em 0.35em;
+}
+.prose pre {
+	background: var(--bg-raised);
+	border: 1px solid var(--line);
+	border-radius: 10px;
+	padding: 14px 16px;
+	overflow-x: auto;
+}
+.prose pre code {
+	border: 0;
+	padding: 0;
+	background: none;
+}
+.prose blockquote {
+	margin: 0 0 1.1em;
+	padding-left: 16px;
+	border-left: 3px solid var(--line);
+	color: var(--muted);
+}
+.prose img {
+	border-radius: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition: none !important;
+		animation: none !important;
+	}
+	html {
+		scroll-behavior: auto;
+	}
+}

@@ -2,6 +2,7 @@
 id: 8
 title: "New Site: activities.quinnchrest.dev"
 date: 2026-09-28
+project: activities
 category: feature
 tags: ["React", "Vite", "MapLibre", "Strava", "Claude Code"]
 ---
