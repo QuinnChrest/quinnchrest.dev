@@ -5,7 +5,7 @@
 
 	let { seed = 1, peaks = DEFAULT_PEAKS, height = 760 }: { seed?: number; peaks?: Peak[]; height?: number } = $props();
 
-	const paths = $derived(contours(seed, peaks));
+	const paths = $derived(contours(seed, peaks, height));
 </script>
 
 <svg viewBox="0 0 1200 {height}" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="height: {height}px">

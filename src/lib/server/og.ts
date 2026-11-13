@@ -37,11 +37,12 @@ const h = (type: string, style: Record<string, unknown>, ...children: (Node | st
 });
 
 function background(seed: number): string {
-	const paths = contours(seed, [
+	const peaks = [
 		{ x: 1020, y: 120, rings: 13 },
 		{ x: 1180, y: 560, rings: 8 },
 		{ x: 80, y: 600, rings: 5 }
-	])
+	];
+	const paths = contours(seed, peaks, OG_HEIGHT)
 		.map((p) => `<path d="${p.d}" fill="none" stroke="${C.contour}" stroke-width="${p.index ? 2.4 : 1.2}"/>`)
 		.join('');
 	const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${OG_WIDTH}" height="${OG_HEIGHT}" viewBox="0 0 1200 630">${paths}</svg>`;
