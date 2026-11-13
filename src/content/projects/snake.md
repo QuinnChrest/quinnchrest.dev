@@ -2,6 +2,7 @@
 id: 36
 title: "Snake"
 status: completed
+kind: game
 featured: false
 image: "https://images.unsplash.com/photo-1585095595205-e68428a9e205?w=400&h=300&fit=crop"
 technologies: ["Javascript","PixiJS"]

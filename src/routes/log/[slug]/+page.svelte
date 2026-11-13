@@ -26,6 +26,13 @@
 	<a class="mono back" href="/log">← Dev log</a>
 
 	<article>
+		{#if e.visibility !== 'published'}
+			<p class="pending">
+				{e.visibility === 'draft'
+					? 'Draft: only visible in npm run dev. Remove `draft: true` to publish.'
+					: 'Scheduled: only visible in npm run dev until the daily deploy on its date.'}
+			</p>
+		{/if}
 		<header>
 			<p class="mono meta">
 				<time datetime={e.date.slice(0, 10)}>{formatDate(e.date)}</time>
@@ -64,6 +71,14 @@
 	.back {
 		display: inline-block;
 		margin-top: 40px;
+	}
+	.pending {
+		margin: 20px 0 0;
+		padding: 10px 14px;
+		border: 1px dashed var(--trail);
+		border-radius: 10px;
+		color: var(--trail);
+		font-size: 15px;
 	}
 	.back:hover {
 		color: var(--trail);

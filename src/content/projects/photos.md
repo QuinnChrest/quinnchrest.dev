@@ -2,6 +2,7 @@
 id: 39
 title: "Photos"
 status: completed
+kind: web
 featured: true
 image: "https://photos.quinnchrest.dev/img/colorado-camping-lumberjack-389c818c/640.jpg"
 technologies: ["React","TypeScript","Vite","Bun","Sharp"]

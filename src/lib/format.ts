@@ -1,4 +1,4 @@
-import type { DevLogCategory, ProjectStatus } from '$lib/types';
+import type { DevLogCategory, ProjectKind, ProjectStatus } from '$lib/types';
 
 export const SITE_URL = 'https://quinnchrest.dev';
 
@@ -17,6 +17,13 @@ export const categoryLabel: Record<DevLogCategory, string> = {
 	'bug-fix': 'Bug fix',
 	learning: 'Learning',
 	update: 'Update'
+};
+
+export const kindLabel: Record<ProjectKind, string> = {
+	ai: 'AI',
+	game: 'Game',
+	web: 'Web',
+	tool: 'Tool'
 };
 
 export const statusLabel: Record<ProjectStatus, string> = {

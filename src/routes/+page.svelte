@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Seo from '$lib/components/Seo.svelte';
+	import PhotoStrip from '$lib/components/PhotoStrip.svelte';
 	import Stats from '$lib/components/Stats.svelte';
 	import Trail from '$lib/components/Trail.svelte';
 	import Trailhead from '$lib/components/Trailhead.svelte';
@@ -81,6 +82,16 @@
 			</ul>
 		{/if}
 	</section>
+
+	{#if data.photos?.length}
+		<section aria-labelledby="photos">
+			<div class="section-head">
+				<h2 id="photos">From the trail</h2>
+				<a class="mono" href="https://photos.quinnchrest.dev" target="_blank" rel="noopener">All photos ↗</a>
+			</div>
+			<PhotoStrip photos={data.photos} />
+		</section>
+	{/if}
 
 	<section aria-labelledby="log">
 		<div class="section-head">

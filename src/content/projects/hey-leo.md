@@ -2,6 +2,7 @@
 id: 41
 title: "Hey Leo"
 status: in-progress
+kind: ai
 featured: true
 image: "/projects/hey-leo.webp"
 technologies: ["Python","Claude API"]

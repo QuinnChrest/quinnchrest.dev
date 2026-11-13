@@ -14,7 +14,10 @@
 					{categoryLabel[entry.category]} · {entry.readingMinutes} min
 				</span>
 				<div>
-					<h3>{entry.title}</h3>
+					<h3>
+						{entry.title}
+						{#if entry.visibility !== 'published'}<span class="pending">{entry.visibility}</span>{/if}
+					</h3>
 					<p>{entry.excerpt}</p>
 				</div>
 			</a>
@@ -75,6 +78,18 @@
 		margin: 0;
 		color: var(--muted);
 		max-width: 620px;
+	}
+	/* Only seen in `npm run dev`: drafts and future posts aren't built. */
+	.pending {
+		font-family: var(--font-mono);
+		font-size: 11px;
+		text-transform: uppercase;
+		vertical-align: middle;
+		border: 1px dashed var(--trail);
+		color: var(--trail);
+		border-radius: 4px;
+		padding: 1px 6px;
+		margin-left: 6px;
 	}
 	@media (max-width: 800px) {
 		.stop {

@@ -1,13 +1,16 @@
 <script lang="ts">
 	import type { Project } from '$lib/types';
-	import { statusLabel } from '$lib/format';
+	import { kindLabel, statusLabel } from '$lib/format';
 
 	let { project, eager = false }: { project: Project; eager?: boolean } = $props();
 	const wip = $derived(project.status !== 'completed');
 </script>
 
 <a class="card" href="/projects/{project.slug}">
-	<img src={project.image} alt="" loading={eager ? 'eager' : 'lazy'} width="600" height="400" />
+	<div class="media">
+		<img src={project.image} alt="" loading={eager ? 'eager' : 'lazy'} width="600" height="400" />
+		{#if project.kind}<span class="kind kind-{project.kind}">{kindLabel[project.kind]}</span>{/if}
+	</div>
 	<div>
 		<span class="mono marker" class:wip>
 			{wip ? statusLabel[project.status] + ' · ' : ''}{project.technologies.slice(0, 2).join(' · ')}
@@ -44,8 +47,48 @@
 		display: block;
 		background: var(--line);
 	}
-	div {
+	.card > div:not(.media) {
 		padding: 16px 18px 20px;
+	}
+	.media {
+		position: relative;
+	}
+	.kind {
+		position: absolute;
+		left: 12px;
+		top: 12px;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		font-weight: 500;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		padding: 3px 9px;
+		border-radius: 6px;
+		background: var(--bg-raised);
+		color: var(--ink);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+	}
+	.kind::before {
+		content: '';
+		display: inline-block;
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		margin-right: 6px;
+		vertical-align: 1px;
+		background: var(--kind);
+	}
+	.kind-ai {
+		--kind: #c4a5ff;
+	}
+	.kind-game {
+		--kind: #7ee2a2;
+	}
+	.kind-web {
+		--kind: #7aa5ff;
+	}
+	.kind-tool {
+		--kind: #ffb27a;
 	}
 	h3 {
 		margin: 8px 0 6px;

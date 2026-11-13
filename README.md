@@ -18,10 +18,13 @@ date: 2025-08-01
 category: feature         # feature | bug-fix | learning | update
 tags: ["SvelteKit", "GitHub Pages"]
 project: hey-leo          # optional: the project file this entry is about
+draft: true               # optional: keep it off the site while writing
 ---
 Entry text goes here, in Markdown. Line breaks are preserved.
 The first paragraph is used as the summary on cards and in search results.
 ```
+
+Drafts and posts dated in the future aren't built (no page, RSS item or search result) but do show up, labeled, in `npm run dev`. A future-dated post goes live with the daily deploy on its date, so you can schedule posts by committing them early.
 
 ### Project: `src/content/projects/<slug>.md`
 
@@ -32,6 +35,7 @@ Published at `/projects/<slug>`.
 id: 39                    # higher ids are listed first (after featured projects)
 title: "My Project"
 status: completed         # completed | in-progress | planned
+kind: game                # optional: ai | game | web | tool (label and filter)
 featured: false
 image: "https://example.com/thumbnail.png"
 technologies: ["Svelte", "TypeScript"]

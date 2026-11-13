@@ -1,6 +1,7 @@
+import { dev } from '$app/environment';
 import matter from 'gray-matter';
 import { Marked } from 'marked';
-import type { DevLogEntry, Project } from '$lib/types';
+import { PROJECT_KINDS, type DevLogEntry, type Project, type ProjectKind } from '$lib/types';
 
 // Content lives in src/content as Markdown files with YAML frontmatter.
 // Files are bundled at build time, so adding an entry is just adding a file.
@@ -69,6 +70,13 @@ function excerptOf(md: string, max = 200): string {
 }
 
 let projectsCache: Project[] | undefined;
+
+function checkKind(kind: unknown, slug: string): ProjectKind | undefined {
+	if (kind === undefined) return undefined;
+	if (!PROJECT_KINDS.includes(kind as ProjectKind))
+		throw new Error(`Project "${slug}" has kind "${kind}"; use one of: ${PROJECT_KINDS.join(', ')}`);
+	return kind as ProjectKind;
+}
 let devlogCache: DevLogEntry[] | undefined;
 
 export function getProjects(): Project[] {
@@ -87,6 +95,7 @@ export function getProjects(): Project[] {
 				githubUrl: data.githubUrl || undefined,
 				liveUrl: data.liveUrl || undefined,
 				status: data.status ?? 'planned',
+				kind: checkKind(data.kind, slug),
 				featured: !!data.featured
 			} satisfies Project;
 		})
@@ -94,8 +103,27 @@ export function getProjects(): Project[] {
 	return projectsCache;
 }
 
+/**
+ * Drafts (`draft: true`) and posts dated in the future are left out of the
+ * built site: no page, no RSS item, no search result. The daily scheduled
+ * deploy publishes a future-dated post on the morning of its date. In
+ * `npm run dev` they're included and labeled, so they can be previewed.
+ */
+function visibility(draft: boolean, date: string): DevLogEntry['visibility'] {
+	if (draft) return 'draft';
+	return date > new Date().toISOString() ? 'scheduled' : 'published';
+}
+
 export function getDevLog(): DevLogEntry[] {
-	devlogCache ??= Object.entries(devlogFiles)
+	devlogCache ??= getAllDevLog().filter((e) => dev || e.visibility === 'published');
+	return devlogCache;
+}
+
+let allDevlogCache: DevLogEntry[] | undefined;
+
+function getAllDevLog(): DevLogEntry[] {
+	if (allDevlogCache) return allDevlogCache;
+	allDevlogCache = Object.entries(devlogFiles)
 		.map(([path, raw]) => {
 			const { data, content } = matter(raw);
 			const body = content.trim();
@@ -111,20 +139,25 @@ export function getDevLog(): DevLogEntry[] {
 				readingMinutes: Math.max(1, Math.round(words / 220)),
 				tags: data.tags ?? [],
 				category: data.category ?? 'update',
-				project: data.project || undefined
+				project: data.project || undefined,
+				visibility: visibility(!!data.draft, new Date(data.date).toISOString())
 			} satisfies DevLogEntry;
 		})
 		.sort((a, b) => b.date.localeCompare(a.date) || Number(b.id) - Number(a.id));
 
+	// Checked across drafts too, so a draft can't collide when it's published.
 	const slugs = new Set<string>();
-	for (const entry of devlogCache) {
+	const ids = new Set<string>();
+	for (const entry of allDevlogCache) {
 		if (slugs.has(entry.slug)) throw new Error(`Two dev log entries share the slug "${entry.slug}"`);
+		if (ids.has(entry.id)) throw new Error(`Two dev log entries share the id ${entry.id} (it's the RSS guid)`);
 		slugs.add(entry.slug);
+		ids.add(entry.id);
 		// Catch a `project:` that points at a project file that doesn't exist.
 		if (entry.project && !getProjects().some((p) => p.slug === entry.project))
 			throw new Error(`Dev log entry "${entry.slug}" links to unknown project "${entry.project}"`);
 	}
-	return devlogCache;
+	return allDevlogCache;
 }
 
 export function getProject(slug: string): Project | undefined {

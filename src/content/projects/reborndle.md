@@ -2,6 +2,7 @@
 id: 38
 title: "Reborndle"
 status: completed
+kind: game
 featured: false
 image: "https://www.rebornevo.com/images/pr/gamelogo.png"
 technologies: ["Svelte","Typescript"]

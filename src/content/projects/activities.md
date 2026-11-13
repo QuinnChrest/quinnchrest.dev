@@ -2,6 +2,7 @@
 id: 40
 title: "Quinn in Motion"
 status: completed
+kind: web
 featured: true
 image: "/projects/activities.jpg"
 technologies: ["React","TypeScript","Vite","MapLibre"]

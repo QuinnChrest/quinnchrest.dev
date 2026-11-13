@@ -1,4 +1,8 @@
 export type ProjectStatus = 'completed' | 'in-progress' | 'planned';
+
+/** Hand-picked project type, used for labels and the projects page filter. */
+export const PROJECT_KINDS = ['ai', 'game', 'web', 'tool'] as const;
+export type ProjectKind = (typeof PROJECT_KINDS)[number];
 export type DevLogCategory = 'feature' | 'bug-fix' | 'learning' | 'update';
 
 export interface Project {
@@ -15,6 +19,7 @@ export interface Project {
 	githubUrl?: string;
 	liveUrl?: string;
 	status: ProjectStatus;
+	kind?: ProjectKind;
 	featured: boolean;
 }
 
@@ -35,6 +40,8 @@ export interface DevLogEntry {
 	category: DevLogCategory;
 	/** Slug of the project this entry is about, if any */
 	project?: string;
+	/** Only 'published' entries are in the built site; the others show up in `npm run dev`. */
+	visibility: 'published' | 'draft' | 'scheduled';
 }
 
 export interface GitHubStats {
@@ -53,4 +60,17 @@ export interface SearchDoc {
 	meta: string;
 	tags: string[];
 	text: string;
+}
+
+export interface Photo {
+	id: string;
+	/** Opens this photo on photos.quinnchrest.dev */
+	url: string;
+	avif: string;
+	webp: string;
+	jpg: string;
+	width: number;
+	height: number;
+	alt: string;
+	takenAt?: string;
 }

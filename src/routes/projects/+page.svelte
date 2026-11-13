@@ -1,18 +1,23 @@
 <script lang="ts">
 	import Seo from '$lib/components/Seo.svelte';
 	import Trailhead from '$lib/components/Trailhead.svelte';
-	import { statusLabel } from '$lib/format';
-	import type { ProjectStatus } from '$lib/types';
+	import { kindLabel, statusLabel } from '$lib/format';
+	import { PROJECT_KINDS, type ProjectKind, type ProjectStatus } from '$lib/types';
 
 	let { data } = $props();
 
 	let status = $state<ProjectStatus | 'all'>('all');
+	let kind = $state<ProjectKind | null>(null);
+
+	const kinds = $derived(PROJECT_KINDS.filter((k) => data.projects.some((p) => p.kind === k)));
 
 	const statuses = $derived(
 		(['in-progress', 'completed', 'planned'] as const).filter((s) => data.projects.some((p) => p.status === s))
 	);
 
-	const shown = $derived(data.projects.filter((p) => status === 'all' || p.status === status));
+	const shown = $derived(
+		data.projects.filter((p) => (status === 'all' || p.status === status) && (!kind || p.kind === kind))
+	);
 </script>
 
 <Seo
@@ -28,9 +33,13 @@
 	</header>
 
 	<div class="filters" role="group" aria-label="Filter projects">
-		<button aria-pressed={status === 'all'} onclick={() => (status = 'all')}>All</button>
+		<button aria-pressed={status === 'all' && !kind} onclick={() => ((status = 'all'), (kind = null))}>All</button>
 		{#each statuses as s}
 			<button aria-pressed={status === s} onclick={() => (status = status === s ? 'all' : s)}>{statusLabel[s]}</button>
+		{/each}
+		<span class="sep" aria-hidden="true"></span>
+		{#each kinds as k}
+			<button aria-pressed={kind === k} onclick={() => (kind = kind === k ? null : k)}>{kindLabel[k]}</button>
 		{/each}
 	</div>
 
@@ -87,6 +96,12 @@
 		background: var(--ink);
 		color: var(--bg);
 		border-color: var(--ink);
+	}
+	.sep {
+		width: 1px;
+		height: 20px;
+		background: var(--line);
+		margin: 0 4px;
 	}
 	.count {
 		margin: 18px 0;

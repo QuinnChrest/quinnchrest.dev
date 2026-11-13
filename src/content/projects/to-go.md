@@ -2,6 +2,7 @@
 id: 34
 title: "To Go"
 status: completed
+kind: tool
 featured: false
 image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=400&h=300&fit=crop"
 technologies: ["GO","SQLite","Bubble Tea"]
