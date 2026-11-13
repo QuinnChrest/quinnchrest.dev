@@ -1,5 +1,4 @@
 ---
-id: 5
 title: "PostgreSQL Backups"
 date: 2025-07-17
 category: feature

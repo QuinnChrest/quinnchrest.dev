@@ -3,7 +3,8 @@
 	<nav class="mono" aria-label="Elsewhere">
 		<a href="https://github.com/QuinnChrest" target="_blank" rel="noopener me">GitHub</a>
 		<a href="https://www.linkedin.com/in/quinn-chrest-533581140/" target="_blank" rel="noopener me">LinkedIn</a>
-		<a href="/api/feed.xml">RSS</a>
+		<a href="https://quinnchrest.com" target="_blank" rel="noopener me">Blog</a>
+		<a href="/changelog">Changelog</a>
 	</nav>
 </footer>
 

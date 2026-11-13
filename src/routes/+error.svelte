@@ -19,7 +19,7 @@
 	<div class="links">
 		<a href="/">Back to the trailhead</a>
 		<a href="/projects">Projects</a>
-		<a href="/log">Dev log</a>
+		<a href="/notes">Project notes</a>
 	</div>
 </div>
 

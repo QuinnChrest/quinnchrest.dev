@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { getEntriesForProject, getProject, getProjects } from '$lib/server/content';
+import { getNotesForProject, getProject, getProjects } from '$lib/server/content';
 import type { EntryGenerator, PageServerLoad } from './$types';
 
 export const entries: EntryGenerator = () => getProjects().map((p) => ({ slug: p.slug }));
@@ -7,5 +7,5 @@ export const entries: EntryGenerator = () => getProjects().map((p) => ({ slug: p
 export const load: PageServerLoad = ({ params }) => {
 	const project = getProject(params.slug);
 	if (!project) error(404, 'Project not found');
-	return { project, entries: getEntriesForProject(project.slug) };
+	return { project, notes: getNotesForProject(project.slug) };
 };

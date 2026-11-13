@@ -9,8 +9,8 @@
 	let {
 		initial,
 		projects,
-		entries
-	}: { initial: GitHubStats | null; projects: number; entries: number } = $props();
+		notes
+	}: { initial: GitHubStats | null; projects: number; notes: number } = $props();
 
 	let stats = $state<GitHubStats | null>(null);
 	const shown = $derived(stats ?? initial);
@@ -53,7 +53,7 @@
 	<div><span class="mono">Public repos</span><b>{shown?.publicRepos ?? '—'}</b></div>
 	<div><span class="mono">GitHub stars</span><b>{shown?.stars ?? '—'}</b></div>
 	<div><span class="mono">Projects</span><b>{projects}</b></div>
-	<div><span class="mono">Log entries</span><b>{entries}</b></div>
+	<div><span class="mono">Project notes</span><b>{notes}</b></div>
 	<svg viewBox="0 0 400 70" preserveAspectRatio="none" aria-hidden="true">
 		<path d="{profile} L400 70 L0 70Z" class="fill" />
 		<path d={profile} class="line" />

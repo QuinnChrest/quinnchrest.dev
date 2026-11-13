@@ -1,5 +1,4 @@
 ---
-id: 4
 title: "Developer Site - Admin Panel"
 date: 2025-07-14
 category: feature

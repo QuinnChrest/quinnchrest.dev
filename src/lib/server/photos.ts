@@ -37,13 +37,16 @@ async function load(fetchFn: typeof fetch, count: number): Promise<Photo[] | nul
 				.slice(0, count)
 				.map(({ p }) => {
 					const w = p.widths.includes(640) ? 640 : Math.min(...p.widths);
+					const big = p.widths.includes(1280) ? 1280 : Math.max(...p.widths);
 					const base = `${PHOTOS_URL}/img/${p.id}/${w}`;
+					const bigBase = `${PHOTOS_URL}/img/${p.id}/${big}`;
 					return {
 						id: p.id,
 						url: `${PHOTOS_URL}/#/p/${encodeURIComponent(p.id)}`,
 						avif: `${base}.avif`,
 						webp: `${base}.webp`,
 						jpg: `${base}.jpg`,
+						large: { avif: `${bigBase}.avif`, webp: `${bigBase}.webp`, jpg: `${bigBase}.jpg` },
 						width: p.width,
 						height: p.height,
 						alt: p.title || p.caption || 'A photo by Quinn Chrest',

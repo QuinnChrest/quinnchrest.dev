@@ -1,24 +1,20 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { getDevLog, getEntriesForProject, getProjects } from '$lib/server/content';
+import { getAllPublishedNotes, getChangelog, getNotes, getNotesForProject, getProjects } from '$lib/server/content';
 import { SITE_URL } from '$lib/format';
 
 export const prerender = true;
 
 export const GET: RequestHandler = () => {
-	const entries = getDevLog();
 	// lastmod values come from content dates, not the build time, so crawlers
 	// only see a change when content actually changes.
-	const newest = (entries[0]?.date ?? new Date().toISOString()).slice(0, 10);
-
+	const day = (iso?: string) => iso?.slice(0, 10);
 	const urls: { loc: string; lastmod?: string }[] = [
-		{ loc: '/', lastmod: newest },
-		{ loc: '/projects' },
-		{ loc: '/log', lastmod: newest },
-		...getProjects().map((p) => ({
-			loc: `/projects/${p.slug}`,
-			lastmod: getEntriesForProject(p.slug)[0]?.date.slice(0, 10)
-		})),
-		...entries.map((e) => ({ loc: `/log/${e.slug}`, lastmod: e.date.slice(0, 10) }))
+		{ loc: '/', lastmod: day(getNotes()[0]?.date) },
+		{ loc: '/projects', lastmod: day(getNotes()[0]?.date) },
+		{ loc: '/notes', lastmod: day(getNotes()[0]?.date) },
+		{ loc: '/changelog', lastmod: day(getChangelog()[0]?.date) },
+		...getProjects().map((p) => ({ loc: `/projects/${p.slug}`, lastmod: day(getNotesForProject(p.slug)[0]?.date) })),
+		...getAllPublishedNotes().map((n) => ({ loc: n.url, lastmod: day(n.date) }))
 	];
 
 	const body = urls

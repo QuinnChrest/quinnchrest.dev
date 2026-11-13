@@ -1,8 +1,17 @@
 <script lang="ts">
 	import type { Project } from '$lib/types';
-	import { kindLabel, statusLabel } from '$lib/format';
+	import { formatDate, kindLabel, statusLabel } from '$lib/format';
 
-	let { project, eager = false }: { project: Project; eager?: boolean } = $props();
+	let {
+		project,
+		eager = false,
+		latest
+	}: {
+		project: Project;
+		eager?: boolean;
+		/** The project's newest note, if it has any */
+		latest?: { title: string; date: string; count: number };
+	} = $props();
 	const wip = $derived(project.status !== 'completed');
 </script>
 
@@ -17,6 +26,12 @@
 		</span>
 		<h3>{project.title}</h3>
 		<p>{project.description}</p>
+		{#if latest}
+			<span class="latest">
+				<span class="mono">Latest note · {formatDate(latest.date, 'short')}{latest.count > 1 ? ` · ${latest.count} notes` : ''}</span>
+				{latest.title}
+			</span>
+		{/if}
 	</div>
 </a>
 
@@ -49,6 +64,27 @@
 	}
 	.card > div:not(.media) {
 		padding: 16px 18px 20px;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+	.latest {
+		display: block;
+		margin-top: auto;
+		padding-top: 14px;
+		border-top: 1px dashed var(--line);
+		font-size: 15px;
+		font-weight: 600;
+		line-height: 1.3;
+	}
+	.latest .mono {
+		display: block;
+		font-weight: 400;
+		font-size: 11px;
+		margin-bottom: 2px;
+	}
+	.card > div:not(.media) > p {
+		margin-bottom: 14px;
 	}
 	.media {
 		position: relative;

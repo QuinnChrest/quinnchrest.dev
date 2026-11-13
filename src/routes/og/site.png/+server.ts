@@ -3,7 +3,7 @@ import type { RequestHandler } from './$types';
 
 export const prerender = true;
 
-// Share image for pages without their own (home, project list, dev log list).
+// Share image for pages without their own (home, project list, notes list).
 export const GET: RequestHandler = async () => {
 	const png = await renderOgImage({
 		kicker: 'Software developer · Chanhassen, MN',

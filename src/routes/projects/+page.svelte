@@ -29,7 +29,10 @@
 	<header class="head">
 		<span class="mono">Trail map</span>
 		<h1>Projects</h1>
-		<p>Everything I've built on evenings and weekends, newest first. Pick one for the details and any dev log entries about it.</p>
+		<p>
+			Everything I've built on evenings and weekends. Pick one for the details and its notes, or read
+			<a href="/notes">every project note</a> in order.
+		</p>
 	</header>
 
 	<div class="filters" role="group" aria-label="Filter projects">
@@ -48,10 +51,7 @@
 	<div class="grid">
 		{#each shown as project, i (project.slug)}
 			<div class="cell">
-				<Trailhead {project} eager={i < 3} />
-				{#if data.entryCounts[project.slug]}
-					<span class="mono tag">{data.entryCounts[project.slug]} log {data.entryCounts[project.slug] === 1 ? 'entry' : 'entries'}</span>
-				{/if}
+				<Trailhead {project} eager={i < 3} latest={data.latest[project.slug]} />
 			</div>
 		{/each}
 	</div>
@@ -66,6 +66,11 @@
 		font-size: clamp(40px, 6vw, 64px);
 		font-weight: 800;
 		margin: 10px 0 12px;
+	}
+	.head a {
+		color: var(--trail);
+		text-decoration: underline;
+		text-underline-offset: 3px;
 	}
 	.head p {
 		color: var(--muted);
@@ -118,17 +123,6 @@
 	}
 	.cell > :global(.card) {
 		flex: 1;
-	}
-	.tag {
-		position: absolute;
-		top: 12px;
-		right: 12px;
-		background: var(--bg-raised);
-		color: var(--ink);
-		padding: 3px 8px;
-		border-radius: 6px;
-		font-size: 11px;
-		pointer-events: none;
 	}
 	@media (max-width: 900px) {
 		.grid {

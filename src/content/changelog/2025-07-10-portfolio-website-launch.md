@@ -1,5 +1,4 @@
 ---
-id: 1
 title: "Portfolio Website Launch"
 date: 2025-07-10
 category: feature

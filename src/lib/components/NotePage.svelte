@@ -1,70 +1,93 @@
 <script lang="ts">
 	import Seo from '$lib/components/Seo.svelte';
 	import { SITE_URL, categoryLabel, formatDate } from '$lib/format';
+	import type { Note } from '$lib/types';
 
-	let { data } = $props();
-	const e = $derived(data.entry);
+	type Link = { url: string; title: string } | null;
+
+	let {
+		note,
+		project,
+		back,
+		newer,
+		older
+	}: {
+		note: Note;
+		/** The project this note is about; null for changelog notes */
+		project: { slug: string; title: string; image: string } | null;
+		back: { href: string; label: string };
+		newer: Link;
+		older: Link;
+	} = $props();
 
 	const jsonLd = $derived({
 		'@context': 'https://schema.org',
 		'@type': 'BlogPosting',
-		headline: e.title,
-		datePublished: e.date,
-		description: e.excerpt,
-		url: `${SITE_URL}/log/${e.slug}`,
-		keywords: e.tags.join(', '),
+		headline: note.title,
+		datePublished: note.date,
+		description: note.excerpt,
+		url: SITE_URL + note.url,
+		keywords: note.tags.join(', '),
 		author: { '@id': `${SITE_URL}/#person` }
 	});
 </script>
 
-<Seo title="{e.title} | Quinn Chrest" description={e.excerpt} type="article" published={e.date} image="/og/{e.slug}.png" />
+<Seo
+	title="{note.title} | {project ? project.title : 'Changelog'} | Quinn Chrest"
+	description={note.excerpt}
+	type="article"
+	published={note.date}
+	image={note.ogImage}
+/>
 <svelte:head>
 	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`}
 </svelte:head>
 
 <div class="wrap">
-	<a class="mono back" href="/log">← Dev log</a>
+	<a class="mono back" href={back.href}>← {back.label}</a>
 
 	<article>
-		{#if e.visibility !== 'published'}
+		{#if note.visibility !== 'published'}
 			<p class="pending">
-				{e.visibility === 'draft'
+				{note.visibility === 'draft'
 					? 'Draft: only visible in npm run dev. Remove `draft: true` to publish.'
 					: 'Scheduled: only visible in npm run dev until the daily deploy on its date.'}
 			</p>
 		{/if}
 		<header>
 			<p class="mono meta">
-				<time datetime={e.date.slice(0, 10)}>{formatDate(e.date)}</time>
-				<span>{categoryLabel[e.category]}</span>
-				<span>{e.readingMinutes} min read</span>
+				<time datetime={note.date.slice(0, 10)}>{formatDate(note.date)}</time>
+				<span>{categoryLabel[note.category]}</span>
+				<span>{note.readingMinutes} min read</span>
 			</p>
-			<h1>{e.title}</h1>
-			{#if data.project}
-				<a class="project" href="/projects/{data.project.slug}">
-					<img src={data.project.image} alt="" width="40" height="40" />
-					<span><span class="mono">Project</span><br />{data.project.title}</span>
+			<h1>{note.title}</h1>
+			{#if project}
+				<a class="project" href="/projects/{project.slug}">
+					<img src={project.image} alt="" width="40" height="40" />
+					<span><span class="mono">Project</span><br />{project.title}</span>
 				</a>
 			{/if}
 		</header>
 
-		<div class="prose">{@html e.html}</div>
+		<div class="prose">{@html note.html}</div>
 
-		{#if e.tags.length}
+		{#if note.tags.length}
 			<ul class="tags" aria-label="Tags">
-				{#each e.tags as t}<li>{t}</li>{/each}
+				{#each note.tags as t}<li>{t}</li>{/each}
 			</ul>
 		{/if}
 	</article>
 
-	<nav class="pager" aria-label="More entries">
-		{#if data.older}
-			<a href="/log/{data.older.slug}"><span class="mono">← Older</span>{data.older.title}</a>
-		{:else}<span></span>{/if}
-		{#if data.newer}
-			<a class="newer" href="/log/{data.newer.slug}"><span class="mono">Newer →</span>{data.newer.title}</a>
-		{/if}
-	</nav>
+	{#if older || newer}
+		<nav class="pager" aria-label="More notes">
+			{#if older}
+				<a href={older.url}><span class="mono">← Older</span>{older.title}</a>
+			{:else}<span></span>{/if}
+			{#if newer}
+				<a class="newer" href={newer.url}><span class="mono">Newer →</span>{newer.title}</a>
+			{/if}
+		</nav>
+	{/if}
 </div>
 
 <style>

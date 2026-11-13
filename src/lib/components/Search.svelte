@@ -86,7 +86,7 @@
 				bind:value={query}
 				onkeydown={onKeydown}
 				type="search"
-				placeholder="Search projects and the dev log…"
+				placeholder="Search projects and notes…"
 				aria-label="Search"
 				aria-controls="search-results"
 				aria-activedescendant={hits.length ? `hit-${active}` : undefined}
@@ -109,7 +109,7 @@
 				{#each hits as hit, i (hit.doc.url)}
 					<li id="hit-{i}" role="option" aria-selected={i === active}>
 						<a href={hit.doc.url} onclick={(e) => (e.preventDefault(), go(hit.doc.url))} onmousemove={() => (active = i)}>
-							<span class="mono">{hit.doc.type === 'project' ? 'Project' : 'Log'} · {hit.doc.meta}</span>
+							<span class="mono">{hit.doc.type === 'project' ? 'Project' : 'Note'} · {hit.doc.meta}</span>
 							<b>{hit.doc.title}</b>
 							{#if hit.snippet}
 								<span class="snip">{hit.snippet.before}<mark>{hit.snippet.match}</mark>{hit.snippet.after}</span>

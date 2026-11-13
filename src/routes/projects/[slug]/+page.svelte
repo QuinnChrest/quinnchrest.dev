@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Seo from '$lib/components/Seo.svelte';
 	import Trail from '$lib/components/Trail.svelte';
-	import { statusLabel } from '$lib/format';
+	import { noteToTrail, statusLabel } from '$lib/format';
 
 	let { data } = $props();
 	const p = $derived(data.project);
@@ -33,10 +33,13 @@
 		<img src={p.image} alt="Screenshot or artwork for {p.title}" width="800" height="600" />
 	</article>
 
-	{#if data.entries.length}
-		<section aria-labelledby="related">
-			<div class="section-head"><h2 id="related">From the trail log</h2></div>
-			<Trail entries={data.entries} />
+	{#if data.notes.length}
+		<section aria-labelledby="notes">
+			<div class="section-head">
+				<h2 id="notes">Notes</h2>
+				<a class="mono" href="/notes">All project notes →</a>
+			</div>
+			<Trail items={data.notes.map((n) => noteToTrail(n))} />
 		</section>
 	{/if}
 </div>

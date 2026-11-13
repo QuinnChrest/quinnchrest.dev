@@ -1,8 +1,6 @@
 ---
-id: 9
 title: "Meet Hey Leo"
 date: 2026-11-12
-project: hey-leo
 category: update
 tags: ["Python", "Claude API", "Claude Code"]
 ---

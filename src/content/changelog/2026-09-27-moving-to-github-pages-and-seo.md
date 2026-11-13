@@ -1,5 +1,4 @@
 ---
-id: 6
 title: "Moving to GitHub Pages + SEO Cleanup"
 date: 2026-09-27
 category: update

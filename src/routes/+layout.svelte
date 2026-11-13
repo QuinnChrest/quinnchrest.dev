@@ -13,10 +13,6 @@
 	const home = $derived(page.url.pathname === '/');
 </script>
 
-<svelte:head>
-	<link rel="alternate" type="application/rss+xml" title="Quinn Chrest - Dev Log" href="/api/feed.xml" />
-</svelte:head>
-
 <div class="page">
 	{#key seed}
 		<Topo

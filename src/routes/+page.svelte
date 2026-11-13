@@ -5,11 +5,25 @@
 	import Trail from '$lib/components/Trail.svelte';
 	import Trailhead from '$lib/components/Trailhead.svelte';
 	import { SITE_URL } from '$lib/format';
+	import type { TrailItem } from '$lib/types';
 
 	let { data } = $props();
 
 	const description =
-		'Quinn Chrest is a software developer in Chanhassen, MN. Browse side projects built with Svelte, React, Python and the Claude API, and read the dev log.';
+		'Quinn Chrest is a software developer in Chanhassen, MN. Browse side projects built with SvelteKit, React, Python and the Claude API, with notes on how each one works.';
+
+	const blogItems: TrailItem[] = $derived(
+		(data.blog ?? []).map((post) => ({
+			key: post.url,
+			href: post.url,
+			date: post.date,
+			meta: 'quinnchrest.com ↗',
+			title: post.title,
+			excerpt: post.excerpt,
+			image: post.image,
+			external: true
+		}))
+	);
 
 	const jsonLd = {
 		'@context': 'https://schema.org',
@@ -57,7 +71,7 @@
 		<div class="coords mono">
 			<span>44.86° N, 93.53° W</span>
 			<span>{data.projectCount} projects logged</span>
-			<span>{data.entryCount} log entries</span>
+			<span>{data.noteCount} project notes</span>
 		</div>
 		</div>
 	</section>
@@ -69,7 +83,7 @@
 		</div>
 		<div class="trailheads">
 			{#each data.featured as project, i (project.slug)}
-				<Trailhead {project} eager={i < 3} />
+				<Trailhead {project} eager={i < 3} latest={data.latest[project.slug]} />
 			{/each}
 		</div>
 		{#if data.others.length}
@@ -93,20 +107,22 @@
 		</section>
 	{/if}
 
-	<section aria-labelledby="log">
-		<div class="section-head">
-			<h2 id="log">Trail log</h2>
-			<a class="mono" href="/log">All {data.entryCount} entries →</a>
-		</div>
-		<Trail entries={data.latest} />
-	</section>
+	{#if blogItems.length}
+		<section aria-labelledby="log">
+			<div class="section-head">
+				<h2 id="log">Trail log</h2>
+				<a class="mono" href="https://quinnchrest.com" target="_blank" rel="noopener me">Read the blog ↗</a>
+			</div>
+			<Trail items={blogItems} />
+		</section>
+	{/if}
 
 	<section aria-labelledby="stats-title" id="stats">
 		<div class="section-head">
 			<h2 id="stats-title">Elevation profile</h2>
 			<a class="mono" href="https://github.com/QuinnChrest" target="_blank" rel="noopener">Live from GitHub ↗</a>
 		</div>
-		<Stats initial={data.github} projects={data.projectCount} entries={data.entryCount} />
+		<Stats initial={data.github} projects={data.projectCount} notes={data.noteCount} />
 	</section>
 </div>
 
