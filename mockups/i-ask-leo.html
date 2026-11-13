@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mock-up I: Ask Leo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #f7f3ee; --side: #efe8de; --ink: #23201c; --muted: #77705f; --line: #e0d7c8; --leo: #e9792d; --teal: #1f8a8a; --me: #23201c; --bubble: #ffffff; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #16140f; --side: #1d1a15; --ink: #f1ebe0; --muted: #a59d8c; --line: #302b23; --bubble: #221f19; --me: #e9792d; } }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 Outfit, system-ui, sans-serif; display: grid; grid-template-columns: 300px 1fr; }
+  a { color: inherit; }
+  aside { background: var(--side); border-right: 1px solid var(--line); padding: 24px 20px; overflow-y: auto; }
+  aside .me { display: flex; gap: 12px; align-items: center; margin-bottom: 22px; }
+  aside .me img { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; }
+  aside .me b { display: block; } aside .me span { font-size: 13px; color: var(--muted); }
+  aside h4 { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 22px 0 8px; font-weight: 500; }
+  aside a { display: block; padding: 6px 10px; border-radius: 8px; text-decoration: none; font-size: 15px; }
+  aside a:hover { background: var(--line); }
+  aside a small { color: var(--muted); }
+  .chat { display: flex; flex-direction: column; height: 100vh; }
+  .chat header { display: flex; align-items: center; gap: 12px; padding: 14px 24px; border-bottom: 1px solid var(--line); }
+  .chat header img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; object-position: top; border: 2px solid var(--leo); }
+  .chat header b { display: block; } .chat header span { font-size: 13px; color: var(--teal); }
+  .log { flex: 1; overflow-y: auto; padding: 28px 24px; display: flex; flex-direction: column; gap: 14px; max-width: 820px; width: 100%; margin: 0 auto; }
+  .msg { display: flex; gap: 10px; align-items: flex-end; max-width: 88%; animation: up .25s ease-out; }
+  @keyframes up { from { opacity: 0; transform: translateY(8px); } }
+  .msg img.av { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: top; flex: none; }
+  .msg .b { background: var(--bubble); border: 1px solid var(--line); padding: 12px 16px; border-radius: 18px 18px 18px 4px; }
+  .msg.you { align-self: flex-end; } .msg.you .b { background: var(--me); color: #fff; border: 0; border-radius: 18px 18px 4px 18px; }
+  .b p { margin: 0 0 8px; } .b p:last-child { margin: 0; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+  .card { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; text-decoration: none; background: var(--bg); }
+  .card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+  .card div { padding: 8px 10px; font-size: 14px; } .card small { color: var(--muted); display: block; }
+  .typing span { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--muted); margin: 0 2px; animation: t 1s infinite; }
+  .typing span:nth-child(2) { animation-delay: .15s; } .typing span:nth-child(3) { animation-delay: .3s; }
+  @keyframes t { 50% { transform: translateY(-4px); opacity: .4; } }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 24px 10px; max-width: 820px; width: 100%; margin: 0 auto; }
+  .chips button { font: inherit; font-size: 14px; border: 1px solid var(--leo); color: var(--leo); background: transparent; border-radius: 99px; padding: 6px 14px; cursor: pointer; }
+  .chips button:hover { background: var(--leo); color: #fff; }
+  .input { display: flex; gap: 10px; padding: 12px 24px 20px; max-width: 820px; width: 100%; margin: 0 auto; }
+  .input div { flex: 1; border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; color: var(--muted); background: var(--bubble); }
+  .note { font-size: 12px; color: var(--muted); text-align: center; padding-bottom: 12px; }
+  @media (max-width: 800px) {
+    body { grid-template-columns: 1fr; }
+    aside { display: none; }
+    .log { padding: 18px 12px; } .chips, .input { padding-left: 12px; padding-right: 12px; }
+    .chat header { padding: 10px 12px; }
+    .cards { grid-template-columns: 1fr 1fr; }
+    .msg { max-width: 96%; }
+  }
+</style>
+</head>
+<body>
+<aside>
+  <div class="me"><img src="../static/avatar.jpg" alt=""><div><b>Quinn Chrest</b><span>Software developer · Chanhassen, MN</span></div></div>
+  <h4>Projects</h4>
+  <a href="#">Hey Leo <small>· in progress</small></a>
+  <a href="#">Quinn in Motion</a><a href="#">Photos</a><a href="#">Reborndle</a><a href="#">YuYudle</a><a href="#">Snake</a><a href="#">Blackjack</a><a href="#">To Go</a>
+  <h4>Dev log</h4>
+  <a href="#">Meet Hey Leo <small>Nov 12</small></a>
+  <a href="#">New site: activities <small>Sep 28</small></a>
+  <a href="#">New site: photos <small>Sep 27</small></a>
+  <a href="#">All entries →</a>
+  <h4>Elsewhere</h4>
+  <a href="#">GitHub</a><a href="#">LinkedIn</a><a href="#">RSS</a>
+</aside>
+
+<div class="chat">
+  <header><img src="../static/projects/hey-leo.webp" alt=""><div><b>Leo</b><span>● Quinn's tour guide</span></div></header>
+  <div class="log" id="log"></div>
+  <div class="chips" id="chips"></div>
+  <div class="input"><div>Pick a question above…</div></div>
+  <div class="note">Leo's answers here are written ahead of time from the site's Markdown. No AI runs on this page.</div>
+</div>
+
+<script>
+  const LEO = '../static/projects/hey-leo.webp';
+  const photo = 'https://photos.quinnchrest.dev/img/colorado-camping-lumberjack-389c818c/640.jpg';
+  const card = (img, t, s) => `<a class="card" href="#"><img src="${img}" alt=""><div>${t}<small>${s}</small></div></a>`;
+  const answers = {
+    'Who is Quinn?': `<p>Quinn's a software developer in Chanhassen, Minnesota. On weekends Quinn builds side projects: games, small sites, a terminal app, and me.</p><p>Quinn also rides a bike a lot. About 1,170 miles of it is on a map.</p>`,
+    'Show me projects': `<p>Here are the three Quinn's proudest of right now:</p><div class="cards">${card(LEO, 'Hey Leo', 'that\'s me! in progress')}${card('../static/projects/activities.jpg', 'Quinn in Motion', 'rides on a heat map')}${card(photo, 'Photos', 'a photo gallery')}</div><p style="margin-top:10px">There are also games: Snake, Blackjack, YuYudle and Reborndle, and To Go, a to-do list for the terminal.</p>`,
+    "What's new?": `<p><b>Nov 12 · Meet Hey Leo.</b> Quinn wrote up how I work: I hear "Hey Leo", Haiku decides whether Haiku, Sonnet or Opus answers, and I read the answer out loud.</p><p><a href="#">Read the entry →</a> or <a href="#">see the whole dev log</a>.</p>`,
+    'How do you work?': `<p>The wake word and speech-to-text run on Quinn's computer, so only the text of a question goes to Claude. A small model picks the right model for the job, which keeps answers fast and cheap.</p>`,
+    'How do I reach Quinn?': `<p>GitHub is the best place: <a href="#">github.com/QuinnChrest</a>. Quinn is on <a href="#">LinkedIn</a> too, and the dev log has an <a href="#">RSS feed</a>.</p>`
+  };
+  const log = document.getElementById('log'), chips = document.getElementById('chips');
+  const add = (html, you) => { const m = document.createElement('div'); m.className = 'msg' + (you ? ' you' : ''); m.innerHTML = (you ? '' : `<img class="av" src="${LEO}" alt="">`) + `<div class="b">${html}</div>`; log.appendChild(m); log.scrollTop = log.scrollHeight; return m; };
+  const leoSays = (html, delay = 700) => { const t = add('<span class="typing"><span></span><span></span><span></span></span>'); setTimeout(() => { t.querySelector('.b').innerHTML = html; log.scrollTop = log.scrollHeight; }, delay); };
+  const renderChips = () => { chips.innerHTML = ''; Object.keys(answers).forEach(q => { const b = document.createElement('button'); b.textContent = q; b.onclick = () => { add(q, true); leoSays(answers[q]); }; chips.appendChild(b); }); };
+  leoSays(`<p>Hey! I'm Leo, Quinn's voice assistant. Usually I live on Quinn's computer, but today I'm showing you around the website. 🦁</p><p>What do you want to know?</p>`, 500);
+  renderChips();
+</script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mock-up K: Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #f4f5f7; --col: #ebedf0; --card: #fff; --ink: #172033; --muted: #66708a; --line: #dde1e8; --accent: #2563eb;
+    --l-ai: #f3e8ff; --l-ai-t: #7c3aed; --l-web: #dbeafe; --l-web-t: #1d4ed8; --l-game: #dcfce7; --l-game-t: #15803d; --l-tool: #ffedd5; --l-tool-t: #c2410c; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0e1117; --col: #161a22; --card: #1e232d; --ink: #e7eaf0; --muted: #8d96a8; --line: #2a303c; --accent: #6b9bff;
+    --l-ai: #2e1f4a; --l-ai-t: #c4a5ff; --l-web: #1b2b4d; --l-web-t: #93b4ff; --l-game: #163a25; --l-game-t: #7ee2a2; --l-tool: #42260f; --l-tool-t: #ffb27a; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 Manrope, system-ui, sans-serif; }
+  a { color: inherit; text-decoration: none; }
+  .top { display: flex; align-items: center; gap: 16px; padding: 14px 24px; border-bottom: 1px solid var(--line); background: var(--card); flex-wrap: wrap; }
+  .top img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+  .top h1 { font-size: 17px; margin: 0; font-weight: 800; }
+  .top .crumb { color: var(--muted); font-size: 14px; }
+  .top .sp { flex: 1; }
+  .top nav { display: flex; gap: 6px; } .top nav a { padding: 6px 12px; border-radius: 8px; font-weight: 500; font-size: 14px; color: var(--muted); } .top nav a.on, .top nav a:hover { background: var(--col); color: var(--ink); }
+  .intro { padding: 26px 24px 8px; max-width: 760px; }
+  .intro h2 { font-size: 28px; margin: 0 0 6px; font-weight: 800; letter-spacing: -0.02em; }
+  .intro p { margin: 0; color: var(--muted); }
+  .filters { display: flex; gap: 8px; padding: 16px 24px; flex-wrap: wrap; align-items: center; }
+  .filters span { font-size: 13px; color: var(--muted); margin-right: 4px; }
+  .filters button { font: inherit; font-size: 13px; font-weight: 700; border: 1px solid var(--line); background: var(--card); color: var(--ink); padding: 5px 12px; border-radius: 99px; cursor: pointer; }
+  .filters button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .board { display: grid; grid-template-columns: repeat(4, minmax(260px, 1fr)); gap: 16px; padding: 0 24px 40px; align-items: start; }
+  .col { background: var(--col); border-radius: 14px; padding: 12px; }
+  .col h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; margin: 2px 4px 12px; display: flex; justify-content: space-between; color: var(--muted); }
+  .col h3 b { background: var(--card); color: var(--ink); border-radius: 99px; padding: 0 8px; font-size: 12px; }
+  .col h3 i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+  .card { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,.04); transition: box-shadow .15s, transform .15s; }
+  .card:hover { box-shadow: 0 6px 16px rgba(0,0,0,.08); transform: translateY(-1px); }
+  .card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 6px; display: block; margin-bottom: 10px; }
+  .card h4 { margin: 6px 0 4px; font-size: 16px; font-weight: 800; }
+  .card p { margin: 0; font-size: 13.5px; color: var(--muted); }
+  .card .foot { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 12px; color: var(--muted); }
+  .lbl { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-right: 4px; }
+  .ai { background: var(--l-ai); color: var(--l-ai-t); } .web { background: var(--l-web); color: var(--l-web-t); } .game { background: var(--l-game); color: var(--l-game-t); } .tool { background: var(--l-tool); color: var(--l-tool-t); }
+  .prog { height: 6px; border-radius: 99px; background: var(--col); margin-top: 10px; overflow: hidden; } .prog i { display: block; height: 100%; width: 60%; background: var(--accent); }
+  .ghost { border: 2px dashed var(--line); border-radius: 10px; padding: 18px 12px; text-align: center; color: var(--muted); font-size: 13.5px; }
+  .entry { border-left: 3px solid var(--accent); }
+  .entry time { font-size: 12px; color: var(--muted); font-weight: 700; }
+  .card.hide { display: none; }
+  @media (max-width: 900px) {
+    .top { padding: 12px 16px; } .top .crumb { display: none; }
+    .intro, .filters { padding-left: 16px; padding-right: 16px; }
+    .board { grid-template-columns: 1fr; padding: 0 16px 40px; }
+  }
+</style>
+</head>
+<body>
+  <div class="top">
+    <img src="../static/avatar.jpg" alt="">
+    <h1>Quinn Chrest</h1><span class="crumb">/ side projects</span>
+    <span class="sp"></span>
+    <nav><a class="on" href="#">Board</a><a href="#">Dev log</a><a href="#">About</a></nav>
+  </div>
+
+  <div class="intro">
+    <h2>What I'm building</h2>
+    <p>I'm a software developer in Chanhassen, MN. This board is every side project I've worked on, sorted by where it stands, and the latest dev log entries.</p>
+  </div>
+
+  <div class="filters" id="filters"><span>Filter</span><button class="on" data-f="all">All</button><button data-f="ai">AI</button><button data-f="web">Web</button><button data-f="game">Games</button><button data-f="tool">Tools</button></div>
+
+  <div class="board">
+    <div class="col">
+      <h3><span><i style="background:#9aa3b5"></i>Up next</span><b>0</b></h3>
+      <div class="ghost">Nothing planned yet.<br>Projects with <code>status: planned</code> will show up here.</div>
+    </div>
+
+    <div class="col">
+      <h3><span><i style="background:var(--accent)"></i>In progress</span><b>1</b></h3>
+      <a class="card" data-t="ai" href="#"><img src="../static/projects/hey-leo.webp" alt=""><span class="lbl ai">AI</span><span class="lbl tool">Tool</span><h4>Hey Leo</h4><p>A voice assistant for my computer, powered by Claude. Haiku decides which model answers.</p><div class="prog"><i></i></div><div class="foot"><span>Python · Claude API</span><span>Source ↗</span></div></a>
+    </div>
+
+    <div class="col">
+      <h3><span><i style="background:#22c55e"></i>Shipped</span><b>8</b></h3>
+      <a class="card" data-t="web" href="#"><img src="../static/projects/activities.jpg" alt=""><span class="lbl web">Web</span><h4>Quinn in Motion</h4><p>Every Strava ride and walk on one heat map.</p><div class="foot"><span>React · MapLibre</span><span>Live ↗</span></div></a>
+      <a class="card" data-t="web" href="#"><img src="https://photos.quinnchrest.dev/img/colorado-camping-lumberjack-389c818c/640.jpg" alt=""><span class="lbl web">Web</span><h4>Photos</h4><p>A gallery of photos I've taken and like.</p><div class="foot"><span>React · Bun</span><span>Live ↗</span></div></a>
+      <a class="card" data-t="game" href="#"><span class="lbl game">Game</span><h4>Reborndle</h4><p>Guess the Pokémon Reborn trainer.</p><div class="foot"><span>Svelte</span><span>Play ↗</span></div></a>
+      <a class="card" data-t="game" href="#"><span class="lbl game">Game</span><h4>YuYudle</h4><p>Daily Yu Yu Hakusho guessing game.</p><div class="foot"><span>SvelteKit</span><span>Play ↗</span></div></a>
+      <a class="card" data-t="game" href="#"><span class="lbl game">Game</span><h4>Snake</h4><p>Snake in JavaScript with PixiJS.</p><div class="foot"><span>PixiJS</span><span>Play ↗</span></div></a>
+      <a class="card" data-t="game" href="#"><span class="lbl game">Game</span><h4>Blackjack</h4><p>Learn to play by the book.</p><div class="foot"><span>React</span><span>Play ↗</span></div></a>
+      <a class="card" data-t="tool" href="#"><span class="lbl tool">Tool</span><h4>To Go</h4><p>A to-do list with a full terminal UI.</p><div class="foot"><span>Go · Bubble Tea</span><span>Source ↗</span></div></a>
+      <a class="card" data-t="web" href="#"><span class="lbl web">Web</span><h4>Developer Site</h4><p>This website.</p><div class="foot"><span>SvelteKit</span><span>Source ↗</span></div></a>
+    </div>
+
+    <div class="col">
+      <h3><span><i style="background:#f59e0b"></i>Dev log</span><b>9</b></h3>
+      <a class="card entry" href="#"><time>Nov 12, 2026 · update</time><h4>Meet Hey Leo</h4><p>What Leo is and how the model routing works.</p></a>
+      <a class="card entry" href="#"><time>Sep 28, 2026 · feature</time><h4>New site: activities</h4><p>149 rides and walks going back to 2020.</p></a>
+      <a class="card entry" href="#"><time>Sep 27, 2026 · feature</time><h4>New site: photos</h4><p>Launched with the first 15 photos.</p></a>
+      <a class="card entry" href="#"><time>Sep 27, 2026 · update</time><h4>Moving to GitHub Pages</h4><p>No more server or database.</p></a>
+      <div class="foot" style="padding:4px"><a href="#">All 9 entries →</a><a href="#">RSS</a></div>
+      <div class="card" style="margin-top:10px"><h4 style="margin-top:0">GitHub</h4><p>24 repos · 12 stars · 8 followers</p></div>
+    </div>
+  </div>
+<script>
+  document.getElementById('filters').addEventListener('click', e => {
+    const f = e.target.dataset.f; if (!f) return;
+    document.querySelectorAll('.filters button').forEach(b => b.classList.toggle('on', b === e.target));
+    document.querySelectorAll('.card[data-t]').forEach(c => c.classList.toggle('hide', f !== 'all' && !c.outerHTML.includes(`lbl ${f}`)));
+  });
+</script>
+</body>
+</html>

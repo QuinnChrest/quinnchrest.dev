@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mock-up H: Arcade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #120a24; --panel: #1d1238; --pink: #ff4fa3; --cyan: #3ff0ff; --yellow: #ffe14a; --green: #6dff7a; --fg: #efe6ff; --dim: #9d8cc7; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 22px/1.25 VT323, monospace; min-height: 100vh;
+    background-image: linear-gradient(transparent 0 50%, rgba(255,255,255,.025) 50%); background-size: 100% 4px; }
+  a { color: inherit; text-decoration: none; }
+  .px { font-family: "Press Start 2P", monospace; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; }
+  .hud { display: flex; justify-content: space-between; font-size: 11px; color: var(--dim); gap: 12px; flex-wrap: wrap; }
+  .hud b { color: var(--yellow); font-weight: 400; }
+  .title { text-align: center; padding: 70px 0 50px; }
+  .title h1 { font-size: clamp(26px, 6vw, 64px); line-height: 1.2; margin: 0; color: var(--yellow);
+    text-shadow: 4px 4px 0 var(--pink), 8px 8px 0 #5a1f8f; letter-spacing: .02em; }
+  .title p { color: var(--dim); max-width: 620px; margin: 26px auto 0; }
+  .blink { display: inline-block; margin-top: 34px; font-size: 14px; color: var(--cyan); animation: b 1.1s steps(1) infinite; }
+  @keyframes b { 50% { opacity: 0; } }
+  h2 { font-size: 16px; color: var(--cyan); margin: 60px 0 20px; display: flex; align-items: center; gap: 14px; }
+  h2::after { content: ""; flex: 1; height: 4px; background: repeating-linear-gradient(90deg, var(--cyan) 0 8px, transparent 8px 16px); }
+  .levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .lv { background: var(--panel); border: 4px solid var(--fg); padding: 10px; position: relative; image-rendering: pixelated; transition: transform .1s; box-shadow: 6px 6px 0 #000; }
+  .lv:hover, .lv:focus { border-color: var(--yellow); transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--pink); outline: none; }
+  .lv:hover::before { content: "▶"; position: absolute; left: -26px; top: 40%; color: var(--yellow); font-size: 20px; }
+  .lv img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; border: 2px solid #000; filter: contrast(1.1) saturate(1.2); }
+  .lv .px { font-size: 11px; color: var(--yellow); margin: 12px 0 6px; display: block; }
+  .lv h3 { font-family: "Press Start 2P"; font-size: 14px; margin: 0 0 8px; line-height: 1.4; }
+  .lv p { margin: 0; color: var(--dim); font-size: 19px; }
+  .hp { display: flex; gap: 3px; margin-top: 10px; } .hp i { width: 14px; height: 10px; background: var(--green); } .hp i.e { background: #3a2a5c; }
+  .minis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-top: 18px; }
+  .mini { border: 3px solid var(--dim); padding: 12px 8px; text-align: center; background: var(--panel); }
+  .mini:hover { border-color: var(--pink); color: var(--pink); }
+  .mini .ic { font-size: 30px; display: block; }
+  .mini .px { font-size: 9px; }
+  .scores { background: var(--panel); border: 4px solid var(--fg); padding: 22px 26px; box-shadow: 6px 6px 0 #000; }
+  .scores .row { display: grid; grid-template-columns: 70px 140px 1fr 90px; gap: 14px; padding: 8px 0; border-bottom: 2px dashed #3a2a5c; align-items: baseline; }
+  .scores .row:hover { color: var(--yellow); }
+  .scores .rk { font-family: "Press Start 2P"; font-size: 12px; color: var(--pink); }
+  .scores .d { color: var(--dim); }
+  .scores .c { font-family: "Press Start 2P"; font-size: 9px; color: var(--green); text-align: right; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .stats div { border: 4px solid var(--fg); padding: 16px; background: var(--panel); text-align: center; }
+  .stats b { display: block; font-family: "Press Start 2P"; font-size: 26px; color: var(--yellow); font-weight: 400; margin-bottom: 8px; }
+  footer { text-align: center; margin-top: 60px; color: var(--dim); }
+  footer a { color: var(--cyan); margin: 0 10px; }
+  @media (max-width: 800px) {
+    .levels { grid-template-columns: 1fr; } .minis { grid-template-columns: repeat(3, 1fr); }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .scores { padding: 14px; } .scores .row { grid-template-columns: 50px 1fr; gap: 2px 10px; } .scores .row > :nth-child(n+3) { grid-column: 2; text-align: left; }
+    .lv:hover::before { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hud px"><span>1UP <b>QUINN</b></span><span>HI-SCORE <b>009 PROJECTS</b></span><span>CREDIT <b>∞</b></span></div>
+
+  <section class="title">
+    <h1 class="px">QUINN<br>CHREST</h1>
+    <p>Software developer from Chanhassen, MN. I build games, guessing games, a terminal to-do app, maps of my bike rides and a voice assistant. Pick a level.</p>
+    <span class="blink px">▶ PRESS START</span>
+  </section>
+
+  <h2 class="px">SELECT LEVEL</h2>
+  <div class="levels">
+    <a class="lv" href="#"><img src="../static/projects/hey-leo.webp" alt=""><span class="px">WORLD 1-1 · WIP</span><h3>HEY LEO</h3><p>A voice assistant powered by Claude. Haiku picks which model answers.</p><div class="hp"><i></i><i></i><i></i><i></i><i></i><i class="e"></i><i class="e"></i><i class="e"></i></div></a>
+    <a class="lv" href="#"><img src="../static/projects/activities.jpg" alt=""><span class="px">WORLD 1-2 · CLEAR</span><h3>QUINN IN MOTION</h3><p>Every Strava ride and walk on one glowing heat map.</p><div class="hp"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></a>
+    <a class="lv" href="#"><img src="https://photos.quinnchrest.dev/img/colorado-camping-lumberjack-389c818c/640.jpg" alt=""><span class="px">WORLD 1-3 · CLEAR</span><h3>PHOTOS</h3><p>A gallery of photos I've taken and like.</p><div class="hp"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></a>
+  </div>
+  <div class="minis">
+    <a class="mini" href="#"><span class="ic">🐍</span><span class="px">SNAKE</span></a>
+    <a class="mini" href="#"><span class="ic">🃏</span><span class="px">BLACKJACK</span></a>
+    <a class="mini" href="#"><span class="ic">❓</span><span class="px">YUYUDLE</span></a>
+    <a class="mini" href="#"><span class="ic">🎴</span><span class="px">REBORNDLE</span></a>
+    <a class="mini" href="#"><span class="ic">✅</span><span class="px">TO GO</span></a>
+    <a class="mini" href="#"><span class="ic">🕹</span><span class="px">THIS SITE</span></a>
+  </div>
+
+  <h2 class="px">DEV LOG · HIGH SCORES</h2>
+  <div class="scores">
+    <a class="row" href="#"><span class="rk">1ST</span><span class="d">2026-11-12</span><span>Meet Hey Leo</span><span class="c">UPDATE</span></a>
+    <a class="row" href="#"><span class="rk">2ND</span><span class="d">2026-09-28</span><span>New site: activities.quinnchrest.dev</span><span class="c">FEATURE</span></a>
+    <a class="row" href="#"><span class="rk">3RD</span><span class="d">2026-09-27</span><span>New site: photos.quinnchrest.dev</span><span class="c">FEATURE</span></a>
+    <a class="row" href="#"><span class="rk">4TH</span><span class="d">2026-09-27</span><span>Moving to GitHub Pages + SEO cleanup</span><span class="c">UPDATE</span></a>
+    <a class="row" href="#"><span class="rk">5TH</span><span class="d">2025-07-17</span><span>PostgreSQL backups</span><span class="c">FEATURE</span></a>
+  </div>
+
+  <h2 class="px">PLAYER STATS</h2>
+  <div class="stats">
+    <div><b>24</b>REPOS</div><div><b>12</b>STARS</div><div><b>08</b>FOLLOWERS</div><div><b>09</b>LOGS</div>
+  </div>
+
+  <footer><p>CONTINUE? <a href="#">GITHUB</a><a href="#">LINKEDIN</a><a href="#">RSS</a></p><p>© 2026 QUINN CHREST · INSERT COIN</p></footer>
+</div>
+</body>
+</html>

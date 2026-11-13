@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mock-up J: Plain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #fdfdfc; --ink: #1d1d1b; --muted: #77776f; --line: #e8e8e3; --accent: #2f6fed; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #121211; --ink: #e6e6e1; --muted: #8b8b84; --line: #262624; --accent: #7aa5ff; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 19px/1.65 Newsreader, Georgia, serif; }
+  main { max-width: 620px; margin: 0 auto; padding: 72px 20px 80px; }
+  a { color: var(--ink); text-decoration-color: var(--line); text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+  a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  header { display: flex; align-items: center; gap: 14px; margin-bottom: 40px; }
+  header img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }
+  header h1 { font-size: 21px; font-weight: 500; margin: 0; line-height: 1.2; }
+  header span { color: var(--muted); font-size: 16px; }
+  p { margin: 0 0 18px; }
+  .muted { color: var(--muted); }
+  h2 { font-size: 15px; font-weight: 500; color: var(--muted); margin: 56px 0 14px; letter-spacing: .02em; }
+  ul { list-style: none; padding: 0; margin: 0; }
+  .work li { padding: 6px 0; display: flex; gap: 10px; align-items: baseline; }
+  .work li span.d { color: var(--muted); flex: 1; border-bottom: 1px dotted var(--line); }
+  .work .now::after { content: "building"; font-size: 13px; color: var(--accent); margin-left: 8px; font-style: italic; }
+  .log li { display: grid; grid-template-columns: 110px 1fr; padding: 6px 0; }
+  .log time { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 16px; padding-top: 2px; }
+  .stats { color: var(--muted); }
+  .stats b { color: var(--ink); font-weight: 500; }
+  footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 16px; display: flex; gap: 18px; flex-wrap: wrap; }
+  @media (max-width: 600px) {
+    main { padding-top: 40px; }
+    .work li { flex-wrap: wrap; } .work li span.d { flex-basis: 100%; border: 0; font-size: 16px; }
+    .log li { grid-template-columns: 1fr; } .log time { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header><img src="../static/avatar.jpg" alt=""><div><h1>Quinn Chrest</h1><span>Software developer, Chanhassen MN</span></div></header>
+
+  <p>Hi. I write software for work and for fun. This page is the fun part: things I've built on evenings and weekends, and notes about building them.</p>
+  <p>Right now I'm working on <a href="#">Hey Leo</a>, a voice assistant for my computer that uses Claude. Before that I put <a href="#">every bike ride I've recorded</a> on one map and made a little <a href="#">photo gallery</a>.</p>
+  <p class="muted">You can find me on <a href="#">GitHub</a> and <a href="#">LinkedIn</a>.</p>
+
+  <h2>Projects</h2>
+  <ul class="work">
+    <li><a class="now" href="#">Hey Leo</a><span class="d">voice assistant powered by Claude</span></li>
+    <li><a href="#">Quinn in Motion</a><span class="d">rides and walks on a heat map</span></li>
+    <li><a href="#">Photos</a><span class="d">pictures I've taken and like</span></li>
+    <li><a href="#">Reborndle</a><span class="d">guess the Pokémon Reborn trainer</span></li>
+    <li><a href="#">YuYudle</a><span class="d">daily Yu Yu Hakusho guessing game</span></li>
+    <li><a href="#">Snake</a><span class="d">JavaScript and PixiJS</span></li>
+    <li><a href="#">Blackjack</a><span class="d">learn to play by the book</span></li>
+    <li><a href="#">To Go</a><span class="d">a to-do list for the terminal</span></li>
+  </ul>
+
+  <h2>Writing</h2>
+  <ul class="log">
+    <li><time>2026-11-12</time><a href="#">Meet Hey Leo</a></li>
+    <li><time>2026-09-28</time><a href="#">New site: activities.quinnchrest.dev</a></li>
+    <li><time>2026-09-27</time><a href="#">New site: photos.quinnchrest.dev</a></li>
+    <li><time>2026-09-27</time><a href="#">Moving to GitHub Pages + SEO cleanup</a></li>
+    <li><time>2025-07-17</time><a href="#">PostgreSQL backups</a></li>
+    <li><time>2025-07-14</time><a href="#">Developer site: admin panel</a></li>
+    <li><time>2025-07-10</time><a href="#">Portfolio website launch</a></li>
+  </ul>
+
+  <h2>Numbers</h2>
+  <p class="stats"><b>24</b> public repos, <b>12</b> stars, <b>8</b> followers on GitHub, and <b>1,170</b> miles on the bike since 2020.</p>
+
+  <footer><a href="#">RSS</a><a href="#">GitHub</a><a href="#">LinkedIn</a><span>Built with SvelteKit, hosted on GitHub Pages.</span></footer>
+</main>
+</body>
+</html>
