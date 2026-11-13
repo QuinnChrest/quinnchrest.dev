@@ -1,42 +1,7 @@
 /* Topo theme. Colors are tokens so light and dark stay in sync.
-   Dark mode follows the system unless the visitor picks one with the toggle
+   The site is dark by default; the header toggle switches to light
    (stored as data-theme on <html>, set before paint in app.html). */
 :root {
-	--bg: #f1ecdf;
-	--bg-raised: #faf7ef;
-	--ink: #1f2b22;
-	--muted: #5b675c;
-	--line: #d6ceb8;
-	--contour: #c4b999;
-	--trail: #d24b20;
-	--moss: #3d5a3f;
-	--focus: #2563eb;
-	--shadow: 0 12px 30px rgba(40, 30, 10, 0.08);
-
-	--font-sans: 'Bricolage Grotesque', system-ui, sans-serif;
-	--font-mono: 'IBM Plex Mono', ui-monospace, monospace;
-	--wrap: 1100px;
-	--radius: 16px;
-	color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-	:root:not([data-theme='light']) {
-		--bg: #141a15;
-		--bg-raised: #1b231c;
-		--ink: #e9e4d4;
-		--muted: #9aa392;
-		--line: #2c372d;
-		--contour: #2a352b;
-		--trail: #ff7448;
-		--moss: #9cc49a;
-		--focus: #7aa5ff;
-		--shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-		color-scheme: dark;
-	}
-}
-
-:root[data-theme='dark'] {
 	--bg: #141a15;
 	--bg-raised: #1b231c;
 	--ink: #e9e4d4;
@@ -47,7 +12,26 @@
 	--moss: #9cc49a;
 	--focus: #7aa5ff;
 	--shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+
+	--font-sans: 'Bricolage Grotesque', system-ui, sans-serif;
+	--font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+	--wrap: 1100px;
+	--radius: 16px;
 	color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+	--bg: #f1ecdf;
+	--bg-raised: #faf7ef;
+	--ink: #1f2b22;
+	--muted: #5b675c;
+	--line: #d6ceb8;
+	--contour: #c4b999;
+	--trail: #d24b20;
+	--moss: #3d5a3f;
+	--focus: #2563eb;
+	--shadow: 0 12px 30px rgba(40, 30, 10, 0.08);
+	color-scheme: light;
 }
 
 *,

@@ -1,17 +1,18 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	let dark = $state(false);
+	// Dark is the default; only a saved "light" choice changes it.
+	let dark = $state(true);
 
 	onMount(() => {
-		const set = document.documentElement.dataset.theme;
-		dark = set ? set === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+		dark = document.documentElement.dataset.theme !== 'light';
 	});
 
 	function toggle() {
 		dark = !dark;
 		const theme = dark ? 'dark' : 'light';
-		document.documentElement.dataset.theme = theme;
+		if (dark) delete document.documentElement.dataset.theme;
+		else document.documentElement.dataset.theme = 'light';
 		try {
 			localStorage.setItem('theme', theme);
 		} catch {
